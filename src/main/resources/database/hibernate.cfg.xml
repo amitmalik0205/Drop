@@ -6,7 +6,15 @@
 
 	<session-factory>
 	
-		<mapping class= "com.qait.mathplay.dao.domain.User"/>
+		<mapping class= "com.drop.dao.domain.User"/>
+		<mapping class= "com.drop.dao.domain.DealMatch"/>
+		<mapping class= "com.drop.dao.domain.DealPost"/>
+		<mapping class= "com.drop.dao.domain.MailingAddress"/>
+		<mapping class= "com.drop.dao.domain.UserRating"/>
+		<mapping class= "com.drop.dao.domain.Location"/>
+		<mapping class= "com.drop.dao.domain.BusinessDetails"/>
+		<mapping class= "com.drop.dao.domain.DealCategory"/>
+		<mapping class= "com.drop.dao.domain.DealWanted1"/>
 		
 	</session-factory>
 </hibernate-configuration>
