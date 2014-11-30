@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.drop.controller.form.LoginForm;
-import com.drop.controller.form.RegisterationForm;
+import com.drop.controller.form.RegistrationForm;
 import com.drop.dao.IUserDao;
 import com.drop.dao.domain.User;
 import com.drop.dto.ForgetPasswordDTO;
@@ -27,15 +27,12 @@ public class UserServiceImpl implements IUserService {
 	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void saveUser(RegisterationForm form) {
+	public void saveUser(RegistrationForm form) {
 		User user = new User();
 		user.setFirstName(form.getFirstName());
 		user.setLastName(form.getLastName());
 		user.setEmail(form.getEmail());
 		user.setPassword(form.getPassword());
-		user.setLocationDescription(form.getLocation());
-		user.setPhoneNumber(form.getPhone());
-		user.setSkypeName(form.getSkypeName());
 		userDao.create(user);
 	}
 	

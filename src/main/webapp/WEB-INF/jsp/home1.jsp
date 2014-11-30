@@ -32,110 +32,8 @@
 
     <!-- Your custom styles (blank file) -->
     <link rel="stylesheet" href="css/mystyles.css"/>
-
-<style type="text/css">
-.formFieldError {
-	color: red;
-}
-</style>
-
-<script type="text/javascript">
-
-     function forgotPassword() {
-    	  alert("forgot form submit"); 
-          var $form = $("#forgotPassForm");
-          jQuery.ajax({
-                   url:  $form.attr("action"),
-                   context: document.body,
-                   type: 'post',
-                   data: $form.serialize()
-               }).done(function(res) {
-               	alert(res);
-                   if(res.status==="ERROR"){
-                       for(var key in res.errorsMap){
-                       	alert(res.errorsMap[key]);
-                           var err="<span class=\"formFieldError\" id=\""+key+"Id\">"+res.errorsMap[key]+"</span>";
-                           jQuery("[name^='"+key+"']").after(err);
-                       }
-                   }else{                      
-                       alert("hi");
-                   }
-               }).fail(function(data){
-               	alert(data.responseText);
-               });
-           return false; 
-     }
     
-		function login() {
-		  alert("login form submit"); 
-          var $form = $("#loginForm");
-          jQuery.ajax({
-                   url:  $form.attr("action"),
-                   context: document.body,
-                   type: 'post',
-                   data: $form.serialize()
-               }).done(function(res) {
-               	alert(res);
-                   if(res.status==="ERROR"){
-                       for(var key in res.errorsMap){
-                       	alert(res.errorsMap[key]);
-                           var err="<span class=\"formFieldError\" id=\""+key+"Id\">"+res.errorsMap[key]+"</span>";
-                           jQuery("[name^='"+key+"']").after(err);
-                       }
-                   }else{                      
-                       alert("hi");
-                   }
-               }).fail(function(data){
-               	alert(data.responseText);
-               });
-           return false; 
-		}
-     
-		function updateInfo() {
-			  alert("form submit");
-			  /*  var $form = $("#registerationForm");
-			    // .serialize() to send the form input name-value pairs as params.
-			    $.ajax({
-			        // url can be obtained via the form action attribute passed to the JSP.
-			        url: $form.attr("action"),
-			        data: $form.serialize(),
-			        type: "POST",
-	         		   success : function(response) {
-	         			  for(var key in response.errorMap){
-	                            var err="<span class=\"formFieldError\" id=\""+key+"Id\">"+res.errorMap[key]+"</span>";
-	                            jQuery("[name^='"+key+"']").after(err);
-	                        }
-
-	         		   },
-	         		   error : function(jqXHR, textStatus, errorThrown) {
-	         			 	alert(jqXHR.responseText);	         			
-	         		   }
-	            }); */ 
-	            var $form = $("#registerationForm");
-	           jQuery.ajax({
-	                    url:  $form.attr("action"),
-	                    context: document.body,
-	                    type: 'post',
-	                    data: $form.serialize()
-	                }).done(function(res) {
-	                	alert(res);
-	                    if(res.status==="ERROR"){
-	                        for(var key in res.errorsMap){
-	                        	alert(res.errorsMap[key]);
-	                            var err="<span class=\"formFieldError\" id=\""+key+"Id\">"+res.errorsMap[key]+"</span>";
-	                            jQuery("[name^='"+key+"']").after(err);
-	                        }
-	                    }else{                      
-	                        alert("hi");
-	                    }
-	                }).fail(function(data){
-	                	alert(data.responseText);
-	                });
-	            return false; 
-			}
-	</script>
-    
-</head>
+    <script src="js/myscript.js"></script>
 
 <body class="boxed" style="background-image: url(img/textures/wood-1.jpg)">
 
@@ -448,12 +346,11 @@
             <i class="fa fa-edit dialog-icon"></i>
             <h3>Member Register</h3>
             <h5>Ready to get best offers? Let's get started!</h5>
-            
+            <span class="formFieldError" id="errorSpan" style="display: none;"></span>
             <form:form method="POST" commandName="registerationForm" action="register.htm" cssClass="dialog-form" id="registerationForm">
             	<div class="form-group">
                     <label>First Name</label>
                     <form:input path="firstName" placeholder="First Name" cssClass="form-control"/>
-                    <form:errors path="firstName"></form:errors>
                 </div>
                 <div class="form-group">
                     <label>Last Name</label>
@@ -467,7 +364,7 @@
                     <label>Password</label>
                     <form:password path="password" placeholder="Password" cssClass="form-control"/>
                 </div>
-				<div class="form-group">
+				<%-- <div class="form-group">
 					<label>Your Location</label>
 					<form:input path="location" placeholder="City, State" cssClass="form-control" />
 				</div>
@@ -478,7 +375,7 @@
 				<div class="form-group">
 					<label>Skype Name</label>
 					<form:input path="skypeName" placeholder="Skype Name" cssClass="form-control" />
-				</div>
+				</div> --%>
 <%-- 				<div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
@@ -498,7 +395,7 @@
                         <input type="checkbox">Get hot offers via e-mail
                     </label>
                 </div> --%>
-                <a class="btn btn-primary" onclick="updateInfo()" href="#">Sign up</a>
+                <a class="btn btn-primary" onclick="registerUser()" href="#">Sign up</a>
              <!--  <input class="btn btn-primary" value="Sign up" type="submit"/> -->
             </form:form>
         </div>
