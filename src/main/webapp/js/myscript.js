@@ -1,11 +1,17 @@
-function cleanErrors() {
+function cleanErrors(needToRemoveFieldValues) {
 	$(".formFieldError").each(function() {
 		$(this).remove();
 	});
+	
+	if(needToRemoveFieldValues) {
+		$(".form-control").each(function() {
+			$(this).val('');
+		});
+	}
 }
 
 function forgotPassword() {
-	cleanErrors();
+	cleanErrors(false);
 	var $form = $("#forgotPassForm");
 	jQuery.ajax({
 		url : $form.attr("action"),
@@ -50,7 +56,7 @@ function forgotPassword() {
 }
 
 function login() {
-	cleanErrors();
+	cleanErrors(false);
 	var $form = $("#loginForm");
 	jQuery.ajax({
 		url : $form.attr("action"),
@@ -95,7 +101,7 @@ function login() {
 }
 
 function registerUser() {
-	cleanErrors();
+	cleanErrors(false);
 	var $form = $("#registerationForm");
 	jQuery.ajax({
 		url : $form.attr("action"),

@@ -112,13 +112,13 @@
 
                 // We close the popup if click is on close button or on preloader. Or if there is no content.
                 if (!mfp.content || $(target).hasClass('mfp-close') || (mfp.preloader && target === mfp.preloader[0])) {
-                	cleanErrors(); //Added by me
+                	cleanErrors(true); //Added by me
                     return true;
                 }
 
                 // if click is outside the content
                 if ((target !== mfp.content[0] && !$.contains(mfp.content[0], target))) {
-                	cleanErrors(); //Added by me
+                	cleanErrors(true); //Added by me
                     if (closeOnBg) {
                         // last check, if the clicked element is in DOM, (in case it's removed onclick)
                         if ($.contains(document, target)) {
