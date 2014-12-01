@@ -1,5 +1,7 @@
 package com.drop.dao.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +10,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "deal_category")
-public class DealCategory {
+public class DealCategory implements Serializable {
+
+	private static final long serialVersionUID = -6503386109821729793L;
 
 	@Id
 	@GeneratedValue

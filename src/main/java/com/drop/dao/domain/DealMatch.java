@@ -37,7 +37,7 @@ public class DealMatch {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "deal_wanted_id")
-	private DealWanted1 dealWanted;	
+	private DealWanted dealWanted;	
 	
 	@Column(name = "date")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -122,11 +122,11 @@ public class DealMatch {
 		this.rejectedReason = rejectedReason;
 	}
 
-	public DealWanted1 getDealWanted() {
+	public DealWanted getDealWanted() {
 		return dealWanted;
 	}
 
-	public void setDealWanted(DealWanted1 dealWanted) {
+	public void setDealWanted(DealWanted dealWanted) {
 		this.dealWanted = dealWanted;
 	}
 

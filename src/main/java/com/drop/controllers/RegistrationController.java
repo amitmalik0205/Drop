@@ -3,6 +3,7 @@ package com.drop.controllers;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -81,6 +82,8 @@ public class RegistrationController {
 					return msgConfig.getProperty("user.exists");
 				}
 				userService.saveUser(form);
+				HttpSession session = request.getSession();
+				session.setAttribute("user", userService.getUserByEmail(form.getEmail()));
 			} catch (Exception e) {
 				logger.fatal(DropUtil.getExceptionDescriptionString(e));
 				e.printStackTrace();

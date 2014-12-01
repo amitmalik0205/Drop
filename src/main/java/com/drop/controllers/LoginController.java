@@ -1,12 +1,9 @@
 package com.drop.controllers;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -15,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,8 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.drop.controller.form.ForgotPasswordForm;
 import com.drop.controller.form.LoginForm;
 import com.drop.dao.domain.User;
-import com.drop.enums.RESPONSE_STATUS;
-import com.drop.json.response.JsonResponse;
 import com.drop.service.IUserService;
 import com.drop.util.DropUtil;
 
@@ -53,12 +47,14 @@ public class LoginController {
 				if (savedUser == null) {
 					return msgConfig.getProperty("authenticatin.failed");
 				}
+				HttpSession session = request.getSession();
+				session.setAttribute("user", savedUser);
 			} catch (Exception e) {
 				e.printStackTrace();
 				logger.fatal(DropUtil.getExceptionDescriptionString(e));
 				return "ERROR";
 			}
-		}
+		}		
 		return "SUCCESS";
 	}
 	

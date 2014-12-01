@@ -1,5 +1,6 @@
 package com.drop.dao.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -14,18 +15,26 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "deal_wanted")
-public class DealWanted1 {
+public class DealWanted implements Serializable {
 	
+	private static final long serialVersionUID = 4328274086721337311L;
+
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
 	private String id;
+	
+	@Column(name = "title")
+	private String title;
+	
+	@Column(name = "description")
+	private String description;
 
 	@Column(name = "max_price")
 	private BigDecimal maxPrice;
-
-	@Column(name = "description")
-	private String description;
+	
+	@Column(name = "tip_amount")
+	private BigDecimal tipAmount; // how much the dropee will pay to the finder
 
 	@Column(name = "accept_coupons")
 	private Boolean acceptCoupons;
@@ -36,9 +45,6 @@ public class DealWanted1 {
 	@Column(name = "would_buy_locally")
 	private Boolean wouldBuyLocally;
 
-	@Column(name = "tip_amount")
-	private BigDecimal tipAmount; // how much the dropee will pay to the finder
-
 	@Column(name = "want_new")
 	private Boolean wantNew;
 
@@ -47,10 +53,6 @@ public class DealWanted1 {
 
 	@Column(name = "refurbished_ok")
 	private Boolean refurbishedOK;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "deal_category_id")
-	private DealCategory dealCategory;//
 
 	// private DealMatchID matchedId;
 	@Column(name = "active")
@@ -61,6 +63,10 @@ public class DealWanted1 {
 
 	@Column(name = "ip_address")
 	private String ipAddress; // location of user's IP when they posted this
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "deal_category_id")
+	private DealCategory dealCategory;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
@@ -184,6 +190,14 @@ public class DealWanted1 {
 
 	public void setDealCategory(DealCategory dealCategory) {
 		this.dealCategory = dealCategory;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	

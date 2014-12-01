@@ -37,8 +37,14 @@ public class GenericDaoImpl<T extends Serializable> implements IGenericDao<T> {
 		
 	@Override
 	@SuppressWarnings("unchecked")
-	public T findOne(long id){
+	public T getEntity(long id){
 		return (T) getCurrentSession().get(clazz, id );
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public T loadEntity(long id){
+		return (T) getCurrentSession().load(clazz, id );
 	}
 		
 	@Override
@@ -65,7 +71,7 @@ public class GenericDaoImpl<T extends Serializable> implements IGenericDao<T> {
 		
 	@Override
 	public void deleteById(long entityId){
-		T entity = findOne(entityId);
+		T entity = loadEntity(entityId);
 		delete(entity);
 	}
 	

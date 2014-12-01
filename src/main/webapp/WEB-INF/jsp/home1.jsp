@@ -306,10 +306,11 @@
                                     </ul>
                                 </div>
                             </li>
-                            <li><a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top"><i class="fa fa-sign-in"></i>Sign in</a>
-                            </li>
-                            <li><a class="popup-text" href="#register-dialog" data-effect="mfp-move-from-top"><i class="fa fa-edit"></i>Sign up</a>
-                            </li>
+                            <li><a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top" id="anchorSignIn"><i class="fa fa-sign-in"></i>Sign in</a></li>                          
+                            <li><a class="popup-text" href="#register-dialog" data-effect="mfp-move-from-top" id="anchorSignUp"><i class="fa fa-edit"></i>Sign up</a></li>
+                            <li><a class="popup-text" href="#want-drop-dialog" data-effect="mfp-move-from-top" id="anchorWantDrop" ><i class="fa fa-sign-in"></i>Want Drop</a></li>
+                            <li><a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top" id="anchorPostDrop"><i class="fa fa-sign-in"></i>Post Drop</a></li>
+                            <li><a href="signOut.htm"  id="anchorSignOut" style="display: none"><i class="fa fa-sign-in"></i>Sign out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -342,7 +343,7 @@
         </div>
 
 		<!-- User Registration Dialog -->
-        <div id="register-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix" style="overflow: scroll; max-height: 500px">
+        <div id="register-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix">
             <i class="fa fa-edit dialog-icon"></i>
             <h3>Member Register</h3>
             <h5>Ready to get best offers? Let's get started!</h5>
@@ -364,40 +365,12 @@
                     <label>Password</label>
                     <form:password path="password" placeholder="Password" cssClass="form-control"/>
                 </div>
-				<%-- <div class="form-group">
-					<label>Your Location</label>
-					<form:input path="location" placeholder="City, State" cssClass="form-control" />
-				</div>
-				<div class="form-group">
-					<label>Phone Number</label>
-					<form:input path="phone" placeholder="Phone Number" cssClass="form-control" />
-				</div>
-				<div class="form-group">
-					<label>Skype Name</label>
-					<form:input path="skypeName" placeholder="Skype Name" cssClass="form-control" />
-				</div> --%>
-<%-- 				<div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label>Your Location</label>
-                            <form:input path="password" placeholder="Boston" cssClass="form-control"/>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label>Postal/Zip</label>
-                            <input type="password" placeholder="12345" class="form-control">
-                        </div>
-                    </div>
-                </div> 
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox">Get hot offers via e-mail
-                    </label>
-                </div> --%>
                 <a class="btn btn-primary" onclick="registerUser()" href="#">Sign up</a>
-             <!--  <input class="btn btn-primary" value="Sign up" type="submit"/> -->
-            </form:form>
+				<ul class="dialog-alt-links">
+					<li><a class="popup-text" href="#login-dialog"
+						data-effect="mfp-zoom-out">Already member</a></li>
+				</ul>
+			</form:form>
         </div>
 
 
@@ -414,6 +387,79 @@
         </div>
         <!-- END LOGIN REGISTER LINKS CONTENT -->
 
+		<!--Deal Wanted Dialog -->
+        <div id="want-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix">
+            <i class="fa fa-edit dialog-icon"></i>
+            <h3>Drop Wanted</h3>
+            <h5>Want to get best offers? Don't worry just post what you want</h5>
+            <span class="formFieldError" id="errorSpan" style="display: none;"></span>
+            <form:form method="POST" commandName="dealWantedForm" action="wantdrop.htm" cssClass="dialog-form" id="dealWantedForm">
+            	<div class="form-group">
+                    <label>Title</label>
+                    <form:input path="title" placeholder="Title" cssClass="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <form:textarea path="description" placeholder="Describe what you want" cssClass="form-control"/>
+                </div>
+				<div class="form-group">
+					<label>Category</label>		
+					<form:select path="category" cssClass="form-control">
+						<form:option value="0" label="--Select Category--" />
+						<form:options itemValue="id" itemLabel="name"
+							items="${dealWantedForm.dealCategories}" />
+					</form:select>
+				</div>
+				<div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                    		<label>Maximum Price</label>
+                    		<form:input path="maxPrice" placeholder="Maximum Price" cssClass="form-control"/>
+                		</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                    		<label>Tip Amount</label>
+                    		<form:input path="tipAmount" placeholder="Tip Amount" cssClass="form-control"/>
+                		</div>
+                    </div>
+                </div>
+				<div class="checkbox">
+					<form:checkbox path="acceptCoupons" label="Accept Coupons"></form:checkbox>
+				</div>
+				<div class="row">
+                	<div class="col-md-6">
+		                <div class="checkbox">
+		                	<form:checkbox path="wouldBuyOnline" label="Buy Online"></form:checkbox>		                   
+		                </div>   
+	                </div>
+	                <div class="col-md-6">
+		                <div class="checkbox">
+		                    <form:checkbox path="wouldBuyLocally" label="Buy Locally"></form:checkbox>	
+		                </div> 	
+	                </div>                
+                </div>    
+                 <div class="row">
+                	<div class="col-md-3">
+		                <div class="checkbox">
+		                    <form:checkbox path="wantNew" label="New"></form:checkbox>
+		                </div>   
+	                </div>
+	                <div class="col-md-3">
+		                <div class="checkbox">
+		                    <form:checkbox path="wantUsed" label="Old"></form:checkbox>
+		                </div> 	
+	                </div>  
+	                <div class="col-md-6">
+		                <div class="checkbox">
+		                	<form:checkbox path="refurbishedOK" label="Refurbished"></form:checkbox>		                   
+		                </div> 	
+	                </div>               
+                </div>                     
+                <a class="btn btn-primary" onclick="postDealWanted()" href="#">Publish</a>
+             <!--  <input class="btn btn-primary" value="Sign up" type="submit"/> -->
+            </form:form>
+        </div>
 
         <!-- TOP AREA -->
         <div class="top-area">

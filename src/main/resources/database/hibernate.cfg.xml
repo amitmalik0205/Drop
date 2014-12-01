@@ -14,7 +14,7 @@
 		<mapping class= "com.drop.dao.domain.Location"/>
 		<mapping class= "com.drop.dao.domain.BusinessDetails"/>
 		<mapping class= "com.drop.dao.domain.DealCategory"/>
-		<mapping class= "com.drop.dao.domain.DealWanted1"/>
+		<mapping class= "com.drop.dao.domain.DealWanted"/>
 		
 	</session-factory>
 </hibernate-configuration>
