@@ -35,7 +35,7 @@
     
     <!-- Date time picker css -->
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" type="text/css"/>
-   
+ 
 
 <body class="boxed" style="background-image: url(img/textures/wood-1.jpg)">
 
@@ -331,7 +331,7 @@
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <form:input path="password" placeholder="My secret password" cssClass="form-control"/>
+                    <form:password path="password" placeholder="My secret password" cssClass="form-control"/>
                 </div>
                <!--  <input type="submit" value="Sign in" class="btn btn-primary"/> -->
                <a class="btn btn-primary" onclick="login()" href="#">Sign in</a>
@@ -506,10 +506,10 @@
                     </div>
                 </div>
 				<div class="form-group">
-					<label>Started On</label>
-					<div class="col-xs-4">
-						<div class='input-group date' id='fromDateTimePicker'>
-							<form:input cssClass="form-control" path="starts" id="starts" />
+					<label>Starts On</label>
+					<div>
+						<div class='input-group date dateTimePicker' onclick="dateTimePicker()">
+							<form:input cssClass="form-control" path="starts"/>
 							<span class="input-group-addon"> 
 								<span class="glyphicon glyphicon-calendar"></span>
 							</span>
@@ -518,9 +518,9 @@
 				</div>
 				<div class="form-group">
 					<label>Expires On</label>
-					<div class="col-xs-4">
-						<div class='input-group date' id='toDateTimePicker'>
-							<form:input cssClass="form-control" path="expires" id="expires" />
+					<div>
+						<div class='input-group date dateTimePicker' onclick="dateTimePicker()">
+							<form:input cssClass="form-control" path="expires" />
 							<span class="input-group-addon"> 
 								<span class="glyphicon glyphicon-calendar"></span>
 							</span>
@@ -1276,8 +1276,10 @@
         <!-- Custom scripts -->
         <script src="js/custom.js"></script>
         <script src="js/myscript.js"></script>
-		<script src='js/datepicker/moment.min.js'></script>
-		<script src='js/datepicker/bootstrap-datetimepicker.min.js'></script>
+		<script src='js/moment.min.js'></script>
+		<script src='js/bootstrap-datetimepicker.min.js'></script>
+		
+		
     </div>
 </body>
 

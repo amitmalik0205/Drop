@@ -32,7 +32,7 @@ public class DealPost implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "deal_category_id")
-	private DealCategory dealCategoryId;
+	private DealCategory dealCategory;
 
 	@Column(name = "title")
 	private String title;
@@ -101,13 +101,13 @@ public class DealPost implements Serializable {
 	public void setSalePrice(BigDecimal salePrice) {
 		this.salePrice = salePrice;
 	}
-
-	public DealCategory getDealCategoryId() {
-		return dealCategoryId;
+	
+	public DealCategory getDealCategory() {
+		return dealCategory;
 	}
 
-	public void setDealCategoryId(DealCategory dealCategoryId) {
-		this.dealCategoryId = dealCategoryId;
+	public void setDealCategory(DealCategory dealCategory) {
+		this.dealCategory = dealCategory;
 	}
 
 	public String getTitle() {

@@ -2,14 +2,23 @@ package com.drop.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import com.drop.exception.DropException;
+
 public class DropUtil {
+	
+	private static final Logger logger = Logger.getLogger(DropUtil.class);
 
 	/*
 	 * Method returns the stack trace of exception in string format. Used for
@@ -48,5 +57,27 @@ public class DropUtil {
 			ipAddress = request.getRemoteAddr();
 		}
 		return ipAddress;
+	}
+	
+	/**
+	 * Utility method to convert a String to date
+	 * 
+	 * @param str
+	 *            Date string to convert
+	 * @param formatString
+	 *            format like 'MM-dd-yyyy'
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Date convertStringToDate(String str, String formatString) {
+		Date date = null;
+		try {
+			DateFormat dateFormat = new SimpleDateFormat(formatString);
+			date = (Date) dateFormat.parse(str);
+		} catch (ParseException e) {
+			logger.fatal(getExceptionDescriptionString(e));
+			throw new DropException();
+		}
+		return date;
 	}
 }

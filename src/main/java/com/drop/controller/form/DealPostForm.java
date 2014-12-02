@@ -1,7 +1,6 @@
 package com.drop.controller.form;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 import com.drop.dao.domain.DealCategory;
@@ -22,9 +21,9 @@ public class DealPostForm {
 	
 	private Double discountPercent;
 	
-	private Date expires;
+	private String expires;
 	
-	private Date starts;
+	private String starts;
 	
 	private String specialInstructions;
 	
@@ -96,19 +95,19 @@ public class DealPostForm {
 		this.discountPercent = discountPercent;
 	}
 
-	public Date getExpires() {
+	public String getExpires() {
 		return expires;
 	}
 
-	public void setExpires(Date expires) {
+	public void setExpires(String expires) {
 		this.expires = expires;
 	}
 
-	public Date getStarts() {
+	public String getStarts() {
 		return starts;
 	}
 
-	public void setStarts(Date starts) {
+	public void setStarts(String starts) {
 		this.starts = starts;
 	}
 
