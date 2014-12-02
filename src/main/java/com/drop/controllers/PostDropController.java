@@ -13,22 +13,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.drop.controller.form.DealWantedForm;
+import com.drop.controller.form.DealPostForm;
 import com.drop.dao.domain.User;
-import com.drop.service.IDealWantedService;
+import com.drop.service.IDealPostService;
 import com.drop.util.DropUtil;
 
 @Controller
-public class WantDropController {
-	
-	private static final Logger logger = Logger.getLogger(WantDropController.class);
+public class PostDropController {
+
+	private static final Logger logger = Logger.getLogger(PostDropController.class);
 	
 	@Autowired
-	private IDealWantedService dealWantedService;
+	private IDealPostService dealPostService;
 
-	@RequestMapping(value = "/wantdrop", method = RequestMethod.POST)
+	@RequestMapping(value = "/postdrop", method = RequestMethod.POST)
 	public @ResponseBody
-	String registerUser(@Valid DealWantedForm form, BindingResult result,
+	String registerUser(@Valid DealPostForm form, BindingResult result,
 			ModelMap map, HttpServletRequest request) {
 
 		if (result.hasErrors()) {
@@ -39,7 +39,7 @@ public class WantDropController {
 				HttpSession session = request.getSession(false);
 				User user = (User)session.getAttribute("user");
 				form.setUserId(user.getUserId());
-				dealWantedService.saveDealWanted(form);
+				dealPostService.saveDealPost(form);
 			} catch (Exception e) {
 				logger.fatal(DropUtil.getExceptionDescriptionString(e));
 				e.printStackTrace();

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.drop.controller.form.DealWantedForm;
 import com.drop.dao.IDealCategoryDao;
 import com.drop.dao.IDealWantedDao;
+import com.drop.dao.IUserDao;
 import com.drop.dao.domain.DealWanted;
 import com.drop.service.IDealWantedService;
 
@@ -18,6 +19,9 @@ public class DealWantedServiceImpl implements IDealWantedService {
 	
 	@Autowired
 	private IDealCategoryDao categoryDao;
+	
+	@Autowired
+	private IUserDao userDao;
 	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -34,7 +38,10 @@ public class DealWantedServiceImpl implements IDealWantedService {
 		entity.setWantNew(form.getWantNew());
 		entity.setWantUsed(form.getWantUsed());
 		entity.setRefurbishedOK(form.getRefurbishedOK());
-		entity.setDealCategory(categoryDao.loadEntity(form.getCategory()));
+		entity.setIpAddress(form.getIpAddress());
+		entity.setActive(true);
+		entity.setDealCategory(categoryDao.loadEntity(form.getCategory()));		
+		entity.setUser(userDao.loadEntity(form.getUserId()));
 		
 		dealWantedDao.create(entity);
 	}

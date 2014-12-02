@@ -1,5 +1,6 @@
 package com.drop.dao.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -17,7 +18,9 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "deal_post")
-public class DealPost {
+public class DealPost implements Serializable {
+
+	private static final long serialVersionUID = 3534368434423368L;
 
 	@Id
 	@GeneratedValue

@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -38,5 +40,13 @@ public class DropUtil {
 	         }
         }
         return builder.toString();   
+	}
+	
+	public static String getIPAddress(HttpServletRequest request) {
+		String ipAddress = request.getHeader("X-FORWARDED-FOR");
+		if (ipAddress == null) {
+			ipAddress = request.getRemoteAddr();
+		}
+		return ipAddress;
 	}
 }

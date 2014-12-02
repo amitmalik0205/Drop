@@ -3,7 +3,9 @@ package com.drop.controller.form;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -17,10 +19,13 @@ public class DealWantedForm {
 	@NotEmpty(message = "Deal description is required")
 	private String description;
 	
+	@NotNull(message = "Please select a category")
 	@Min(value = 1, message = "Please select a category")
 	private Long category;
 	
-	@NotEmpty(message = "Please fill maximun price")
+	@NotNull(message = "Please enter maximum price")
+	@Min(value = 1, message = "Maximum Price must be greater then 1")
+	@Max(value = Long.MAX_VALUE, message = "Maximum Price is out of range")
 	private BigDecimal maxPrice;
 	
 	private BigDecimal tipAmount;
@@ -38,6 +43,10 @@ public class DealWantedForm {
 	private Boolean wantUsed;
 
 	private Boolean refurbishedOK;
+	
+	private String ipAddress;
+	
+	private Long userId;
 
 	public String getTitle() {
 		return title;
@@ -133,5 +142,21 @@ public class DealWantedForm {
 
 	public void setRefurbishedOK(Boolean refurbishedOK) {
 		this.refurbishedOK = refurbishedOK;
+	}
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 }

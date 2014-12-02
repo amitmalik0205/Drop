@@ -33,7 +33,9 @@
     <!-- Your custom styles (blank file) -->
     <link rel="stylesheet" href="css/mystyles.css"/>
     
-    <script src="js/myscript.js"></script>
+    <!-- Date time picker css -->
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" type="text/css"/>
+   
 
 <body class="boxed" style="background-image: url(img/textures/wood-1.jpg)">
 
@@ -309,7 +311,7 @@
                             <li><a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top" id="anchorSignIn"><i class="fa fa-sign-in"></i>Sign in</a></li>                          
                             <li><a class="popup-text" href="#register-dialog" data-effect="mfp-move-from-top" id="anchorSignUp"><i class="fa fa-edit"></i>Sign up</a></li>
                             <li><a class="popup-text" href="#want-drop-dialog" data-effect="mfp-move-from-top" id="anchorWantDrop" ><i class="fa fa-sign-in"></i>Want Drop</a></li>
-                            <li><a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top" id="anchorPostDrop"><i class="fa fa-sign-in"></i>Post Drop</a></li>
+                            <li><a class="popup-text" href="#post-drop-dialog" data-effect="mfp-move-from-top" id="anchorPostDrop"><i class="fa fa-sign-in"></i>Post Drop</a></li>
                             <li><a href="signOut.htm"  id="anchorSignOut" style="display: none"><i class="fa fa-sign-in"></i>Sign out</a></li>
                         </ul>
                     </div>
@@ -385,12 +387,11 @@
                 <!-- <input type="submit" value="Request new password" class="btn btn-primary"> -->
             </form:form>
         </div>
-        <!-- END LOGIN REGISTER LINKS CONTENT -->
 
 		<!--Deal Wanted Dialog -->
-        <div id="want-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix">
+        <div id="want-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix scrollPopup">
             <i class="fa fa-edit dialog-icon"></i>
-            <h3>Drop Wanted</h3>
+            <h3>Want Drop</h3>
             <h5>Want to get best offers? Don't worry just post what you want</h5>
             <span class="formFieldError" id="errorSpan" style="display: none;"></span>
             <form:form method="POST" commandName="dealWantedForm" action="wantdrop.htm" cssClass="dialog-form" id="dealWantedForm">
@@ -425,34 +426,34 @@
                     </div>
                 </div>
 				<div class="checkbox">
-					<form:checkbox path="acceptCoupons" label="Accept Coupons"></form:checkbox>
+					<form:checkbox path="acceptCoupons" label="Accept Coupons" cssClass="dummyChkBoxClass"></form:checkbox>
 				</div>
 				<div class="row">
                 	<div class="col-md-6">
 		                <div class="checkbox">
-		                	<form:checkbox path="wouldBuyOnline" label="Buy Online"></form:checkbox>		                   
+		                	<form:checkbox path="wouldBuyOnline" label="Buy Online" cssClass="dummyChkBoxClass"></form:checkbox>		                   
 		                </div>   
 	                </div>
 	                <div class="col-md-6">
 		                <div class="checkbox">
-		                    <form:checkbox path="wouldBuyLocally" label="Buy Locally"></form:checkbox>	
+		                    <form:checkbox path="wouldBuyLocally" label="Buy Locally" cssClass="dummyChkBoxClass"></form:checkbox>	
 		                </div> 	
 	                </div>                
                 </div>    
                  <div class="row">
                 	<div class="col-md-3">
 		                <div class="checkbox">
-		                    <form:checkbox path="wantNew" label="New"></form:checkbox>
+		                    <form:checkbox path="wantNew" label="New" cssClass="dummyChkBoxClass"></form:checkbox>
 		                </div>   
 	                </div>
 	                <div class="col-md-3">
 		                <div class="checkbox">
-		                    <form:checkbox path="wantUsed" label="Old"></form:checkbox>
+		                    <form:checkbox path="wantUsed" label="Old" cssClass="dummyChkBoxClass"></form:checkbox>
 		                </div> 	
 	                </div>  
 	                <div class="col-md-6">
 		                <div class="checkbox">
-		                	<form:checkbox path="refurbishedOK" label="Refurbished"></form:checkbox>		                   
+		                	<form:checkbox path="refurbishedOK" label="Refurbished" cssClass="dummyChkBoxClass"></form:checkbox>		                   
 		                </div> 	
 	                </div>               
                 </div>                     
@@ -460,6 +461,104 @@
              <!--  <input class="btn btn-primary" value="Sign up" type="submit"/> -->
             </form:form>
         </div>
+        
+        <!--Deal Post Dialog -->
+        <div id="post-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix scrollPopup">
+            <i class="fa fa-edit dialog-icon"></i>
+            <h3>Post Drop</h3>
+            <h5>Want to get best offers? Don't worry just post what you want to sell</h5>
+            <span class="formFieldError" id="errorSpan" style="display: none;"></span>
+            <form:form method="POST" commandName="dealPostForm" action="postdrop.htm" cssClass="dialog-form" id="dealPostForm">
+            	<div class="form-group">
+                    <label>Title</label>
+                    <form:input path="title" placeholder="Title" cssClass="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <form:textarea path="description" placeholder="Describe what you want to sell" cssClass="form-control"/>
+                </div>
+				<div class="form-group">
+					<label>Category</label>		
+					<form:select path="category" cssClass="form-control">
+						<form:option value="0" label="--Select Category--" />
+						<form:options itemValue="id" itemLabel="name"
+							items="${dealPostForm.dealCategories}" />
+					</form:select>
+				</div>
+				<div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                    		<label>Sale Price</label>
+                    		<form:input path="salePrice" placeholder="Sale Price" cssClass="form-control"/>
+                		</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                    		<label>Retail Price</label>
+                    		<form:input path="retailPrice" placeholder="Retail Price" cssClass="form-control"/>
+                		</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                    		<label>Discount %</label>
+                    		<form:input path="discountPercent" placeholder="Discount %" cssClass="form-control"/>
+                		</div>
+                    </div>
+                </div>
+				<div class="form-group">
+					<label>Started On</label>
+					<div class="col-xs-4">
+						<div class='input-group date' id='fromDateTimePicker'>
+							<form:input cssClass="form-control" path="starts" id="starts" />
+							<span class="input-group-addon"> 
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Expires On</label>
+					<div class="col-xs-4">
+						<div class='input-group date' id='toDateTimePicker'>
+							<form:input cssClass="form-control" path="expires" id="expires" />
+							<span class="input-group-addon"> 
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>						
+					</div>
+				</div>
+				<div class="form-group">
+                    <label>Special Instructions</label>
+                    <form:textarea path="specialInstructions" placeholder="Special Instructions" cssClass="form-control"/>
+                </div>				
+				<div class="row">
+                	<div class="col-md-6">
+						<div class="checkbox">
+							<form:checkbox path="couponsRequired" label="Coupons Required" cssClass="dummyChkBoxClass"></form:checkbox>
+						</div>
+					</div>
+	                <div class="col-md-6">
+		                <div class="checkbox">
+		                    <form:checkbox path="membershipRequired" label="Membership Required" cssClass="dummyChkBoxClass"></form:checkbox>	
+		                </div> 	
+	                </div>                
+                </div>
+				<div class="row">
+                	<div class="col-md-6">
+		                <div class="checkbox">
+		                	<form:checkbox path="onlineDeal" label="Online Deal" cssClass="dummyChkBoxClass"></form:checkbox>		                   
+		                </div>   
+	                </div>
+	                <div class="col-md-6">
+		                <div class="checkbox">
+		                    <form:checkbox path="localDeal" label="Local Deal" cssClass="dummyChkBoxClass"></form:checkbox>	
+		                </div> 	
+	                </div>                
+                </div>                         
+                <a class="btn btn-primary" onclick="postDealPost()" href="#">Publish</a>
+            </form:form>
+        </div>
+        
 
         <!-- TOP AREA -->
         <div class="top-area">
@@ -1176,6 +1275,9 @@
 
         <!-- Custom scripts -->
         <script src="js/custom.js"></script>
+        <script src="js/myscript.js"></script>
+		<script src='js/datepicker/moment.min.js'></script>
+		<script src='js/datepicker/bootstrap-datetimepicker.min.js'></script>
     </div>
 </body>
 
