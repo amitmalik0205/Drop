@@ -507,9 +507,9 @@
                 </div>
 				<div class="form-group">
 					<label>Started On</label>
-					<div class="col-xs-4">
+					<div>
 						<div class='input-group date' id='fromDateTimePicker'>
-							<form:input cssClass="form-control" path="starts" id="starts" />
+							<form:input cssClass="form-control" path="starts" id="fromDateTimePicker" />
 							<span class="input-group-addon"> 
 								<span class="glyphicon glyphicon-calendar"></span>
 							</span>
@@ -518,9 +518,9 @@
 				</div>
 				<div class="form-group">
 					<label>Expires On</label>
-					<div class="col-xs-4">
+					<div>
 						<div class='input-group date' id='toDateTimePicker'>
-							<form:input cssClass="form-control" path="expires" id="expires" />
+							<form:input cssClass="form-control" path="expires" id="toDateTimePicker" />
 							<span class="input-group-addon"> 
 								<span class="glyphicon glyphicon-calendar"></span>
 							</span>
@@ -1276,8 +1276,8 @@
         <!-- Custom scripts -->
         <script src="js/custom.js"></script>
         <script src="js/myscript.js"></script>
-		<script src='js/datepicker/moment.min.js'></script>
-		<script src='js/datepicker/bootstrap-datetimepicker.min.js'></script>
+		<script src='js/moment.min.js'></script>
+		<script src='js/bootstrap-datetimepicker.min.js'></script>
     </div>
 </body>
 
