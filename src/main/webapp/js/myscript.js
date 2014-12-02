@@ -19,17 +19,11 @@ function cleanErrors(needToRemoveFieldValues) {
 	}
 }
 
-$(function () {
-	 $('#toDateTimePicker').datetimepicker({
-        pick12HourFormat: false
+function dateTimePicker() {
+	$('.dateTimePicker').datetimepicker({
+        pick12HourFormat: false,
     });
-});
-
-$(function () {
-	 $('#fromDateTimePicker').datetimepicker({
-        pick12HourFormat: false
-    });
-});
+}
 
 function forgotPassword() {
 	cleanErrors(false);
