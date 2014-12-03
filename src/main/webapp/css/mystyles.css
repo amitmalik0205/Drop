@@ -1,11 +1,16 @@
 .formFieldError {
 	color: red;
-	/* margin-top: 5px;
-    margin-left: 50px;
-    display:inline-block; */
 }
 
 .scrollPopup {
 	overflow-y: scroll;
 	max-height: 600px;
+}
+
+.broadPopup {
+	max-width: 700px;
+}
+
+.hiddenTag {
+	display: none;
 }

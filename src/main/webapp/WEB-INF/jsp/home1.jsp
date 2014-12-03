@@ -62,173 +62,8 @@
                         <nav>
                             <ul class="nav nav-pills flexnav" id="flexnav" data-breakpoint="800">
                                 <li class="active"><a href="index.html">Home</a>
-                                    <ul>
-                                        <li><a href="index-shop-layout-1.html">Shop Layout</a>
-                                            <ul>
-                                                <li><a href="index-shop-layout-1.html">Layout 1</a>
-                                                </li>
-                                                <li><a href="index-shop-layout-2.html">Layout 2</a>
-                                                </li>
-                                                <li><a href="index-shop-layout-3.html">Layout 3</a>
-                                                </li>
-                                                <li><a href="index-shop-layout-4.html">Layout 4</a>
-                                                </li>
-                                                <li><a href="index-shop-layout-5.html">Layout 5</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="active"><a href="index-coupon-layout-1.html">Coupon Layout</a>
-                                            <ul>
-                                                <li><a href="index-coupon-layout-1.html">Layout 1</a>
-                                                </li>
-                                                <li><a href="index-coupon-layout-2.html">Layout 2</a>
-                                                </li>
-                                                <li><a href="index-coupon-layout-3.html">Layout 3</a>
-                                                </li>
-                                                <li class="active"><a href="index.html">Layout 4</a>
-                                                </li>
-                                                <li><a href="index-coupon-layout-5.html">Layout 5</a>
-                                                </li>
-                                                <li><a href="index-coupon-layout-6.html">Layout 6</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="index-header-layout-1.html">Headers</a>
-                                            <ul>
-                                                <li><a href="index-header-layout-1.html">Layout 1</a>
-                                                </li>
-                                                <li><a href="index-header-layout-2.html">Layout 2</a>
-                                                </li>
-                                                <li><a href="index-header-layout-3.html">Layout 3</a>
-                                                </li>
-                                                <li><a href="index-header-layout-4.html">Layout 4</a>
-                                                </li>
-                                                <li><a href="index-header-layout-5.html">Layout 5</a>
-                                                </li>
-                                                <li><a href="index-header-logged-user.html">Logged User</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a href="category-page-shop.html">Category</a>
-                                    <ul>
-                                        <li><a href="category-page-shop.html">Shop</a>
-                                        </li>
-                                        <li><a href="category-page-coupon.html">Coupon</a>
-                                        </li>
-                                        <li><a href="category-page-thumbnails-shop-layout-1.html">Thumbnails</a>
-                                            <ul>
-                                                <li><a href="category-page-thumbnails-shop-layout-1.html">Shop</a>
-                                                    <ul>
-                                                        <li><a href="category-page-thumbnails-shop-layout-1.html">Layout 1</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-shop-layout-2.html">Layout 2</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-shop-layout-3.html">Layout 3</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-shop-layout-4.html">layout 4</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-shop-layout-5.html">Layout 5</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-shop-layout-6.html">Layout 6</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-shop-horizontal.html">Horizontal</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="category-page-thumbnails-coupon-layout-1.html">Coupon</a>
-                                                    <ul>
-                                                        <li><a href="category-page-thumbnails-coupon-layout-1.html">Layout 1</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-coupon-layout-2.html">Layout 2</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-coupon-layout-3.html">Layout 3</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-coupon-layout-4.html">Layout 4</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-coupon-layout-5.html">Layout 5</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-coupon-layout-6.html">Layout 6</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-coupon-layout-7.html">Layout 7</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-coupon-layout-8.html">Layout 8</a>
-                                                        </li>
-                                                        <li><a href="category-page-thumbnails-coupon-horizontal.html">Horizontal</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="category-page-thumbnails-breadcrumbs.html">Breadcrumbs</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a href="product-shop-sidebar.html">Product </a>
-                                    <ul>
-                                        <li><a href="product-shop-sidebar.html">Shop</a>
-                                            <ul>
-                                                <li><a href="product-shop-sidebar.html">Sidebar</a>
-                                                </li>
-                                                <li><a href="product-shop-sidebar-left.html">Sidebar Left</a>
-                                                </li>
-                                                <li><a href="product-shop-centered.html">Centered</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="product-coupon-default.html">Coupon</a>
-                                            <ul>
-                                                <li><a href="product-coupon-default.html">Default</a>
-                                                </li>
-                                                <li><a href="product-coupon-meta-right.html">Meta right</a>
-                                                </li>
-                                                <li><a href="product-coupon-gallery.html">Gallery</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a href="features-typography.html">Features</a>
-                                    <ul>
-                                        <li><a href="features-typography.html">Typography</a>
-                                        </li>
-                                        <li><a href="features-elements.html">Elements</a>
-                                        </li>
-                                        <li><a href="features-grid.html">Grid</a>
-                                        </li>
-                                        <li><a href="features-icons.html">Icons</a>
-                                        </li>
-                                        <li><a href="features-image-hover.html">Image Hovers</a>
-                                        </li>
-                                        <li><a href="features-sliders.html">Sliders</a>
-                                        </li>
-                                        <li><a href="features-media.html">Media</a>
-                                        </li>
-                                        <li><a href="features-lightbox.html">Lightbox</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a href="blog-sidebar-right.html">Blog</a>
-                                    <ul>
-                                        <li><a href="blog-sidebar-right.html">Sidebar Right</a>
-                                        </li>
-                                        <li><a href="blog-sidebar-left.html">Sidebar Left</a>
-                                        </li>
-                                        <li><a href="blog-full-width.html">Full Width</a>
-                                        </li>
-                                        <li><a href="post-sidebar-right.html">Post</a>
-                                            <ul>
-                                                <li><a href="post-sidebar-right.html">Sidebar Right</a>
-                                                </li>
-                                                <li><a href="post-sidebar-left.html">Sidebar Left</a>
-                                                </li>
-                                                <li><a href="post-full-width.html">Full Width</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
+                                    
+                        		</li>                                
                                 <li><a href="page-full-width.html">Pages</a>
                                     <ul>
                                         <li><a href="page-my-account-settings.html">My Account</a>
@@ -283,36 +118,21 @@
                     </div>
                     <div class="col-md-6">
                         <!-- LOGIN REGISTER LINKS -->
-                        <ul class="login-register">
-                            <li class="shopping-cart"><a href="page-cart.html"><i class="fa fa-shopping-cart"></i>My Cart</a>
-                                <div class="shopping-cart-box">
-                                    <ul class="shopping-cart-items">
-                                        <li>
-                                            <a href="product-shop-sidebar.html">
-                                                <img src="img/70x70.png" alt="Image Alternative text" title="AMaze" />
-                                                <h5>New Glass Collection</h5><span class="shopping-cart-item-price">$150</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="product-shop-sidebar.html">
-                                                <img src="img/70x70.png" alt="Image Alternative text" title="Gamer Chick" />
-                                                <h5>Playstation Accessories</h5><span class="shopping-cart-item-price">$170</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <ul class="list-inline text-center">
-                                        <li><a href="page-cart.html"><i class="fa fa-shopping-cart"></i> View Cart</a>
-                                        </li>
-                                        <li><a href="page-checkout.html"><i class="fa fa-check-square"></i> Checkout</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li><a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top" id="anchorSignIn"><i class="fa fa-sign-in"></i>Sign in</a></li>                          
-                            <li><a class="popup-text" href="#register-dialog" data-effect="mfp-move-from-top" id="anchorSignUp"><i class="fa fa-edit"></i>Sign up</a></li>
-                            <li><a class="popup-text" href="#want-drop-dialog" data-effect="mfp-move-from-top" id="anchorWantDrop" ><i class="fa fa-sign-in"></i>Want Drop</a></li>
-                            <li><a class="popup-text" href="#post-drop-dialog" data-effect="mfp-move-from-top" id="anchorPostDrop"><i class="fa fa-sign-in"></i>Post Drop</a></li>
-                            <li><a href="signOut.htm"  id="anchorSignOut" style="display: none"><i class="fa fa-sign-in"></i>Sign out</a></li>
+                        <ul class="login-register">    
+                        	<c:if test="${sessionScope.user == null}">                         	
+                        		<li><a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top" id="anchorSignIn"><i class="fa fa-sign-in"></i>Sign in</a></li>                          
+                            	<li><a class="popup-text" href="#register-dialog" data-effect="mfp-move-from-top" id="anchorSignUp"><i class="fa fa-edit"></i>Sign up</a></li>
+                            	<li><a class="popup-text" href="#want-drop-dialog" data-effect="mfp-move-from-top" id="anchorWantDrop" style="display: none"><i class="fa fa-sign-in"></i>Want Drop</a></li>
+                           		<li><a class="popup-text" href="#post-drop-dialog" data-effect="mfp-move-from-top" id="anchorPostDrop" style="display: none"><i class="fa fa-sign-in"></i>Post Drop</a></li>
+                            	<li><a href="signOut.htm"  id="anchorSignOut"  style="display: none"><i class="fa fa-sign-in"></i>Sign out</a></li>
+                        	</c:if>    
+                        	<c:if test="${sessionScope.user != null}">
+                        		<li><a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top" id="anchorSignIn" style="display: none"><i class="fa fa-sign-in"></i>Sign in</a></li>                          
+                            	<li><a class="popup-text" href="#register-dialog" data-effect="mfp-move-from-top" id="anchorSignUp" style="display: none"><i class="fa fa-edit"></i>Sign up</a></li>
+                            	<li><a class="popup-text" href="#want-drop-dialog" data-effect="mfp-move-from-top" id="anchorWantDrop" ><i class="fa fa-sign-in"></i>Want Drop</a></li>
+                           		<li><a class="popup-text" href="#post-drop-dialog" data-effect="mfp-move-from-top" id="anchorPostDrop"><i class="fa fa-sign-in"></i>Post Drop</a></li>
+                            	<li><a href="signOut.htm"  id="anchorSignOut"><i class="fa fa-sign-in"></i>Sign out</a></li>
+                        	</c:if>                                                
                         </ul>
                     </div>
                 </div>
@@ -334,7 +154,7 @@
                     <form:password path="password" placeholder="My secret password" cssClass="form-control"/>
                 </div>
                <!--  <input type="submit" value="Sign in" class="btn btn-primary"/> -->
-               <a class="btn btn-primary" onclick="login()" href="#">Sign in</a>
+               <a class="btn btn-primary" onclick="submitForm('loginForm')" href="#">Sign in</a>
             </form:form>
             <ul class="dialog-alt-links">
                 <li><a class="popup-text" href="#register-dialog" data-effect="mfp-zoom-out">Not member yet</a>
@@ -367,7 +187,7 @@
                     <label>Password</label>
                     <form:password path="password" placeholder="Password" cssClass="form-control"/>
                 </div>
-                <a class="btn btn-primary" onclick="registerUser()" href="#">Sign up</a>
+                <a class="btn btn-primary" onclick="submitForm('registerationForm')" href="#">Sign up</a>
 				<ul class="dialog-alt-links">
 					<li><a class="popup-text" href="#login-dialog"
 						data-effect="mfp-zoom-out">Already member</a></li>
@@ -383,13 +203,97 @@
             <form:form cssClass="dialog-form" id="forgotPassForm" commandName="forgotPasswordForm" action="forgotPassword.htm">
                 <label>E-mail</label>
                 <form:input path="email" placeholder="email@domain.com" cssClass="span12"/>
-                <a class="btn btn-primary" onclick="forgotPassword()" href="#">Request password</a>
+                <a class="btn btn-primary" onclick="submitForm('forgotPassForm')" href="#">Request password</a>
                 <!-- <input type="submit" value="Request new password" class="btn btn-primary"> -->
             </form:form>
         </div>
+        
+        		<!--Deal Wanted Dialog -->
+        <div id="want-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix broadPopup">
+            <i class="fa fa-edit dialog-icon"></i>
+            <h3>Want Drop</h3>
+            <h5>Want to get best offers? Don't worry just post what you want</h5>
+            <span class="formFieldError" id="errorSpan" style="display: none;"></span>
+            <form:form method="POST" commandName="dealWantedForm" action="wantdrop.htm" cssClass="dialog-form" id="dealWantedForm">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Title</label>
+							<form:input path="title" placeholder="Title" cssClass="form-control" />
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Description</label>
+							<form:textarea path="description" placeholder="Describe what you want" cssClass="form-control" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Category</label>
+							<form:select path="category" cssClass="form-control">
+								<form:option value="0" label="--Select Category--" />
+								<form:options itemValue="id" itemLabel="name"
+									items="${dealWantedForm.dealCategories}" />
+							</form:select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label>Maximum Price</label>
+							<form:input path="maxPrice" placeholder="Maximum Price" cssClass="form-control" />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label>Tip Amount</label>
+							<form:input path="tipAmount" placeholder="Tip Amount" cssClass="form-control" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="checkbox">
+							<form:checkbox path="acceptCoupons" label="Accept Coupons" cssClass="dummyChkBoxClass"></form:checkbox>
+						</div>
+					</div>
+					<div class="col-md-4">
+		                <div class="checkbox">
+		                	<form:checkbox path="wouldBuyOnline" label="Buy Online" cssClass="dummyChkBoxClass"></form:checkbox>		                   
+		                </div>   
+	                </div>
+	                <div class="col-md-4">
+		                <div class="checkbox">
+		                    <form:checkbox path="wouldBuyLocally" label="Buy Locally" cssClass="dummyChkBoxClass"></form:checkbox>	
+		                </div> 	
+	                </div>                
+                </div>    
+                 <div class="row">
+                	<div class="col-md-4">
+		                <div class="checkbox">
+		                    <form:checkbox path="wantNew" label="Want New" cssClass="dummyChkBoxClass"></form:checkbox>
+		                </div>   
+	                </div>
+	                <div class="col-md-4">
+		                <div class="checkbox">
+		                    <form:checkbox path="wantUsed" label="Want Old" cssClass="dummyChkBoxClass"></form:checkbox>
+		                </div> 	
+	                </div>  
+	                <div class="col-md-4">
+		                <div class="checkbox">
+		                	<form:checkbox path="refurbishedOK" label="Want Refurbished" cssClass="dummyChkBoxClass"></form:checkbox>		                   
+		                </div> 	
+	                </div>               
+                </div>                     
+                <a class="btn btn-primary" onclick="submitForm('dealWantedForm')" href="#">Publish</a>
+             <!--  <input class="btn btn-primary" value="Sign up" type="submit"/> -->
+            </form:form>
+        </div>
 
-		<!--Deal Wanted Dialog -->
-        <div id="want-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix scrollPopup">
+<%-- 		<!--Deal Wanted Dialog -->
+        <div id="want-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix scrollPopup" style="max-width : 700px;">
             <i class="fa fa-edit dialog-icon"></i>
             <h3>Want Drop</h3>
             <h5>Want to get best offers? Don't worry just post what you want</h5>
@@ -457,12 +361,167 @@
 		                </div> 	
 	                </div>               
                 </div>                     
-                <a class="btn btn-primary" onclick="postDealWanted()" href="#">Publish</a>
+                <a class="btn btn-primary" onclick="submitForm('dealWantedForm')" href="#">Publish</a>
              <!--  <input class="btn btn-primary" value="Sign up" type="submit"/> -->
+            </form:form>
+        </div> --%>
+        
+        <!--Deal Post Dialog -->
+        <div id="post-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix broadPopup scrollPopup">
+            <i class="fa fa-edit dialog-icon"></i>
+            <h3>Post Drop</h3>
+            <h5>Want to get best offers? Don't worry just post what you want to sell</h5>
+            <span class="formFieldError" id="errorSpan" style="display: none;"></span>
+            <form:form method="POST" commandName="dealPostForm" action="postdrop.htm" cssClass="dialog-form" id="dealPostForm">
+            	<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Title</label>
+							<form:input path="title" placeholder="Title" cssClass="form-control" />
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Category</label>
+							<form:select path="category" cssClass="form-control">
+								<form:option value="0" label="--Select Category--" />
+								<form:options itemValue="id" itemLabel="name"
+									items="${dealPostForm.dealCategories}" />
+							</form:select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+				<div class="col-md-6">
+						<div class="form-group">
+							<label>Description</label>
+							<form:textarea path="description" placeholder="Describe what you want" cssClass="form-control" />
+						</div>
+					</div>					
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Special Instructions</label>
+							<form:textarea path="specialInstructions" placeholder="Special Instructions" cssClass="form-control" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                    		<label>Sale Price</label>
+                    		<form:input path="salePrice" placeholder="Sale Price" cssClass="form-control"/>
+                		</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                    		<label>Retail Price</label>
+                    		<form:input path="retailPrice" placeholder="Retail Price" cssClass="form-control"/>
+                		</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                    		<label>Discount %</label>
+                    		<form:input path="discountPercent" placeholder="Discount %" cssClass="form-control"/>
+                		</div>
+                    </div>
+                </div>
+                <div class="row">
+					<div class="col-md-5">
+						<div class="form-group">
+							<label>Starts On</label>
+							<div>
+								<div class='input-group date dateTimePicker'
+									onclick="dateTimePicker()">
+									<form:input cssClass="form-control" path="starts" />
+									<span class="input-group-addon"> <span
+										class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-5">
+						<div class="form-group">
+							<label class="control-label">Expires On</label>
+							<div>
+								<div class='input-group date dateTimePicker'
+									onclick="dateTimePicker()">
+									<form:input cssClass="form-control" path="expires" />
+									<span class="input-group-addon"> <span
+										class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>						
+				<div class="row">
+                	<div class="col-md-6">
+						<div class="checkbox">
+							<form:checkbox path="couponsRequired" label="Coupons Required" cssClass="dummyChkBoxClass"></form:checkbox>
+						</div>
+					</div>
+	                <div class="col-md-6">
+		                <div class="checkbox">
+		                    <form:checkbox path="membershipRequired" label="Membership Required" cssClass="dummyChkBoxClass"></form:checkbox>	
+		                </div> 	
+	                </div>                
+                </div>
+				<div class="row">
+					<div class="col-md-6">						
+						<div class="radio">
+							<form:radiobutton path="dealType" value="localDeal" label="Local Deal" cssClass="dummyChkBoxClass" id="localDealRadio" onclick="showDealLocation()"></form:radiobutton>
+						</div>
+					</div>
+					<div class="col-md-6">
+		                <div class="radio">
+		                	<form:radiobutton path="dealType"  value="onlineDeal" label="Online Deal" cssClass="dummyChkBoxClass" id="onlineDealRadio" onclick="showDealLocation()"></form:radiobutton>		                   
+		                </div>   
+	                </div>	                               
+                </div> 
+                <div class="row">
+                	<div class="col-md-6">
+                		<div class="form-group hiddenTag adderssDummyClass">
+                    		<label>Address Line1</label>
+                    		<form:input path="addressLine1" placeholder="Address Line1" cssClass="form-control"/>
+                		</div>
+                	</div>
+                	<div class="col-md-6">
+                		<div class="form-group hiddenTag adderssDummyClass">
+                    		<label>Address Line2</label>
+                    		<form:input path="addressLine2" placeholder="Address Line2" cssClass="form-control"/>
+                		</div>
+                	</div>
+                </div>  
+                <div class="row">
+                	<div class="col-md-6">
+                		<div class="form-group hiddenTag adderssDummyClass">
+                    		<label>City</label>
+                    		<form:input path="city" placeholder="City" cssClass="form-control"/>
+                		</div>
+                	</div>
+                	<div class="col-md-6 hiddenTag adderssDummyClass">
+                		<div class="form-group">
+                    		<label>State</label>
+                    		<form:input path="state" placeholder="State" cssClass="form-control"/>
+                		</div>
+                	</div>
+                	<div class="col-md-4 hiddenTag adderssDummyClass">
+                		<div class="form-group">
+                    		<label>ZIP</label>
+                    		<form:input path="zip" placeholder="ZIP" cssClass="form-control"/>
+                		</div>
+                	</div>
+                </div>
+				<div class="form-group hiddenTag urlDummyClass">
+					<label>Deal URL</label>
+					<form:input path="url" placeholder="Deal URL" cssClass="form-control" />
+				</div>
+				<a class="btn btn-primary" onclick="submitForm('dealPostForm')" href="#">Publish</a>
             </form:form>
         </div>
         
-        <!--Deal Post Dialog -->
+<%--              <!--Deal Post Dialog -->
         <div id="post-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix scrollPopup">
             <i class="fa fa-edit dialog-icon"></i>
             <h3>Post Drop</h3>
@@ -555,9 +614,9 @@
 		                </div> 	
 	                </div>                
                 </div>                         
-                <a class="btn btn-primary" onclick="postDealPost()" href="#">Publish</a>
+                <a class="btn btn-primary" onclick="submitForm('dealPostForm')" href="#">Publish</a>
             </form:form>
-        </div>
+        </div> --%>
         
 
         <!-- TOP AREA -->

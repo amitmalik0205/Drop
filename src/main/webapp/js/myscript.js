@@ -25,7 +25,91 @@ function dateTimePicker() {
     });
 }
 
-function forgotPassword() {
+function hideDealLocationFields() {
+	$(".adderssDummyClass").each(function(){
+    	$(this).hide();
+    });
+	
+	$(".urlDummyClass").hide();
+}
+
+function showDealLocation(chkbox) {
+	if($('input:radio[name=dealType]:checked').val() == "localDeal") { 
+		$(".urlDummyClass").hide();
+        $(".adderssDummyClass").each(function(){
+        	$(this).show();
+        });
+    } else if($('input:radio[name=dealType]:checked').val() == "onlineDeal") {
+    	$(".adderssDummyClass").each(function(){
+        	$(this).hide();
+        });
+    	$(".urlDummyClass").show();
+    }
+}
+
+function submitForm(formID) {
+	cleanErrors();
+	var $form = $("#" + formID);
+	jQuery.ajax({
+		url : $form.attr("action"),
+		context : document.body,
+		type : 'post',
+		data : $form.serialize()
+	}).done(
+			function(res) {
+				if (res === "ERROR") {
+					var errorMsg = "Some Error Occured";
+					var err = "<div class=\"formFieldError\" id=\"errorSpan\">" + errorMsg + "</div>";
+					$form.before(err);
+				} else if (res === "SUCCESS") {
+					$.magnificPopup.instance.close();
+					if(formID == "forgotPassForm") {
+						alert("forgotPassForm");
+					} else if(formID == "loginForm") {
+						$("#anchorSignIn").hide();
+						$("#anchorSignUp").hide();
+						$("#anchorWantDrop").show();
+						$("#anchorPostDrop").show();
+						$("#anchorSignOut").show();
+					} else if(formID == "registerationForm") {
+						$("#anchorSignIn").hide();
+						$("#anchorSignUp").hide();
+						$("#anchorWantDrop").show();
+						$("#anchorPostDrop").show();
+						$("#anchorSignOut").show();
+					} else if(formID == "dealPostForm") {
+						
+					} else if(formID == "dealWantedForm") {
+						
+					}
+				} else {
+					var items = res.split(',');
+					for ( var i = 0; i < items.length; i++) {
+						var id;
+						if (i == 0) {
+							var err = "<div class=\"formFieldError\" id=\"" + i
+									+ "errorSpan\">" + items[i] + "</div>";
+							$form.before(err);
+							id = i + "errorSpan";
+						} else {
+							var err = "<div class=\"formFieldError\" id=\"" + i
+									+ "errorSpan\">" + items[i] + "</div>";
+							jQuery("#" + id).after(err);
+							id = i + "errorSpan";
+						}
+					}
+				}
+			}).fail(
+			function(data) {
+				var errorMsg = "Some Error Occured";
+				var err = "<div class=\"formFieldError\" id=\"errorSpan\">" + errorMsg + "</div>";
+				$form.before(err);
+			});
+	return false;
+}
+
+
+/*function forgotPassword() {
 	cleanErrors(false);
 	var $form = $("#forgotPassForm");
 	jQuery.ajax({
@@ -256,46 +340,4 @@ function postDealPost() {
 				$form.before(err);
 			});
 	return false;
-}
-
-function submitForm(formID) {
-	cleanErrors();
-	var $form = $("#" + formID);
-	jQuery.ajax({
-		url : $form.attr("action"),
-		context : document.body,
-		type : 'post',
-		data : $form.serialize()
-	}).done(
-			function(res) {
-				if (res === "ERROR") {
-					var errorMsg = "Some Error Occured";
-					var err = "<div class=\"formFieldError\" id=\"errorSpan\">" + errorMsg + "</div>";
-					$form.before(err);
-				} else if (res === "SUCCESS") {
-					$.magnificPopup.instance.close();
-				} else {
-					var items = res.split(',');
-					for ( var i = 0; i < items.length; i++) {
-						var id;
-						if (i == 0) {
-							var err = "<div class=\"formFieldError\" id=\"" + i
-									+ "errorSpan\">" + items[i] + "</div>";
-							$form.before(err);
-							id = i + "errorSpan";
-						} else {
-							var err = "<div class=\"formFieldError\" id=\"" + i
-									+ "errorSpan\">" + items[i] + "</div>";
-							jQuery("#" + id).after(err);
-							id = i + "errorSpan";
-						}
-					}
-				}
-			}).fail(
-			function(data) {
-				var errorMsg = "Some Error Occured";
-				var err = "<div class=\"formFieldError\" id=\"errorSpan\">" + errorMsg + "</div>";
-				$form.before(err);
-			});
-	return false;
-}
+}*/

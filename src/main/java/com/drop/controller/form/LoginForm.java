@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class LoginForm {
 
+	@NotEmpty(message = "Email can not be empty")
 	@Email(message = "Wrong email format")
 	private String email;
 	

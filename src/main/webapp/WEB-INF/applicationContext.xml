@@ -28,6 +28,7 @@
 				<value>classpath:/properties/message.properties</value>
 				<value>classpath:/properties/mail.properties</value>
 				<value>classpath:/properties/velocity-email.properties</value>
+				<value>classpath:/properties/validation.properties</value>
 			</list>
 		</property>
 	</bean>
@@ -41,6 +42,8 @@
 		location="classpath:/properties/mail.properties" />
 	<util:properties id="velocityConfig"
 		location="classpath:/properties/velocity-email.properties" />
+	<util:properties id="validationConfig"
+		location="classpath:/properties/validation.properties" />
 
 	<bean id="velocityEngine"
 		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">

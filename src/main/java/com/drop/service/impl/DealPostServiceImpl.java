@@ -13,6 +13,9 @@ import com.drop.dao.IDealCategoryDao;
 import com.drop.dao.IDealPostDao;
 import com.drop.dao.IUserDao;
 import com.drop.dao.domain.DealPost;
+import com.drop.dao.domain.Location;
+import com.drop.dao.domain.MailingAddress;
+import com.drop.enums.POST_DEAL_TYPE;
 import com.drop.service.IDealPostService;
 import com.drop.util.DropUtil;
 
@@ -43,8 +46,6 @@ public class DealPostServiceImpl implements IDealPostService {
 		entity.setRetailPrice(form.getRetailPrice());
 		entity.setDiscountPercent(form.getDiscountPercent());
 		entity.setSpecialInstructions(form.getSpecialInstructions());
-		entity.setOnlineDeal(form.getOnlineDeal());
-		entity.setLocalDeal(form.getLocalDeal());
 		entity.setCouponsRequired(form.getCouponsRequired());
 		entity.setMembershipRequired(form.getMembershipRequired());
 		entity.setIpAddress(form.getIpAddress());
@@ -58,6 +59,29 @@ public class DealPostServiceImpl implements IDealPostService {
 		
 		entity.setStarts(starts);
 		entity.setExpires(expires);
+		
+		Location location = new Location();
+		String dealType = form.getDealType();
+		
+		if(dealType != null) {
+			if(dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) { 				
+				entity.setLocalDeal(true);
+				MailingAddress address = new MailingAddress();
+				address.setAddressLine1(form.getAddressLine1());
+				address.setAddressLine2(form.getAddressLine2());
+				address.setState(form.getState());
+				address.setCity(form.getCity());
+				address.setZip(form.getZip());
+				
+				location.setMailingAddress(address);
+				
+			} else if(dealType.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {				
+				entity.setOnlineDeal(true);
+				location.setUrl(form.getUrl());
+			}
+		}	
+			
+		entity.setLocation(location);
 		
 		dealPostDao.create(entity);
 	}
