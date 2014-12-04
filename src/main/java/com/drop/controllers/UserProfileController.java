@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.drop.controller.form.AccountSettingsForm;
@@ -98,17 +99,18 @@ public class UserProfileController {
 	
 	
 	@RequestMapping(value = "/addAddress", method = RequestMethod.POST)
-	public String addAddress(
+	public @ResponseBody
+	String addAddress(
 			@Valid @ModelAttribute("addressForm") AddressBookForm form,
 			BindingResult result, ModelMap map, HttpServletRequest request) {
-		
+
 		if (result.hasErrors()) {
 			return DropUtil.getErrorString(result);
 		} else {
 			try {
-				
+
 				userService.saveOrUpdateUser(form);
-				
+
 			} catch (Exception e) {
 				logger.fatal(DropUtil.getExceptionDescriptionString(e));
 				e.printStackTrace();
