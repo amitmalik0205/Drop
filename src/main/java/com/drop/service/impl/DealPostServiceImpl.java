@@ -17,6 +17,7 @@ import com.drop.dao.domain.Location;
 import com.drop.dao.domain.MailingAddress;
 import com.drop.enums.POST_DEAL_TYPE;
 import com.drop.service.IDealPostService;
+import com.drop.service.ISolrSearchService;
 import com.drop.util.DropUtil;
 
 @Service
@@ -35,6 +36,9 @@ public class DealPostServiceImpl implements IDealPostService {
 	@Qualifier("msgConfig")
 	private Properties msgConfig;
 
+	@Autowired
+	private ISolrSearchService solrSearchService;
+	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void saveDealPost(DealPostForm form) {
@@ -84,6 +88,8 @@ public class DealPostServiceImpl implements IDealPostService {
 		entity.setLocation(location);
 		
 		dealPostDao.create(entity);
+		
+		solrSearchService.add(entity);
 	}
 
 }

@@ -10,6 +10,7 @@ import com.drop.dao.IDealWantedDao;
 import com.drop.dao.IUserDao;
 import com.drop.dao.domain.DealWanted;
 import com.drop.service.IDealWantedService;
+import com.drop.service.ISolrSearchService;
 
 @Service
 public class DealWantedServiceImpl implements IDealWantedService {
@@ -22,6 +23,9 @@ public class DealWantedServiceImpl implements IDealWantedService {
 	
 	@Autowired
 	private IUserDao userDao;
+	
+	@Autowired
+	private ISolrSearchService solrSearchService;
 	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -44,6 +48,8 @@ public class DealWantedServiceImpl implements IDealWantedService {
 		entity.setUser(userDao.loadEntity(form.getUserId()));
 		
 		dealWantedDao.create(entity);
+		
+		solrSearchService.search(entity);
 	}
 
 }
