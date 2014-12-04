@@ -1,77 +1,41 @@
-package com.drop.dao.domain;
+package com.drop.session.object;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import com.drop.dao.domain.MailingAddress;
 
-@Entity
-@Table(name = "user")
-@NamedQueries({
-    @NamedQuery(name = "User.getUserByEmailAndPassword", query = "FROM User WHERE email = :email and password = :pwd"),
-    @NamedQuery(name = "User.getUserByEmail", query = "FROM User WHERE email = :email"),
-})
-public class User implements Serializable {
+public class SessionUser implements Serializable {
 
-	private static final long serialVersionUID = -1997512730718094749L;
-
-	@Id
-	@GeneratedValue
-	@Column(name = "userId")
+	private static final long serialVersionUID = -6499650610330369835L;
+	
 	private Long userId;
 	
-	@Column(name = "firstName", nullable = false)
 	private String firstName;
 	
-	@Column(name = "lastName", nullable = false)
 	private String lastName;
 	
-	@Column(name = "email", nullable = false)
 	private String email;
 	
-	@Column(name = "password", nullable = false)
 	private String password;
 	
-	@Column(name = "moneyEarned")
 	private BigDecimal moneyEarned;	// how much they have made from posting drops
 	
-	@Column(name = "moneyPaid")
 	private BigDecimal moneyPaid;  // how much money they have paid others to find drops
 	
-	@Column(name = "totalPosts")
 	private Integer totalPosts;
 	
-	@Column(name = "location")
-	private String locationDescription;	// city, state
-	
-	@Column(name = "warningsSent")
 	private Integer warningsSent;	// number of warnings sent to user
 	
-	@Column(name = "phoneNumber")
 	private String phoneNumber;	// for SMS
 	
-	@Column(name = "skypeName")
 	private String skypeName;
 	
-	@Column(name = "autoApproveListings")
 	private Boolean autoApproveListings;	// system function.  if true, then no need for drop.com admin to approve listing
 	
-	@Column(name = "autoApproveWarning")
 	private String autoApproveWarning;   // the reason the MonitoringService gave on why we need to not auto-approve
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name = "user_id")
 	private Set<MailingAddress> addresses;
 
 	public Long getUserId() {
@@ -176,14 +140,6 @@ public class User implements Serializable {
 
 	public void setAutoApproveWarning(String autoApproveWarning) {
 		this.autoApproveWarning = autoApproveWarning;
-	}
-
-	public String getLocationDescription() {
-		return locationDescription;
-	}
-
-	public void setLocationDescription(String locationDescription) {
-		this.locationDescription = locationDescription;
 	}
 
 	public Set<MailingAddress> getAddresses() {

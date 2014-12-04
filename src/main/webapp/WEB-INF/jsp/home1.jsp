@@ -37,113 +37,27 @@
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" type="text/css"/>
  
 
-<body class="boxed" style="background-image: url(img/textures/wood-1.jpg)">
+   <body class="boxed" style="background-image: url(img/textures/wood-1.jpg)">
 
 
     <div class="global-wrap">
+ 
+ 		<jsp:include page="header.jsp"/>
 
+		<!-- PAGE TITLE -->
+		<!-- <div class="top-title-area">
+			<div class="container">
+				<h1 class="title-page"></h1>
+			</div>
+		</div> -->
+		<!-- END PAGE TITLE -->
 
-        <!-- //////////////////////////////////
-	//////////////MAIN HEADER///////////// 
-	////////////////////////////////////-->
-        <div class="top-main-area text-center">
-            <div class="container">
-                <a href="index.html" class="logo mt5">
-                    <img src="img/logo-small-dark.png" alt="Image Alternative text" title="Image Title" />
-                </a>
-            </div>
-        </div>
-        <header class="main">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <!-- MAIN NAVIGATION -->
-                        <div class="flexnav-menu-button" id="flexnav-menu-button">Menu</div>
-                        <nav>
-                            <ul class="nav nav-pills flexnav" id="flexnav" data-breakpoint="800">
-                                <li class="active"><a href="index.html">Home</a>
-                                    
-                        		</li>                                
-                                <li><a href="page-full-width.html">Pages</a>
-                                    <ul>
-                                        <li><a href="page-my-account-settings.html">My Account</a>
-                                            <ul>
-                                                <li><a href="page-my-account-settings.html">Settings</a>
-                                                </li>
-                                                <li><a href="page-my-account-addresses.html">Address Book</a>
-                                                </li>
-                                                <li><a href="page-my-account-orders.html">Orders History</a>
-                                                </li>
-                                                <li><a href="page-my-account-wishlist.html">Wishlist</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="page-full-width.html">Full Width</a>
-                                        </li>
-                                        <li><a href="page-sidebar-right.html">Sidebar Right</a>
-                                        </li>
-                                        <li><a href="page-sidebar-left.html">Sidebar Left</a>
-                                        </li>
-                                        <li><a href="page-faq.html">Faq</a>
-                                        </li>
-                                        <li><a href="page-about-us.html">About us</a>
-                                        </li>
-                                        <li><a href="page-team.html">Team</a>
-                                        </li>
-                                        <li><a href="page-cart.html">Shopping Cart</a>
-                                        </li>
-                                        <li><a href="page-checkout.html">Checkout</a>
-                                        </li>
-                                        <li><a href="page-404.html">404</a>
-                                        </li>
-                                        <li><a href="page-search.html">Search</a>
-                                            <ul>
-                                                <li><a href="page-search-black.html">Black</a>
-                                                </li>
-                                                <li><a href="page-search-white.html">White</a>
-                                                </li>
-                                                <li><a href="page-search-sticky.html">Sticky</a>
-                                                </li>
-                                                <li><a href="page-search-no-search.html">No Search</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="page-contact.html">Contact</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </nav>
-                        <!-- END MAIN NAVIGATION -->
-                    </div>
-                    <div class="col-md-6">
-                        <!-- LOGIN REGISTER LINKS -->
-                        <ul class="login-register">    
-                        	<c:if test="${sessionScope.user == null}">                         	
-                        		<li><a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top" id="anchorSignIn"><i class="fa fa-sign-in"></i>Sign in</a></li>                          
-                            	<li><a class="popup-text" href="#register-dialog" data-effect="mfp-move-from-top" id="anchorSignUp"><i class="fa fa-edit"></i>Sign up</a></li>
-                            	<li><a class="popup-text" href="#want-drop-dialog" data-effect="mfp-move-from-top" id="anchorWantDrop" style="display: none"><i class="fa fa-sign-in"></i>Want Drop</a></li>
-                           		<li><a class="popup-text" href="#post-drop-dialog" data-effect="mfp-move-from-top" id="anchorPostDrop" style="display: none"><i class="fa fa-sign-in"></i>Post Drop</a></li>
-                            	<li><a href="signOut.htm"  id="anchorSignOut"  style="display: none"><i class="fa fa-sign-in"></i>Sign out</a></li>
-                        	</c:if>    
-                        	<c:if test="${sessionScope.user != null}">
-                        		<li><a class="popup-text" href="#login-dialog" data-effect="mfp-move-from-top" id="anchorSignIn" style="display: none"><i class="fa fa-sign-in"></i>Sign in</a></li>                          
-                            	<li><a class="popup-text" href="#register-dialog" data-effect="mfp-move-from-top" id="anchorSignUp" style="display: none"><i class="fa fa-edit"></i>Sign up</a></li>
-                            	<li><a class="popup-text" href="#want-drop-dialog" data-effect="mfp-move-from-top" id="anchorWantDrop" ><i class="fa fa-sign-in"></i>Want Drop</a></li>
-                           		<li><a class="popup-text" href="#post-drop-dialog" data-effect="mfp-move-from-top" id="anchorPostDrop"><i class="fa fa-sign-in"></i>Post Drop</a></li>
-                            	<li><a href="signOut.htm"  id="anchorSignOut"><i class="fa fa-sign-in"></i>Sign out</a></li>
-                        	</c:if>                                                
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- LOGIN REGISTER LINKS CONTENT -->
+		<!-- LOGIN REGISTER LINKS CONTENT -->
         <div id="login-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix">
             <i class="fa fa-sign-in dialog-icon"></i>
             <h3>Member Login</h3>
             <h5>Welcome back, friend. Login to get started</h5>
+            <span class="formFieldError" id="errorSpan" style="display: none;"></span>
             <form:form cssClass="dialog-form" method="POST" commandName="loginForm" action="login.htm" id="loginForm">
                 <div class="form-group">
                     <label>E-mail</label>
@@ -200,6 +114,7 @@
             <i class="icon-retweet dialog-icon"></i>
             <h3>Password Recovery</h3>
             <h5>Fortgot your password? Don't worry we can deal with it</h5>
+            <span class="formFieldError" id="errorSpan" style="display: none;"></span>
             <form:form cssClass="dialog-form" id="forgotPassForm" commandName="forgotPasswordForm" action="forgotPassword.htm">
                 <label>E-mail</label>
                 <form:input path="email" placeholder="email@domain.com" cssClass="span12"/>
@@ -291,80 +206,6 @@
              <!--  <input class="btn btn-primary" value="Sign up" type="submit"/> -->
             </form:form>
         </div>
-
-<%-- 		<!--Deal Wanted Dialog -->
-        <div id="want-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix scrollPopup" style="max-width : 700px;">
-            <i class="fa fa-edit dialog-icon"></i>
-            <h3>Want Drop</h3>
-            <h5>Want to get best offers? Don't worry just post what you want</h5>
-            <span class="formFieldError" id="errorSpan" style="display: none;"></span>
-            <form:form method="POST" commandName="dealWantedForm" action="wantdrop.htm" cssClass="dialog-form" id="dealWantedForm">
-            	<div class="form-group">
-                    <label>Title</label>
-                    <form:input path="title" placeholder="Title" cssClass="form-control"/>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <form:textarea path="description" placeholder="Describe what you want" cssClass="form-control"/>
-                </div>
-				<div class="form-group">
-					<label>Category</label>		
-					<form:select path="category" cssClass="form-control">
-						<form:option value="0" label="--Select Category--" />
-						<form:options itemValue="id" itemLabel="name"
-							items="${dealWantedForm.dealCategories}" />
-					</form:select>
-				</div>
-				<div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                    		<label>Maximum Price</label>
-                    		<form:input path="maxPrice" placeholder="Maximum Price" cssClass="form-control"/>
-                		</div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                    		<label>Tip Amount</label>
-                    		<form:input path="tipAmount" placeholder="Tip Amount" cssClass="form-control"/>
-                		</div>
-                    </div>
-                </div>
-				<div class="checkbox">
-					<form:checkbox path="acceptCoupons" label="Accept Coupons" cssClass="dummyChkBoxClass"></form:checkbox>
-				</div>
-				<div class="row">
-                	<div class="col-md-6">
-		                <div class="checkbox">
-		                	<form:checkbox path="wouldBuyOnline" label="Buy Online" cssClass="dummyChkBoxClass"></form:checkbox>		                   
-		                </div>   
-	                </div>
-	                <div class="col-md-6">
-		                <div class="checkbox">
-		                    <form:checkbox path="wouldBuyLocally" label="Buy Locally" cssClass="dummyChkBoxClass"></form:checkbox>	
-		                </div> 	
-	                </div>                
-                </div>    
-                 <div class="row">
-                	<div class="col-md-3">
-		                <div class="checkbox">
-		                    <form:checkbox path="wantNew" label="New" cssClass="dummyChkBoxClass"></form:checkbox>
-		                </div>   
-	                </div>
-	                <div class="col-md-3">
-		                <div class="checkbox">
-		                    <form:checkbox path="wantUsed" label="Old" cssClass="dummyChkBoxClass"></form:checkbox>
-		                </div> 	
-	                </div>  
-	                <div class="col-md-6">
-		                <div class="checkbox">
-		                	<form:checkbox path="refurbishedOK" label="Refurbished" cssClass="dummyChkBoxClass"></form:checkbox>		                   
-		                </div> 	
-	                </div>               
-                </div>                     
-                <a class="btn btn-primary" onclick="submitForm('dealWantedForm')" href="#">Publish</a>
-             <!--  <input class="btn btn-primary" value="Sign up" type="submit"/> -->
-            </form:form>
-        </div> --%>
         
         <!--Deal Post Dialog -->
         <div id="post-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix broadPopup scrollPopup">
@@ -521,104 +362,6 @@
             </form:form>
         </div>
         
-<%--              <!--Deal Post Dialog -->
-        <div id="post-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix scrollPopup">
-            <i class="fa fa-edit dialog-icon"></i>
-            <h3>Post Drop</h3>
-            <h5>Want to get best offers? Don't worry just post what you want to sell</h5>
-            <span class="formFieldError" id="errorSpan" style="display: none;"></span>
-            <form:form method="POST" commandName="dealPostForm" action="postdrop.htm" cssClass="dialog-form" id="dealPostForm">
-            	<div class="form-group">
-                    <label>Title</label>
-                    <form:input path="title" placeholder="Title" cssClass="form-control"/>
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <form:textarea path="description" placeholder="Describe what you want to sell" cssClass="form-control"/>
-                </div>
-				<div class="form-group">
-					<label>Category</label>		
-					<form:select path="category" cssClass="form-control">
-						<form:option value="0" label="--Select Category--" />
-						<form:options itemValue="id" itemLabel="name"
-							items="${dealPostForm.dealCategories}" />
-					</form:select>
-				</div>
-				<div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                    		<label>Sale Price</label>
-                    		<form:input path="salePrice" placeholder="Sale Price" cssClass="form-control"/>
-                		</div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                    		<label>Retail Price</label>
-                    		<form:input path="retailPrice" placeholder="Retail Price" cssClass="form-control"/>
-                		</div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                    		<label>Discount %</label>
-                    		<form:input path="discountPercent" placeholder="Discount %" cssClass="form-control"/>
-                		</div>
-                    </div>
-                </div>
-				<div class="form-group">
-					<label>Starts On</label>
-					<div>
-						<div class='input-group date dateTimePicker' onclick="dateTimePicker()">
-							<form:input cssClass="form-control" path="starts"/>
-							<span class="input-group-addon"> 
-								<span class="glyphicon glyphicon-calendar"></span>
-							</span>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<label>Expires On</label>
-					<div>
-						<div class='input-group date dateTimePicker' onclick="dateTimePicker()">
-							<form:input cssClass="form-control" path="expires" />
-							<span class="input-group-addon"> 
-								<span class="glyphicon glyphicon-calendar"></span>
-							</span>
-						</div>						
-					</div>
-				</div>
-				<div class="form-group">
-                    <label>Special Instructions</label>
-                    <form:textarea path="specialInstructions" placeholder="Special Instructions" cssClass="form-control"/>
-                </div>				
-				<div class="row">
-                	<div class="col-md-6">
-						<div class="checkbox">
-							<form:checkbox path="couponsRequired" label="Coupons Required" cssClass="dummyChkBoxClass"></form:checkbox>
-						</div>
-					</div>
-	                <div class="col-md-6">
-		                <div class="checkbox">
-		                    <form:checkbox path="membershipRequired" label="Membership Required" cssClass="dummyChkBoxClass"></form:checkbox>	
-		                </div> 	
-	                </div>                
-                </div>
-				<div class="row">
-                	<div class="col-md-6">
-		                <div class="checkbox">
-		                	<form:checkbox path="onlineDeal" label="Online Deal" cssClass="dummyChkBoxClass"></form:checkbox>		                   
-		                </div>   
-	                </div>
-	                <div class="col-md-6">
-		                <div class="checkbox">
-		                    <form:checkbox path="localDeal" label="Local Deal" cssClass="dummyChkBoxClass"></form:checkbox>	
-		                </div> 	
-	                </div>                
-                </div>                         
-                <a class="btn btn-primary" onclick="submitForm('dealPostForm')" href="#">Publish</a>
-            </form:form>
-        </div> --%>
-        
-
         <!-- TOP AREA -->
         <div class="top-area">
             <div class="owl-carousel owl-slider" id="owl-carousel-slider" data-inner-pagination="true" data-white-pagination="true">
@@ -656,44 +399,13 @@
         </div>
         <!-- END TOP AREA -->
 
-        <!-- SEARCH AREA -->
-        <form class="search-area form-group">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 clearfix">
-                        <label><i class="fa fa-search"></i><span>I am searching for</span>
-                        </label>
-                        <div class="search-area-division search-area-division-input">
-                            <input class="form-control" type="text" placeholder="Travel Vacation" />
-                        </div>
-                    </div>
-                    <div class="col-md-3 clearfix">
-                        <label><i class="fa fa-map-marker"></i><span>In</span>
-                        </label>
-                        <div class="search-area-division search-area-division-location">
-                            <input class="form-control" type="text" placeholder="Boston" />
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <button class="btn btn-block btn-white search-btn" type="submit">Search</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-        <!-- END SEARCH AREA -->
+ 		<jsp:include page="search.jsp"/>
 
         <div class="gap"></div>
-
-
-        <!-- //////////////////////////////////
-	//////////////END MAIN HEADER////////// 
-	////////////////////////////////////-->
-
 
         <!-- //////////////////////////////////
 	//////////////PAGE CONTENT///////////// 
 	////////////////////////////////////-->
-
 
 
         <div class="container">
@@ -1182,136 +894,7 @@
 	////////////////////////////////////-->
 
 
-
-        <!-- //////////////////////////////////
-	//////////////MAIN FOOTER////////////// 
-	////////////////////////////////////-->
-
-        <footer class="main">
-            <div class="footer-top-area">
-                <div class="container">
-                    <div class="row row-wrap">
-                        <div class="col-md-3">
-                            <a href="index.html">
-                                <img src="img/logo.png" alt="logo" title="logo" class="logo">
-                            </a>
-                            <ul class="list list-social">
-                                <li>
-                                    <a class="fa fa-facebook box-icon" href="#" data-toggle="tooltip" title="Facebook"></a>
-                                </li>
-                                <li>
-                                    <a class="fa fa-twitter box-icon" href="#" data-toggle="tooltip" title="Twitter"></a>
-                                </li>
-                                <li>
-                                    <a class="fa fa-flickr box-icon" href="#" data-toggle="tooltip" title="Flickr"></a>
-                                </li>
-                                <li>
-                                    <a class="fa fa-linkedin box-icon" href="#" data-toggle="tooltip" title="LinkedIn"></a>
-                                </li>
-                                <li>
-                                    <a class="fa fa-tumblr box-icon" href="#" data-toggle="tooltip" title="Tumblr"></a>
-                                </li>
-                            </ul>
-                            <p>Cras donec torquent imperdiet habitasse dignissim convallis felis libero dictumst taciti placerat adipiscing ultrices lacinia velit cursus nisi per commodo</p>
-                        </div>
-                        <div class="col-md-3">
-                            <h4>Sign Up to the Newsletter</h4>
-                            <div class="box">
-                                <form>
-                                    <div class="form-group mb10">
-                                        <label>E-mail</label>
-                                        <input type="text" class="form-control" />
-                                    </div>
-                                    <p class="mb10">Torquent praesent praesent orci integer laoreet adipiscing</p>
-                                    <input type="submit" class="btn btn-primary" value="Sign Up" />
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <h4>Couponia on Twitter</h4>
-                            <!-- START TWITTER -->
-                            <div class="twitter-ticker" id="twitter-ticker"></div>
-                            <!-- END TWITTER -->
-                        </div>
-                        <div class="col-md-3">
-                            <h4>Recent News</h4>
-                            <ul class="thumb-list">
-                                <li>
-                                    <a href="#">
-                                        <img src="img/70x70.png" alt="Image Alternative text" title="Urbex Esch/Lux with Laney and Laaaaag" />
-                                    </a>
-                                    <div class="thumb-list-item-caption">
-                                        <p class="thumb-list-item-meta">Jul 18, 2014</p>
-                                        <h5 class="thumb-list-item-title"><a href="#">Sagittis inceptos</a></h5>
-                                        <p class="thumb-list-item-desciption">Molestie auctor ante ligula phasellus</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <img src="img/70x70.png" alt="Image Alternative text" title="AMaze" />
-                                    </a>
-                                    <div class="thumb-list-item-caption">
-                                        <p class="thumb-list-item-meta">Jul 18, 2014</p>
-                                        <h5 class="thumb-list-item-title"><a href="#">Nisl congue</a></h5>
-                                        <p class="thumb-list-item-desciption">Ad consectetur lacus fermentum montes</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <img src="img/70x70.png" alt="Image Alternative text" title="The Hidden Power of the Heart" />
-                                    </a>
-                                    <div class="thumb-list-item-caption">
-                                        <p class="thumb-list-item-meta">Jul 18, 2014</p>
-                                        <h5 class="thumb-list-item-title"><a href="#">Ut ridiculus</a></h5>
-                                        <p class="thumb-list-item-desciption">Mauris ac pretium gravida ante</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-copyright">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <p>Copyright © 2014, Your Store, All Rights Reserved</p>
-                        </div>
-                        <div class="col-md-6 col-md-offset-2">
-                            <div class="pull-right">
-                                <ul class="list-inline list-payment">
-                                    <li>
-                                        <img src="img/payment/american-express-curved-32px.png" alt="Image Alternative text" title="Image Title" />
-                                    </li>
-                                    <li>
-                                        <img src="img/payment/cirrus-curved-32px.png" alt="Image Alternative text" title="Image Title" />
-                                    </li>
-                                    <li>
-                                        <img src="img/payment/discover-curved-32px.png" alt="Image Alternative text" title="Image Title" />
-                                    </li>
-                                    <li>
-                                        <img src="img/payment/ebay-curved-32px.png" alt="Image Alternative text" title="Image Title" />
-                                    </li>
-                                    <li>
-                                        <img src="img/payment/maestro-curved-32px.png" alt="Image Alternative text" title="Image Title" />
-                                    </li>
-                                    <li>
-                                        <img src="img/payment/mastercard-curved-32px.png" alt="Image Alternative text" title="Image Title" />
-                                    </li>
-                                    <li>
-                                        <img src="img/payment/visa-curved-32px.png" alt="Image Alternative text" title="Image Title" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- //////////////////////////////////
-	//////////////END MAIN  FOOTER///////// 
-	////////////////////////////////////-->
-
+		<jsp:include page="mainFooter.jsp"/>
 
 
         <!-- Scripts queries -->

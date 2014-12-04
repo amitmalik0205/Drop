@@ -81,6 +81,9 @@ function submitForm(formID) {
 						
 					} else if(formID == "dealWantedForm") {
 						
+					} else if(formID == "addressForm") {
+						alert("success");
+						//window.location.href="./showAddressBook.htm";
 					}
 				} else {
 					var items = res.split(',');
