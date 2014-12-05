@@ -12,13 +12,13 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>Title</label>
-							<form:input path="title" placeholder="Title" cssClass="form-control" />
+							<form:input path="title" placeholder="Title" cssClass="form-control dummy-form-control" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>Description</label>
-							<form:textarea path="description" placeholder="Describe what you want" cssClass="form-control" />
+							<form:textarea path="description" placeholder="Describe what you want" cssClass="form-control dummy-form-control" />
 						</div>
 					</div>
 				</div>
@@ -26,7 +26,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>Category</label>
-							<form:select path="category" cssClass="form-control">
+							<form:select path="category" cssClass="form-control dummy-form-control">
 								<form:option value="0" label="--Select Category--" />
 								<form:options itemValue="id" itemLabel="name"
 									items="${dealWantedForm.dealCategories}" />
@@ -36,13 +36,13 @@
 					<div class="col-md-3">
 						<div class="form-group">
 							<label>Maximum Price</label>
-							<form:input path="maxPrice" placeholder="Maximum Price" cssClass="form-control" />
+							<form:input path="maxPrice" placeholder="Maximum Price" cssClass="form-control dummy-form-control" />
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
 							<label>Tip Amount</label>
-							<form:input path="tipAmount" placeholder="Tip Amount" cssClass="form-control" />
+							<form:input path="tipAmount" placeholder="Tip Amount" cssClass="form-control dummy-form-control" />
 						</div>
 					</div>
 				</div>

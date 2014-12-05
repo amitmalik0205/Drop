@@ -35,8 +35,8 @@
     
     <!-- Date time picker css -->
     <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" type="text/css"/>
+ </head>
  
-
    <body class="boxed" style="background-image: url(img/textures/wood-1.jpg)">
 
 
@@ -61,11 +61,11 @@
             <form:form cssClass="dialog-form" method="POST" commandName="loginForm" action="login.htm" id="loginForm">
                 <div class="form-group">
                     <label>E-mail</label>
-                    <form:input path="email" placeholder="email@domain.com" cssClass="form-control"/>
+                    <form:input path="email" placeholder="email@domain.com" cssClass="form-control dummy-form-control"/>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <form:password path="password" placeholder="My secret password" cssClass="form-control"/>
+                    <form:password path="password" placeholder="My secret password" cssClass="form-control dummy-form-control"/>
                 </div>
                <!--  <input type="submit" value="Sign in" class="btn btn-primary"/> -->
                <a class="btn btn-primary" onclick="submitForm('loginForm')" href="#">Sign in</a>
@@ -87,19 +87,19 @@
             <form:form method="POST" commandName="registerationForm" action="register.htm" cssClass="dialog-form" id="registerationForm">
             	<div class="form-group">
                     <label>First Name</label>
-                    <form:input path="firstName" placeholder="First Name" cssClass="form-control"/>
+                    <form:input path="firstName" placeholder="First Name" cssClass="form-control dummy-form-control"/>
                 </div>
                 <div class="form-group">
                     <label>Last Name</label>
-                    <form:input path="lastName" placeholder="Last Name" cssClass="form-control"/>
+                    <form:input path="lastName" placeholder="Last Name" cssClass="form-control dummy-form-control"/>
                 </div>
                 <div class="form-group">
                     <label>E-mail</label>
-                    <form:input path="email" placeholder="email@domain.com" cssClass="form-control"/>
+                    <form:input path="email" placeholder="email@domain.com" cssClass="form-control dummy-form-control"/>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <form:password path="password" placeholder="Password" cssClass="form-control"/>
+                    <form:password path="password" placeholder="Password" cssClass="form-control dummy-form-control"/>
                 </div>
                 <a class="btn btn-primary" onclick="submitForm('registerationForm')" href="#">Sign up</a>
 				<ul class="dialog-alt-links">
@@ -117,7 +117,7 @@
             <span class="formFieldError" id="errorSpan" style="display: none;"></span>
             <form:form cssClass="dialog-form" id="forgotPassForm" commandName="forgotPasswordForm" action="forgotPassword.htm">
                 <label>E-mail</label>
-                <form:input path="email" placeholder="email@domain.com" cssClass="span12"/>
+                <form:input path="email" placeholder="email@domain.com" cssClass="span12 dummy-form-control"/>
                 <a class="btn btn-primary" onclick="submitForm('forgotPassForm')" href="#">Request password</a>
                 <!-- <input type="submit" value="Request new password" class="btn btn-primary"> -->
             </form:form>
@@ -689,7 +689,11 @@
 		<script src='js/bootstrap-datetimepicker.min.js'></script>
 		
 		<script type="text/javascript">
-        		$("#homeli").attr("class","active");
+        	$("#homeli").attr("class","active");
+        	
+        	$('.dateTimePicker').datetimepicker({
+                pick12HourFormat: false,
+            });        		
         </script>
     </div>
 </body>

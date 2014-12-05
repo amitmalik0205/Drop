@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
@@ -29,6 +30,9 @@
 	
 	   	<!-- Custom css -->
 	    <link rel="stylesheet" href="css/mystyles.css"/>
+	    
+	     <!-- Date time picker css -->
+    	<link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" type="text/css"/>
 	</head>
 	
 <body>
@@ -188,10 +192,17 @@
         <!-- Custom scripts -->
         <script src="js/custom.js"></script>
         <script src="js/myscript.js"></script>
+		<script src='js/moment.min.js'></script>
+		<script src='js/bootstrap-datetimepicker.min.js'></script>
         
         <script type="text/javascript">
         	$("#addressbookli").attr("class","active");
         	$("#myaccountli").attr("class","active");
+        	
+        	$('.dateTimePicker').datetimepicker({
+                pick12HourFormat: false,
+            });
+        	
         </script>
     </div>
 </body>

@@ -28,6 +28,9 @@
 
    	<!-- Custom css -->
     <link rel="stylesheet" href="css/mystyles.css"/>
+    
+    <!-- Date time picker css -->
+    <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" type="text/css"/>
 </head>
 
 <body>
@@ -134,10 +137,16 @@
         <!-- Custom scripts -->
         <script src="js/custom.js"></script>
         <script src="js/myscript.js"></script>
+		<script src='js/moment.min.js'></script>
+		<script src='js/bootstrap-datetimepicker.min.js'></script>
         
         <script type="text/javascript">
         	$("#myprofileli").attr("class","active");
         	$("#myaccountli").attr("class","active");
+        	
+        	$('.dateTimePicker').datetimepicker({
+                pick12HourFormat: false,
+            });
         </script>
     </div>
 </body>

@@ -6,9 +6,12 @@ function cleanErrors(needToRemoveFieldValues) {
 
 	// Clear value from form controls
 	if (needToRemoveFieldValues) {
-		$(".form-control").each(function() {
+		$(".dummy-form-control").each(function() {
 			$(this).val('');
 		});
+		
+		//Select the first child in case of select box
+		$("select.dummy-form-control").prop("selectedIndex",0);
 	}
 	
 	// Clear value from checkbox controls
@@ -17,12 +20,6 @@ function cleanErrors(needToRemoveFieldValues) {
 			$(this).removeAttr('checked');
 		});
 	}
-}
-
-function dateTimePicker() {
-	$('.dateTimePicker').datetimepicker({
-        pick12HourFormat: false,
-    });
 }
 
 function hideDealLocationFields() {

@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
@@ -29,6 +30,9 @@
 	
 	   	<!-- Custom css -->
 	    <link rel="stylesheet" href="css/mystyles.css"/>
+	    
+	    <!-- Date time picker css -->
+    	<link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css" type="text/css"/>
 	</head>
 	
 <body>
@@ -71,20 +75,48 @@
                             <table class="table table-order">
                                 <tbody>
                                     <tr>
-                                        <td>Money Earned</td>                                                                            
-                                        <td>$${sessionScope.user.moneyEarned}</td>
+                                        <td>Money Earned</td>
+                                        <c:choose>
+                                        	<c:when test="${sessionScope.user.moneyEarned gt 0}">                                                                          
+                                        		<td>$${sessionScope.user.moneyEarned}</td>
+                                        	</c:when>
+                                        	<c:otherwise>
+                                        		<td></td>
+                                        	</c:otherwise>
+                                        </c:choose>	                                       
                                     </tr>
                                     <tr>
-                                        <td>Money Paid</td>                                                                            
-                                        <td>$${sessionScope.user.moneyPaid}</td>
+                                        <td>Money Paid</td>
+                                        <c:choose>
+                                        	<c:when test="${sessionScope.user.moneyPaid gt 0}">                                                                          
+                                        		<td>$${sessionScope.user.moneyPaid}</td>
+                                        	</c:when>
+                                        	<c:otherwise>
+                                        		<td></td>
+                                        	</c:otherwise>
+                                        </c:choose>                                                                            
                                     </tr>
                                     <tr>
-                                        <td>Total Posts</td>                                                                            
-                                        <td>${sessionScope.user.totalPosts}</td>
+                                        <td>Total Posts</td>
+                                        <c:choose>
+                                        	<c:when test="${sessionScope.user.totalPosts gt 0}">                                                                          
+                                        		<td>${sessionScope.user.totalPosts}</td>
+                                        	</c:when>
+                                        	<c:otherwise>
+                                        		<td></td>
+                                        	</c:otherwise>
+                                        </c:choose>                                                                                   
                                     </tr>
                                     <tr>
-                                        <td>Warning Sent</td>                                                                            
-                                        <td>${sessionScope.user.warningsSent}</td>
+                                        <td>Warning Sent</td>
+                                        <c:choose>
+                                        	<c:when test="${sessionScope.user.warningsSent gt 0}">                                                                          
+                                        		<td>${sessionScope.user.warningsSent}</td>
+                                        	</c:when>
+                                        	<c:otherwise>
+                                        		<td></td>
+                                        	</c:otherwise>
+                                        </c:choose>                                        
                                     </tr>                                            
                                 </tbody>
                             </table>
@@ -122,10 +154,16 @@
         <!-- Custom scripts -->
         <script src="js/custom.js"></script>
         <script src="js/myscript.js"></script>
+		<script src='js/moment.min.js'></script>
+		<script src='js/bootstrap-datetimepicker.min.js'></script>
         
         <script type="text/javascript">
         	$("#mystatisticli").attr("class","active");
         	$("#myaccountli").attr("class","active");
+        	
+        	$('.dateTimePicker').datetimepicker({
+                pick12HourFormat: false,
+            });
         </script>
         
     </div>

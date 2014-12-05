@@ -12,13 +12,13 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>Title</label>
-							<form:input path="title" placeholder="Title" cssClass="form-control" />
+							<form:input path="title" placeholder="Title" cssClass="form-control dummy-form-control" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>Category</label>
-							<form:select path="category" cssClass="form-control">
+							<form:select path="category" cssClass="form-control dummy-form-control">
 								<form:option value="0" label="--Select Category--" />
 								<form:options itemValue="id" itemLabel="name"
 									items="${dealPostForm.dealCategories}" />
@@ -30,13 +30,13 @@
 				<div class="col-md-6">
 						<div class="form-group">
 							<label>Description</label>
-							<form:textarea path="description" placeholder="Describe what you want" cssClass="form-control" />
+							<form:textarea path="description" placeholder="Describe what you want" cssClass="form-control dummy-form-control" />
 						</div>
 					</div>					
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>Special Instructions</label>
-							<form:textarea path="specialInstructions" placeholder="Special Instructions" cssClass="form-control" />
+							<form:textarea path="specialInstructions" placeholder="Special Instructions" cssClass="form-control dummy-form-control" />
 						</div>
 					</div>
 				</div>
@@ -44,19 +44,19 @@
                     <div class="col-md-4">
                         <div class="form-group">
                     		<label>Sale Price</label>
-                    		<form:input path="salePrice" placeholder="Sale Price" cssClass="form-control"/>
+                    		<form:input path="salePrice" placeholder="Sale Price" cssClass="form-control dummy-form-control"/>
                 		</div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                     		<label>Retail Price</label>
-                    		<form:input path="retailPrice" placeholder="Retail Price" cssClass="form-control"/>
+                    		<form:input path="retailPrice" placeholder="Retail Price" cssClass="form-control dummy-form-control"/>
                 		</div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                     		<label>Discount %</label>
-                    		<form:input path="discountPercent" placeholder="Discount %" cssClass="form-control"/>
+                    		<form:input path="discountPercent" placeholder="Discount %" cssClass="form-control dummy-form-control"/>
                 		</div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
 							<div>
 								<div class='input-group date dateTimePicker'
 									onclick="dateTimePicker()">
-									<form:input cssClass="form-control" path="starts" />
+									<form:input cssClass="form-control dummy-form-control" path="starts" />
 									<span class="input-group-addon"> <span
 										class="glyphicon glyphicon-calendar"></span>
 									</span>
@@ -81,7 +81,7 @@
 							<div>
 								<div class='input-group date dateTimePicker'
 									onclick="dateTimePicker()">
-									<form:input cssClass="form-control" path="expires" />
+									<form:input cssClass="form-control dummy-form-control" path="expires" />
 									<span class="input-group-addon"> <span
 										class="glyphicon glyphicon-calendar"></span>
 									</span>
@@ -118,13 +118,13 @@
                 	<div class="col-md-6">
                 		<div class="form-group hiddenTag adderssDummyClass">
                     		<label>Address Line1</label>
-                    		<form:input path="addressLine1" placeholder="Address Line1" cssClass="form-control"/>
+                    		<form:input path="addressLine1" placeholder="Address Line1" cssClass="form-control dummy-form-control"/>
                 		</div>
                 	</div>
                 	<div class="col-md-6">
                 		<div class="form-group hiddenTag adderssDummyClass">
                     		<label>Address Line2</label>
-                    		<form:input path="addressLine2" placeholder="Address Line2" cssClass="form-control"/>
+                    		<form:input path="addressLine2" placeholder="Address Line2" cssClass="form-control dummy-form-control"/>
                 		</div>
                 	</div>
                 </div>  
@@ -132,25 +132,25 @@
                 	<div class="col-md-6">
                 		<div class="form-group hiddenTag adderssDummyClass">
                     		<label>City</label>
-                    		<form:input path="city" placeholder="City" cssClass="form-control"/>
+                    		<form:input path="city" placeholder="City" cssClass="form-control dummy-form-control"/>
                 		</div>
                 	</div>
                 	<div class="col-md-6 hiddenTag adderssDummyClass">
                 		<div class="form-group">
                     		<label>State</label>
-                    		<form:input path="state" placeholder="State" cssClass="form-control"/>
+                    		<form:input path="state" placeholder="State" cssClass="form-control dummy-form-control"/>
                 		</div>
                 	</div>
                 	<div class="col-md-4 hiddenTag adderssDummyClass">
                 		<div class="form-group">
                     		<label>ZIP</label>
-                    		<form:input path="zip" placeholder="ZIP" cssClass="form-control"/>
+                    		<form:input path="zip" placeholder="ZIP" cssClass="form-control dummy-form-control"/>
                 		</div>
                 	</div>
                 </div>
 				<div class="form-group hiddenTag urlDummyClass">
 					<label>Deal URL</label>
-					<form:input path="url" placeholder="Deal URL" cssClass="form-control" />
+					<form:input path="url" placeholder="Deal URL" cssClass="form-control dummy-form-control" />
 				</div>
 				<a class="btn btn-primary" onclick="submitForm('dealPostForm')" href="#">Publish</a>
             </form:form>
