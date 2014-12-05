@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.drop.controller.form.DealWantedForm;
 import com.drop.controller.form.ForgotPasswordForm;
 import com.drop.controller.form.LoginForm;
 import com.drop.dao.domain.User;

@@ -17,23 +17,25 @@
                         <div class="flexnav-menu-button" id="flexnav-menu-button">Menu</div>
                         <nav>
                             <ul class="nav nav-pills flexnav" id="flexnav" data-breakpoint="800">
-                                <li class="active">
+                                <li id="homeli">
                                     <a href="home.htm">Home</a>
                         		</li>                                
-                                <li><a href="#">My Account</a>
+                                <li id="myaccountli"><a href="#">My Account</a>
                                     <ul>
-                                        <li><a href="showAccountSettings.htm">Profile</a>
-                                            <ul>
-                                                <li><a href="showAccountSettings.htm">Settings</a>
+                                               <li>
+                                                	<a href="showAccountSettings.htm">My Profile</a>
                                                 </li>
-                                                <li><a href="showAddressBook.htm">Address Book</a>
+                                                <li>
+                                                	<a href="showAddressBook.htm">Address Book</a>
+                                                <li>
+                                                	<a href="myStatistics.htm">My Statistics</a>
                                                 </li>
-                                                <li><a href="#">Orders History</a>
-                                                </li>
-                                                <li><a href="#">Wishlist</a>
-                                                </li>
-                                            </ul>
-                                        </li>                                        
+                                                <li>
+                                                	<a href="showMyDropWanted.htm">My Drop Wanted</a>
+                                                </li>                                                
+                                                <li>
+                                                	<a href="#">Manage Posts</a>
+                                                </li>                                        
                                     </ul>
                                 </li>
                             </ul>

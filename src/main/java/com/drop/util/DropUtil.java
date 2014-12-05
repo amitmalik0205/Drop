@@ -80,4 +80,11 @@ public class DropUtil {
 		}
 		return date;
 	}
+	
+	public static String convertDateToString(Date date) {
+		String dateStr = "";
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		dateStr = dateFormat.format(date);
+		return dateStr;
+	}
 }

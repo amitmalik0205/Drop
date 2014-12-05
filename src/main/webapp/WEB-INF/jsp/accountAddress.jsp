@@ -52,12 +52,20 @@
         <!-- //////////////////////////////////
 	//////////////PAGE CONTENT///////////// 
 	////////////////////////////////////-->
+	
+		<jsp:include page="dealWantedDialog.jsp"/>
+        
+        
+        <jsp:include page="dealPostDialog.jsp"/>
+        
 
         <div class="container">
         
             <div class="row">
                 
                 	<jsp:include page="profileLeftNevigation.jsp"/>
+                	
+                <div class="col-md-9">
                 
                     <div id="add-address-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix">
                     	<span class="formFieldError" id="errorSpan" style="display: none;"></span>
@@ -90,35 +98,66 @@
                         </form:form>
                     </div>
                     
-                    <div class="row row-wrap">
-	                    <c:forEach var="address" items="${requestScope.addressForm.addressList}">
+                   <div id="edit-address-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix">
+                        <form>
+                            <div class="form-group">
+                                <label>Country</label>
+                                <input value="USA" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>City</label>
+                                <input value="San Francisco, CA" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input value="1355 Market St, Suite 900" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>Zip/Postal</label>
+                                <input value="94103" type="text" class="form-control" />
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" class="i-check" />Set Primary</label>
+                            </div>
+                            <input type="submit" class="btn btn-primary" value="Save Changes" />
+                        </form>
+                    </div>
+                    
+                     <div id="delete-address-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix">
+							<label>Are you sure to delete?</label>
+                     </div>
+                                     
+	                    <div class="row row-wrap">
+		                    <c:forEach var="address" items="${requestScope.addressForm.addressList}">
+			                    <div class="col-md-4">
+		                            <div class="address-box">
+		                                <a class="address-box-remove popup-text" id="anchorRemoveAddress${address.id}" href="#delete-address-dialog" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right" title="Remove"></a>
+		                                <a class="address-box-edit popup-text" id="anchorEditAddress${address.id}" href="#edit-address-dialog" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right" title="Edit"></a>
+		                                <ul>
+		                                	<li>Address: ${address.addressLine1}, ${address.addressLine2}</li>
+		                                    <li>State: ${address.state}</li>	
+		                                    <li>City: ${address.city}</li>	                                    
+		                                    <li>Zip/Postal: ${address.zip}</li>
+		                                </ul>
+		                                <!-- <div class="radio">
+		                                    <label>
+		                                        <input type="radio" class="i-radio" name="primaryAddressOption" />Primary Address</label>
+		                                </div> -->
+		                            </div>
+		                        </div>	                  
+		                    </c:forEach>
 		                    <div class="col-md-4">
-	                            <div class="address-box">
-	                                <a class="address-box-remove" href="#" data-toggle="tooltip" data-placement="right" title="Remove"></a>
-	                                <a class="address-box-edit popup-text" href="#edit-address-dialog" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right" title="Edit"></a>
-	                                <ul>
-	                                	<li>Address: ${address.addressLine1}, ${address.addressLine2}</li>
-	                                    <li>State: ${address.state}</li>	
-	                                    <li>City: ${address.city}</li>	                                    
-	                                    <li>Zip/Postal: ${address.zip}</li>
-	                                </ul>
-	                                <!-- <div class="radio">
-	                                    <label>
-	                                        <input type="radio" class="i-radio" name="primaryAddressOption" />Primary Address</label>
-	                                </div> -->
-	                            </div>
-	                        </div>	                  
-	                    </c:forEach>
-	                    <div class="col-md-4">
-							<a class="address-box address-box-new popup-text" href="#add-address-dialog" data-effect="mfp-move-from-top">
-								<div class="vert-center">
-									<i class="fa fa-plus address-box-new-icon"></i>
-									<p>Add New Address</p>
-								</div>
-							</a>
-					</div>
-                    </div>					
+								<a class="address-box address-box-new popup-text" href="#add-address-dialog" data-effect="mfp-move-from-top">
+									<div class="vert-center">
+										<i class="fa fa-plus address-box-new-icon"></i>
+										<p>Add New Address</p>
+									</div>
+								</a>
+							</div>
+	                    </div>	                    			
 					<div class="gap"></div>
+				  </div>
                 </div>
             </div>
 
@@ -149,6 +188,11 @@
         <!-- Custom scripts -->
         <script src="js/custom.js"></script>
         <script src="js/myscript.js"></script>
+        
+        <script type="text/javascript">
+        	$("#addressbookli").attr("class","active");
+        	$("#myaccountli").attr("class","active");
+        </script>
     </div>
 </body>
 

@@ -53,6 +53,11 @@
 	//////////////PAGE CONTENT///////////// 
 	////////////////////////////////////-->
 
+		<jsp:include page="dealWantedDialog.jsp"/>
+        
+        
+        <jsp:include page="dealPostDialog.jsp"/>
+
 
         <div class="container">
             <div class="row">
@@ -77,7 +82,17 @@
                                     <label for="">E-mail</label>
                                    <form:input path="email" cssClass="form-control"/>
                                    <form:errors path="email" cssClass="formFieldError"></form:errors>
-                                </div>                                
+                                </div> 
+                                <div class="form-group">
+                                    <label for="">Phone Number</label>
+                                   <form:input path="phone" cssClass="form-control"/>
+                                   <form:errors path="phone" cssClass="formFieldError"></form:errors>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Skype Name</label>
+                                   <form:input path="skypeName" cssClass="form-control"/>
+                                   <form:errors path="skypeName" cssClass="formFieldError"></form:errors>
+                                </div>                               
                                 <input type="submit" value="Save Changes" class="btn btn-primary"/>
                             </form:form>
                         </div>
@@ -119,6 +134,11 @@
         <!-- Custom scripts -->
         <script src="js/custom.js"></script>
         <script src="js/myscript.js"></script>
+        
+        <script type="text/javascript">
+        	$("#myprofileli").attr("class","active");
+        	$("#myaccountli").attr("class","active");
+        </script>
     </div>
 </body>
 

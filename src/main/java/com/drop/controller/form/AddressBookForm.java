@@ -18,6 +18,8 @@ public class AddressBookForm {
 	private String zip;
 	
 	Set<MailingAddress> addressList = new LinkedHashSet<MailingAddress>();
+	
+	private Long addressId;
 
 	public String getAddressLine1() {
 		return addressLine1;
@@ -65,5 +67,13 @@ public class AddressBookForm {
 
 	public void setAddressList(Set<MailingAddress> addressList) {
 		this.addressList = addressList;
+	}
+	
+	public Long getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
 	}
 }

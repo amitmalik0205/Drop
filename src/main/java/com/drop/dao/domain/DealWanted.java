@@ -2,7 +2,10 @@ package com.drop.dao.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,84 +13,54 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import com.drop.util.DropUtil;
 
 
 @Entity
 @Table(name = "deal_wanted")
+@NamedQueries({
+    @NamedQuery(name = "DealWanted.getAllDealWantedForUser", query = "FROM DealWanted dw join fetch dw.dealCategory dc WHERE dw.user.userId = :userId")
+})
+
 public class DealWanted implements Serializable {
 	
 	private static final long serialVersionUID = 4328274086721337311L;
 
+	private String id;
+	
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
-	private String id;
-	
-	@Column(name = "title")
-	private String title;
-	
-	@Column(name = "description")
-	private String description;
-
-	@Column(name = "max_price")
-	private BigDecimal maxPrice;
-	
-	@Column(name = "tip_amount")
-	private BigDecimal tipAmount; // how much the dropee will pay to the finder
-
-	@Column(name = "accept_coupons")
-	private Boolean acceptCoupons;
-
-	@Column(name = "would_buy_online")
-	private Boolean wouldBuyOnline;
-
-	@Column(name = "would_buy_locally")
-	private Boolean wouldBuyLocally;
-
-	@Column(name = "want_new")
-	private Boolean wantNew;
-
-	@Column(name = "want_used")
-	private Boolean wantUsed;
-
-	@Column(name = "refurbished_ok")
-	private Boolean refurbishedOK;
-
-	// private DealMatchID matchedId;
-	@Column(name = "active")
-	private Boolean active;
-
-	@Column(name = "reason_for_deleting")
-	private String reasonForDeleting;
-
-	@Column(name = "ip_address")
-	private String ipAddress; // location of user's IP when they posted this
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "deal_category_id")
-	private DealCategory dealCategory;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
-
+	@Access(AccessType.PROPERTY)
 	public String getId() {
 		return id;
 	}
-
+	
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public BigDecimal getMaxPrice() {
-		return maxPrice;
+	
+	private String title;
+	
+	@Column(name = "title")
+	public String getTitle() {
+		return title;
 	}
 
-	public void setMaxPrice(BigDecimal maxPrice) {
-		this.maxPrice = maxPrice;
+	public void setTitle(String title) {
+		this.title = title;
 	}
-
+	
+	private String description;
+	
+	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}
@@ -96,30 +69,20 @@ public class DealWanted implements Serializable {
 		this.description = description;
 	}
 
-	public Boolean getAcceptCoupons() {
-		return acceptCoupons;
+	private BigDecimal maxPrice;
+	
+	@Column(name = "max_price")
+	public BigDecimal getMaxPrice() {
+		return maxPrice;
 	}
 
-	public void setAcceptCoupons(Boolean acceptCoupons) {
-		this.acceptCoupons = acceptCoupons;
+	public void setMaxPrice(BigDecimal maxPrice) {
+		this.maxPrice = maxPrice;
 	}
-
-	public Boolean getWouldBuyOnline() {
-		return wouldBuyOnline;
-	}
-
-	public void setWouldBuyOnline(Boolean wouldBuyOnline) {
-		this.wouldBuyOnline = wouldBuyOnline;
-	}
-
-	public Boolean getWouldBuyLocally() {
-		return wouldBuyLocally;
-	}
-
-	public void setWouldBuyLocally(Boolean wouldBuyLocally) {
-		this.wouldBuyLocally = wouldBuyLocally;
-	}
-
+	
+	private BigDecimal tipAmount; // how much the dropee will pay to the finder
+	
+	@Column(name = "tip_amount")
 	public BigDecimal getTipAmount() {
 		return tipAmount;
 	}
@@ -128,6 +91,42 @@ public class DealWanted implements Serializable {
 		this.tipAmount = tipAmount;
 	}
 
+	private Boolean acceptCoupons;
+	
+	@Column(name = "accept_coupons")
+	public Boolean getAcceptCoupons() {
+		return acceptCoupons;
+	}
+
+	public void setAcceptCoupons(Boolean acceptCoupons) {
+		this.acceptCoupons = acceptCoupons;
+	}
+
+	private Boolean wouldBuyOnline;
+	
+	@Column(name = "would_buy_online")
+	public Boolean getWouldBuyOnline() {
+		return wouldBuyOnline;
+	}
+
+	public void setWouldBuyOnline(Boolean wouldBuyOnline) {
+		this.wouldBuyOnline = wouldBuyOnline;
+	}
+
+	private Boolean wouldBuyLocally;
+	
+	@Column(name = "would_buy_locally")
+	public Boolean getWouldBuyLocally() {
+		return wouldBuyLocally;
+	}
+
+	public void setWouldBuyLocally(Boolean wouldBuyLocally) {
+		this.wouldBuyLocally = wouldBuyLocally;
+	}
+
+	private Boolean wantNew;
+	
+	@Column(name = "want_new")
 	public Boolean getWantNew() {
 		return wantNew;
 	}
@@ -136,6 +135,9 @@ public class DealWanted implements Serializable {
 		this.wantNew = wantNew;
 	}
 
+	private Boolean wantUsed;
+	
+	@Column(name = "want_used")
 	public Boolean getWantUsed() {
 		return wantUsed;
 	}
@@ -144,6 +146,9 @@ public class DealWanted implements Serializable {
 		this.wantUsed = wantUsed;
 	}
 
+	private Boolean refurbishedOK;
+	
+	@Column(name = "refurbished_ok")
 	public Boolean getRefurbishedOK() {
 		return refurbishedOK;
 	}
@@ -152,6 +157,11 @@ public class DealWanted implements Serializable {
 		this.refurbishedOK = refurbishedOK;
 	}
 
+	// private DealMatchID matchedId;
+	
+	private Boolean active;
+	
+	@Column(name = "active")
 	public Boolean getActive() {
 		return active;
 	}
@@ -160,6 +170,9 @@ public class DealWanted implements Serializable {
 		this.active = active;
 	}
 
+	private String reasonForDeleting;
+	
+	@Column(name = "reason_for_deleting")
 	public String getReasonForDeleting() {
 		return reasonForDeleting;
 	}
@@ -168,6 +181,10 @@ public class DealWanted implements Serializable {
 		this.reasonForDeleting = reasonForDeleting;
 	}
 
+	
+	private String ipAddress; // location of user's IP when they posted this
+	
+	@Column(name = "ip_address")
 	public String getIpAddress() {
 		return ipAddress;
 	}
@@ -175,15 +192,11 @@ public class DealWanted implements Serializable {
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
+	
+	private DealCategory dealCategory;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "deal_category_id")
 	public DealCategory getDealCategory() {
 		return dealCategory;
 	}
@@ -191,14 +204,40 @@ public class DealWanted implements Serializable {
 	public void setDealCategory(DealCategory dealCategory) {
 		this.dealCategory = dealCategory;
 	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	
+	private User user;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	private Date createdOn;
+	
+	@Column(name = "created_on")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+		this.date = DropUtil.convertDateToString(createdOn);
+	}
+	
+	private String date;
+
+	@Transient
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
 }

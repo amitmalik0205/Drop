@@ -1,5 +1,9 @@
 package com.drop.service.impl;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +15,7 @@ import com.drop.dao.IUserDao;
 import com.drop.dao.domain.DealWanted;
 import com.drop.service.IDealWantedService;
 import com.drop.service.ISolrSearchService;
+import com.drop.util.DropUtil;
 
 @Service
 public class DealWantedServiceImpl implements IDealWantedService {
@@ -46,10 +51,17 @@ public class DealWantedServiceImpl implements IDealWantedService {
 		entity.setActive(true);
 		entity.setDealCategory(categoryDao.loadEntity(form.getCategory()));		
 		entity.setUser(userDao.loadEntity(form.getUserId()));
+		entity.setCreatedOn(new Date(System.currentTimeMillis()));
 		
 		dealWantedDao.create(entity);
 		
 		solrSearchService.search(entity);
 	}
 
+	@Override
+	@Transactional
+	public List<DealWanted> getAllDealWantedForUser(Long userId) {
+		List<DealWanted> list = dealWantedDao.getAllDealWantedForUser(userId);
+		return list;
+	}
 }
