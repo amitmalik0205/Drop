@@ -33,17 +33,17 @@ public class DealWanted implements Serializable {
 	
 	private static final long serialVersionUID = 4328274086721337311L;
 
-	private String id;
+	private Long id;
 	
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
 	@Access(AccessType.PROPERTY)
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

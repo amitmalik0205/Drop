@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
@@ -72,6 +73,7 @@ public class User implements Serializable {
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "user_id")
+	@OrderBy("id")
 	private Set<MailingAddress> addresses;
 
 	public Long getUserId() {

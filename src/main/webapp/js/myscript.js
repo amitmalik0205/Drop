@@ -80,6 +80,8 @@ function submitForm(formID) {
 						
 					} else if(formID == "addressForm") {
 						window.location.href="./showAddressBook.htm";
+					} else if(formID == "editAddressForm") {
+						window.location.href="./showAddressBook.htm";
 					}
 				} else {
 					var items = res.split(',');

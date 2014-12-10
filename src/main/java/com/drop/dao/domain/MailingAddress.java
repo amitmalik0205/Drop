@@ -1,5 +1,7 @@
 package com.drop.dao.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +10,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "mailing_address")
-public class MailingAddress {
+public class MailingAddress implements Serializable {
+
+	private static final long serialVersionUID = -2353691793380506657L;
 
 	@Id
 	@GeneratedValue

@@ -129,15 +129,27 @@
                     </div>
                     
                      <div id="delete-address-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix">
-							<label>Are you sure to delete?</label>
-                     </div>
-                                     
+                     		<div class="row">
+                     			 <div class="col-md-9">
+                     			 	<label>Do you really want to delete it?</label>
+                     			 </div>
+                     			 <div class="col-md-9">
+                     			 	<a class="btn btn-primary"  href="deleteAddress.htm?addressId=3">Delete</a>
+                     			 </div>                     			 													
+							</div>
+                     </div>        
+                     
+                     <form id="deleteAddressForm" action="deleteAddress.htm">
+                     	<input type="hidden" name="addressIdToDelete"/>
+                     </form>           
+                                        
 	                    <div class="row row-wrap">
 		                    <c:forEach var="address" items="${requestScope.addressForm.addressList}">
 			                    <div class="col-md-4">
 		                            <div class="address-box">
-		                                <a class="address-box-remove popup-text" id="anchorRemoveAddress${address.id}" href="#delete-address-dialog" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right" title="Remove"></a>
-		                                <a class="address-box-edit popup-text" id="anchorEditAddress${address.id}" href="#edit-address-dialog" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right" title="Edit"></a>
+		                            <input type="hidden" id="hiddenID" />
+		                                <a class="address-box-remove popup-text" href="#" id="${address.id}" onclick="deleteAddress();"  data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right" title="Remove"></a>
+		                                <a class="address-box-edit popup-text"  href="#"  id="${address.id}"  data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right" title="Edit"></a>
 		                                <ul>
 		                                	<li>Address: ${address.addressLine1}, ${address.addressLine2}</li>
 		                                    <li>State: ${address.state}</li>	
@@ -196,12 +208,134 @@
 		<script src='js/bootstrap-datetimepicker.min.js'></script>
         
         <script type="text/javascript">
+        
         	$("#addressbookli").attr("class","active");
         	$("#myaccountli").attr("class","active");
         	
         	$('.dateTimePicker').datetimepicker({
                 pick12HourFormat: false,
-            });
+            });    
+        	      
+    		/*  callbacks: {
+	        beforeOpen: function () {
+	            alert(this.ev.get(0).id);
+	            itemId = this.ev.get(0).id;
+	            alert(itemId);
+	        }
+	      }, */
+	      
+	      
+/* 	      function deleteAddress() {
+	    	  
+	    	  alert("hi");
+	    	  
+	    	  $.magnificPopup.open({	    		  
+	    		  items: {
+		        		src: '#delete-address-dialog',
+		        		type: 'inline'
+		        	},
+		        	
+		        	callbacks: {
+        				beforeOpen: function () { }        			
+        			},
+		        	
+		        	closeBtnInside: true,
+	    			
+	    			closeOnContentClick : false
+	    		  
+	    	  });
+	    	  
+	      } */
+	      
+	   	 $('.address-box-remove').magnificPopup({
+	        	
+	        	items: {
+	        		src: '#delete-address-dialog',
+	        		type: 'inline'
+	        	},
+	        	
+	        	closeBtnInside: true,
+    			
+    			closeOnContentClick : false
+	        }); 
+	      
+        		      
+            $('.address-box-edit').magnificPopup({
+        		  items: {
+        		      src: "showEditAddress.htm?addressId=3",
+        		      type: 'ajax'
+        		  },
+        		  
+        		  ajax: {        			  
+        			  // Ajax settings object that will extend default one - http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings
+        			  // For example:
+        			  // settings: {cache:false, async:false}
+        			  settings: null,
+        			  
+        			  // CSS class that will be added to body during the loading (adds "progress" cursor)
+        			  cursor: 'mfp-ajax-cur', 
+        			  
+        			  //  Error message, can contain %curr% and %total% tags if gallery is enabled        			  
+        			  tError: '<a href="%url%">The content</a> could not be loaded.'
+        			},
+        			
+        			closeBtnInside: true,
+        			
+        			closeOnContentClick : false
+        	}); 
+
+        	
+  /*   	function loadAddress($anchorObj) {
+        	
+        		$.magnificPopup.open({
+        			
+        		    type:'ajax',
+        		    
+          		  	items: {
+          			  src: 'showEditAddress.htm?addressId='+$anchorObj.id,
+        		      type: 'ajax'
+          		  	},          		  	
+          		 	
+          		  	
+          		  ajax: {
+          			  settings: null, // Ajax settings object that will extend default one - http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings
+          			  // For example:
+          			  // settings: {cache:false, async:false}
+
+          			  cursor: 'mfp-ajax-cur', // CSS class that will be added to body during the loading (adds "progress" cursor)
+          			  tError: '<a href="%url%">The content</a> could not be loaded.....' //  Error message, can contain %curr% and %total% tags if gallery is enabled
+          			},
+          		  	
+        			callbacks: {
+        				beforeOpen: function () { 
+        					
+        				},
+        				
+        				close: function() {        					
+        				    console.log('Popup removal initiated (after removalDelay timer finished)');
+        				},
+        				
+        				afterClose: function() {
+        				    console.log('Popup is completely closed');
+        				},
+        				
+        				parseAjax: function(mfpResponse) {
+        				    // mfpResponse.data is a "data" object from ajax "success" callback
+        				    // for simple HTML file, it will be just String
+        				    // You may modify it to change contents of the popup
+        				    // For example, to show just #some-element:
+        				    // mfpResponse.data = $(mfpResponse.data).find('#some-element');
+        				    
+        				    // mfpResponse.data must be a String or a DOM (jQuery) element
+        				    console.log('Ajax content loaded:', mfpResponse);
+        				}
+        			} ,
+        			
+        			closeBtnInside: true,
+        			
+        			closeOnContentClick : false
+          		});
+        	}  */
         	
         </script>
     </div>

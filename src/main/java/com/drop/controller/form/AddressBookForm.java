@@ -3,18 +3,24 @@ package com.drop.controller.form;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.drop.dao.domain.MailingAddress;
 
 public class AddressBookForm {
 
+	@NotEmpty(message = "Address line is required")
 	private String addressLine1;
 	
 	private String addressLine2;
 	
+	@NotEmpty(message = "State is required")
 	private String state;
 	
+	@NotEmpty(message = "City is required")
 	private String city;
 	
+	@NotEmpty(message = "Zip is required")
 	private String zip;
 	
 	Set<MailingAddress> addressList = new LinkedHashSet<MailingAddress>();
