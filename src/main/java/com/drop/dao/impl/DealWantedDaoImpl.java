@@ -20,7 +20,7 @@ public class DealWantedDaoImpl extends GenericDaoImpl<DealWanted> implements IDe
 	public List<DealWanted> getAllDealWantedForUser(Long userId) {
 		Session session = getCurrentSession();
 		List<DealWanted> list = null;		
-		Query query = session.getNamedQuery("DealWanted.getAllDealWantedForUser");
+		Query query = session.getNamedQuery("DealWanted.getAllActiveDealWantedForUser");
 		query.setParameter("userId", userId);
 		list = query.list();
 		return list;

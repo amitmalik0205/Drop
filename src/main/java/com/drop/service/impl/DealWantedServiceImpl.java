@@ -1,7 +1,6 @@
 package com.drop.service.impl;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.drop.controller.form.DealWantedForm;
+import com.drop.controller.form.ReasonToDeleteForm;
 import com.drop.dao.IDealCategoryDao;
 import com.drop.dao.IDealWantedDao;
 import com.drop.dao.IUserDao;
 import com.drop.dao.domain.DealWanted;
 import com.drop.service.IDealWantedService;
 import com.drop.service.ISolrSearchService;
-import com.drop.util.DropUtil;
 
 @Service
 public class DealWantedServiceImpl implements IDealWantedService {
@@ -63,5 +62,51 @@ public class DealWantedServiceImpl implements IDealWantedService {
 	public List<DealWanted> getAllDealWantedForUser(Long userId) {
 		List<DealWanted> list = dealWantedDao.getAllDealWantedForUser(userId);
 		return list;
+	}
+	
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void saveOrUpdate(DealWantedForm form) {
+		
+		DealWanted savedDealWanted = dealWantedDao.getEntity(form.getDealWantedId());
+		
+		if(savedDealWanted != null) {
+			savedDealWanted.setTitle(form.getTitle());
+			savedDealWanted.setDescription(form.getDescription());
+			savedDealWanted.setMaxPrice(form.getMaxPrice());
+			savedDealWanted.setTipAmount(form.getTipAmount());
+			savedDealWanted.setAcceptCoupons(form.getAcceptCoupons());
+			savedDealWanted.setWouldBuyOnline(form.getWouldBuyOnline());
+			savedDealWanted.setWouldBuyLocally(form.getWouldBuyLocally());
+			savedDealWanted.setWantNew(form.getWantNew());
+			savedDealWanted.setWantUsed(form.getWantUsed());
+			savedDealWanted.setRefurbishedOK(form.getRefurbishedOK());
+			savedDealWanted.setIpAddress(form.getIpAddress());
+			savedDealWanted.setActive(true);
+			savedDealWanted.setDealCategory(categoryDao.loadEntity(form.getCategory()));		
+			savedDealWanted.setUpdatedOn(new Date(System.currentTimeMillis()));
+			
+			dealWantedDao.saveOrUpdate(savedDealWanted);
+		}
+	}
+	
+	@Override
+	@Transactional
+	public DealWanted getDealWantedById(Long id) {
+		return dealWantedDao.getEntity(id);
+	}
+	
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteDealWanted(ReasonToDeleteForm form) {
+		
+		DealWanted savedDealWanted = dealWantedDao.getEntity(form.getDealId());
+		
+		if(savedDealWanted != null) {
+			savedDealWanted.setActive(false);
+			savedDealWanted.setReasonForDeleting(form.getReason());
+			
+			dealWantedDao.saveOrUpdate(savedDealWanted);
+		}
 	}
 }

@@ -26,7 +26,8 @@ import com.drop.util.DropUtil;
 @Entity
 @Table(name = "deal_wanted")
 @NamedQueries({
-    @NamedQuery(name = "DealWanted.getAllDealWantedForUser", query = "FROM DealWanted dw join fetch dw.dealCategory dc WHERE dw.user.userId = :userId")
+    @NamedQuery(name = "DealWanted.getAllActiveDealWantedForUser", 
+    		query = "FROM DealWanted dw join fetch dw.dealCategory dc WHERE dw.user.userId = :userId and dw.active=true")
 })
 
 public class DealWanted implements Serializable {
@@ -240,4 +241,18 @@ public class DealWanted implements Serializable {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	
+	
+	private Date updatedOn;
+
+	@Column(name = "updated_on")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(Date updatedOn) {
+		this.updatedOn = updatedOn;
+	}
+
 }

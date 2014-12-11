@@ -47,6 +47,8 @@ public class DealWantedForm {
 	private String ipAddress;
 	
 	private Long userId;
+	
+	private Long dealWantedId;
 
 	public String getTitle() {
 		return title;
@@ -159,4 +161,14 @@ public class DealWantedForm {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+
+	public Long getDealWantedId() {
+		return dealWantedId;
+	}
+
+	public void setDealWantedId(Long dealWantedId) {
+		this.dealWantedId = dealWantedId;
+	}
+
+	
 }

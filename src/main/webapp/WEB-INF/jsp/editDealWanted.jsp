@@ -4,10 +4,9 @@
         <!--Deal Wanted Dialog -->
         <div id="want-drop-dialog" class="mfp-with-anim mfp-dialog clearfix broadPopup">
             <i class="fa fa-edit dialog-icon"></i>
-            <h3>Want Drop</h3>
-            <h5>Want to get best offers? Don't worry just post what you want</h5>
+            <h3>Edit Want Drop</h3>          
             <span class="formFieldError" id="errorSpan" style="display: none;"></span>
-            <form:form method="POST" commandName="editDealWantedForm" action="wantdrop.htm" cssClass="dialog-form" id="editDealWantedForm">
+            <form:form method="POST" commandName="editDealWantedForm" action="updateWantdrop.htm" cssClass="dialog-form" id="editDealWantedForm">
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
@@ -79,8 +78,9 @@
 		                	<form:checkbox path="refurbishedOK" label="Want Refurbished" cssClass="dummyChkBoxClass"></form:checkbox>		                   
 		                </div> 	
 	                </div>               
-                </div>                     
-                <a class="btn btn-primary" onclick="submitForm('dealWantedForm')" href="#">Publish</a>
+                </div>   
+                <form:hidden path="dealWantedId"/>                  
+                <a class="btn btn-primary" onclick="submitForm('editDealWantedForm')" href="#">Save Changes</a>
              <!--  <input class="btn btn-primary" value="Sign up" type="submit"/> -->
             </form:form>
         </div>

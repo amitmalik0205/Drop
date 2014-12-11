@@ -68,6 +68,7 @@ function submitForm(formID) {
 						$("#anchorWantDrop").show();
 						$("#anchorPostDrop").show();
 						$("#anchorSignOut").show();
+						window.location.href="./home.htm";
 					} else if(formID == "registerationForm") {
 						$("#anchorSignIn").hide();
 						$("#anchorSignUp").hide();
@@ -82,6 +83,10 @@ function submitForm(formID) {
 						window.location.href="./showAddressBook.htm";
 					} else if(formID == "editAddressForm") {
 						window.location.href="./showAddressBook.htm";
+					} else if(formID == "editDealWantedForm") {
+						window.location.href="./showMyDropWanted.htm";
+					} else if(formID == "deleteDropWantedForm") {
+						window.location.href="./showMyDropWanted.htm";
 					}
 				} else {
 					var items = res.split(',');

@@ -3,9 +3,16 @@
 	<div class="top-main-area text-center">
 		<div class="container">
 			<a href="index.html" class="logo mt5"> <img
-				src="img/logo-small-dark.png" alt="Image Alternative text"
+				src="img/drop_blue.png" alt="Image Alternative text"
 				title="Image Title" />
 			</a>
+			
+		    <c:if test="${sessionScope.user ne null}">
+			    <div style=" clear: both; text-align: right;">
+					<span style="color: #2A8FBD; font-weight: bold;">Welcome:</span> 
+					<span style="font-weight: bold; color: black;">${sessionScope.user.firstName}  ${sessionScope.user.lastName}</span> 
+				</div>	
+		    </c:if>				
 		</div>
 	</div>
 

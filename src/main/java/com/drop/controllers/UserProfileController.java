@@ -24,7 +24,6 @@ import com.drop.controller.form.AddressBookForm;
 import com.drop.controller.form.DealPostForm;
 import com.drop.controller.form.DealWantedForm;
 import com.drop.dao.domain.DealCategory;
-import com.drop.dao.domain.DealWanted;
 import com.drop.dao.domain.MailingAddress;
 import com.drop.dao.domain.User;
 import com.drop.exception.DropException;
@@ -242,6 +241,13 @@ public class UserProfileController {
 	}
 	
 	
+	@RequestMapping(value = "/showDeleteConfirmDialog", method = RequestMethod.GET)
+	public String showDialog(@RequestParam Long addressId, ModelMap map, HttpSession session) {
+		map.addAttribute("addressIdToDelete", addressId);
+		return "deleteConfirmationDialog";
+	}
+	
+	
 	@RequestMapping(value = "/deleteAddress", method = RequestMethod.GET)
 	public String deleteAddress(@RequestParam Long addressId, ModelMap map, HttpSession session) {
 		
@@ -279,70 +285,5 @@ public class UserProfileController {
 		initializeFormModels(map);
 		return "myStatistics";
 	}
-
 	
-	@RequestMapping(value = "/showMyDropWanted", method = RequestMethod.GET)
-	public ModelAndView showMyDropWanted(ModelMap map, HttpSession session) {
-
-		ModelAndView modelAndView = new ModelAndView("myDropWanted");
-
-		try {
-			User user = WebUtil.getSessionUser(session);
-			List<DealWanted> dealWantedList = dealWantedService
-					.getAllDealWantedForUser(user.getUserId());
-			modelAndView.addObject("dealWantedList", dealWantedList);
-			initializeFormModels(map);
-
-		} catch (Exception e) {
-			logger.fatal(DropUtil.getExceptionDescriptionString(e));
-			e.printStackTrace();
-			throw new DropException();
-		}
-		return modelAndView;
-	}
-	
-	
-	@RequestMapping(value = "/showEditDropWanted", method = RequestMethod.GET)
-	public ModelAndView showEditDropWantedForm(@RequestParam("dropWantedId") Long dropWantedId,  ModelMap map, HttpSession session) {
-		
-		ModelAndView modelAndView = new ModelAndView("editDealWanted");
-		
-		try {
-			User user = WebUtil.getSessionUser(session);			
-			DealWanted userDealWanted = null;
-			
-			List<DealWanted> dealWantedList = dealWantedService.getAllDealWantedForUser(user.getUserId());
-			for(DealWanted dealWanted : dealWantedList) {
-				if(dealWanted.getId() == dropWantedId) {
-					userDealWanted = dealWanted;
-					break;
-				}
-			}
-			
-			// If deal belongs to user then allow edit
-			if(userDealWanted != null) {
-				DealWantedForm form = new DealWantedForm();
-				form.setTitle(userDealWanted.getTitle());
-				form.setDescription(userDealWanted.getDescription());
-				form.setCategory(userDealWanted.getDealCategory().getId());
-				form.setTipAmount(userDealWanted.getTipAmount());
-				form.setMaxPrice(userDealWanted.getMaxPrice());
-				form.setAcceptCoupons(userDealWanted.getAcceptCoupons());
-				form.setWouldBuyLocally(userDealWanted.getWouldBuyLocally());
-				form.setWouldBuyOnline(userDealWanted.getWouldBuyOnline());
-				form.setWantNew(userDealWanted.getWantNew());
-				form.setWantUsed(userDealWanted.getWantUsed());
-				form.setRefurbishedOK(userDealWanted.getRefurbishedOK());
-				form.setDealCategories(categoryService.getAllDealCategories());
-				
-				modelAndView.addObject("editDealWantedForm", form);
-			}
-	
-		} catch (Exception e) {
-			logger.fatal(DropUtil.getExceptionDescriptionString(e));
-			e.printStackTrace();
-			throw new DropException();
-		}
-		return modelAndView;
-	}
 }

@@ -6,7 +6,7 @@
 <html>
 
 	<head>
-	    <title>Drop - Address Book</title>
+	    <title>Drop - My Drop Wanted</title>
 	    <!-- meta info -->
 	    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 	    <meta name="keywords" content="Koupon HTML5 Template" />
@@ -92,8 +92,8 @@
 		                                        <td>${dealWanted.title}</td>
 		                                        <td>${dealWanted.dealCategory.name}</td>
 		                                        <td>${dealWanted.date}</td>
-		                                        <td><a class="edit-drop-wanted btn btn-primary" href="#" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Edit</a></td>
-		                                        <td><a class="btn btn-primary" href="#">Delete</a></td>
+		                                        <td><a class="btn btn-primary" href="#" onclick="editDropWanted(this);" id="${dealWanted.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Edit</a></td>
+		                                        <td><a class="btn btn-primary" href="#" onclick="deleteDropWanted(this);" id="${dealWanted.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Delete</a></td>
 		                                        <td><a class="btn btn-primary" href="#">Matching Deals</a></td>
 	                                    	</tr>
 	                                	</c:forEach>	                                    
@@ -145,29 +145,71 @@
             });
         	
         	
-            $('.edit-drop-wanted').magnificPopup({
-      		  items: {
-      		      src: "showEditDropWanted.htm?dropWantedId=1",
-      		      type: 'ajax'
-      		  },
-      		  
-      		  ajax: {        			  
-      			  // Ajax settings object that will extend default one - http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings
-      			  // For example:
-      			  // settings: {cache:false, async:false}
-      			  settings: null,
-      			  
-      			  // CSS class that will be added to body during the loading (adds "progress" cursor)
-      			  cursor: 'mfp-ajax-cur', 
-      			  
-      			  //  Error message, can contain %curr% and %total% tags if gallery is enabled        			  
-      			  tError: '<a href="%url%">The content</a> could not be loaded.'
-      			},
-      			
-      			closeBtnInside: true,
-      			
-      			closeOnContentClick : false
-      	});
+        	function editDropWanted($anchorEditDropWanted) {
+        		
+        		$.magnificPopup.open({
+        			
+        			items: {
+            		      src: 'showEditDropWanted.htm?dropWantedId='+$anchorEditDropWanted.id,
+            		      type: 'ajax'
+            		  },
+        			
+            		  ajax: {
+              			  
+             			   // Ajax settings object that will extend default one - http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings
+             			  // For example-- settings: {cache:false, async:false}
+             			  settings: null, 
+             			            			 
+             			   // CSS class that will be added to body during the loading (adds "progress" cursor)
+             			  cursor: 'mfp-ajax-cur',
+             			  
+             			  //  Error message, can contain %curr% and %total% tags if gallery is enabled
+             			  tError: '<a href="%url%">The content</a> could not be loaded.....' 
+             			},
+             		  	
+           			callbacks: {
+           				beforeOpen: function () { }
+             		},
+           
+           			closeBtnInside: true,
+           			
+           			closeOnContentClick : false
+        			
+        		});
+        	}
+        	
+        	function deleteDropWanted($anchorDeleteDropWanted) {
+        		
+        		$.magnificPopup.open({
+        			
+        			items: {
+            		      src: 'showReasonToDeleteDialog.htm?dealId='+$anchorDeleteDropWanted.id,
+            		      type: 'ajax'
+            		  },
+        			
+            		  ajax: {
+              			  
+             			   // Ajax settings object that will extend default one - http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings
+             			  // For example-- settings: {cache:false, async:false}
+             			  settings: null, 
+             			            			 
+             			   // CSS class that will be added to body during the loading (adds "progress" cursor)
+             			  cursor: 'mfp-ajax-cur',
+             			  
+             			  //  Error message, can contain %curr% and %total% tags if gallery is enabled
+             			  tError: '<a href="%url%">The content</a> could not be loaded.....' 
+             			},
+             		  	
+           			callbacks: {
+           				beforeOpen: function () { }
+             		},
+           
+           			closeBtnInside: true,
+           			
+           			closeOnContentClick : false
+        			
+        		});
+        	}
         	
         </script>
 			
