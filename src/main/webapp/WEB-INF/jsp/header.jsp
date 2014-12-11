@@ -2,7 +2,7 @@
 
 	<div class="top-main-area text-center">
 		<div class="container">
-			<a href="index.html" class="logo mt5"> <img
+			<a href="home.htm" class="logo mt5"> <img
 				src="img/drop_blue.png" alt="Image Alternative text"
 				title="Image Title" />
 			</a>

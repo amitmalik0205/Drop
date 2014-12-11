@@ -45,7 +45,7 @@ function showDealLocation(chkbox) {
 }
 
 function submitForm(formID) {
-	//cleanErrors();
+	cleanErrors(false);
 	var $form = $("#" + formID);
 	jQuery.ajax({
 		url : $form.attr("action"),
@@ -75,6 +75,7 @@ function submitForm(formID) {
 						$("#anchorWantDrop").show();
 						$("#anchorPostDrop").show();
 						$("#anchorSignOut").show();
+						window.location.href="./home.htm";
 					} else if(formID == "dealPostForm") {
 						
 					} else if(formID == "dealWantedForm") {

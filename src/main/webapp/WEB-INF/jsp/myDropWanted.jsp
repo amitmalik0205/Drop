@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 
@@ -69,36 +70,44 @@
 	                <div class="col-md-9">
 	                    <div class="row">
 	                        <div class="col-md-12">
-	                            <table class="table table-order">
-	                                <thead>
-	                                    <tr>
-	                                    	<th></th>
-	                                    	<th>Title</th>
-	                                        <th>Category</th>	                                        
-	                                        <th>PostedOn</th>
-	                                        <th></th>
-	                                        <th></th>
-	                                        <th></th>
-	                                    </tr>
-	                                </thead>
-	                                <tbody>
-	                                	<c:forEach var="dealWanted" items="${requestScope.dealWantedList}">
-	                                		<tr>
-		                                        <td class="table-order-img">
-		                                            <a href="#">
-		                                                <img src="img/70x70.png" alt="Image Alternative text" title="AMaze" />
-		                                            </a>
-		                                        </td>
-		                                        <td>${dealWanted.title}</td>
-		                                        <td>${dealWanted.dealCategory.name}</td>
-		                                        <td>${dealWanted.date}</td>
-		                                        <td><a class="btn btn-primary" href="#" onclick="editDropWanted(this);" id="${dealWanted.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Edit</a></td>
-		                                        <td><a class="btn btn-primary" href="#" onclick="deleteDropWanted(this);" id="${dealWanted.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Delete</a></td>
-		                                        <td><a class="btn btn-primary" href="#">Matching Deals</a></td>
-	                                    	</tr>
-	                                	</c:forEach>	                                    
-	                                </tbody>
-	                            </table>
+	                        	<c:if test="${fn:length(requestScope.dealWantedList) gt 0}">
+		                        	<table class="table table-order">
+		                                <thead>
+		                                    <tr>
+		                                    	<th></th>
+		                                    	<th>Title</th>
+		                                        <th>Category</th>	                                        
+		                                        <th>PostedOn</th>
+		                                        <th></th>
+		                                        <th></th>
+		                                        <th></th>
+		                                    </tr>
+		                                </thead>
+		                                <tbody>	                                	
+		                                	
+		                                	<c:forEach var="dealWanted" items="${requestScope.dealWantedList}">
+		                                		<tr>
+			                                        <td class="table-order-img">
+			                                            <a href="#">
+			                                                <img src="img/70x70.png" alt="Image Alternative text" title="AMaze" />
+			                                            </a>
+			                                        </td>
+			                                        <td>${dealWanted.title}</td>
+			                                        <td>${dealWanted.dealCategory.name}</td>
+			                                        <td>${dealWanted.date}</td>
+			                                        <td><a class="btn btn-primary" href="#" onclick="editDropWanted(this);" id="${dealWanted.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Edit</a></td>
+			                                        <td><a class="btn btn-primary" href="#" onclick="deleteDropWanted(this);" id="${dealWanted.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Delete</a></td>
+			                                        <td><a class="btn btn-primary" href="#">Matching Deals</a></td>
+		                                    	</tr>
+		                                	</c:forEach>	                                    
+		                                </tbody>
+		                            </table>
+	                        	</c:if>
+	                        	
+	                        	<c:if test="${fn:length(requestScope.dealWantedList) lt 1}">
+	                        		No Data found
+	                        	</c:if>
+	                        	
 	                        </div>
 	                    </div>
 	                    <div class="gap"></div>
