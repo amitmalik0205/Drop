@@ -1,10 +1,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 
-        <!--Deal Wanted Dialog -->
         <div id="want-drop-dialog" class="mfp-with-anim mfp-dialog clearfix broadPopup">
             <i class="fa fa-edit dialog-icon"></i>
-            <h3>Edit Want Drop</h3>          
+            <h3>Edit Want Drop</h3>         
             <span class="formFieldError" id="errorSpan" style="display: none;"></span>
             <form:form method="POST" commandName="editDealWantedForm" action="updateWantdrop.htm" cssClass="dialog-form" id="editDealWantedForm">
 				<div class="row">
@@ -21,7 +21,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
+ 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>Category</label>
@@ -78,9 +78,10 @@
 		                	<form:checkbox path="refurbishedOK" label="Want Refurbished" cssClass="dummyChkBoxClass"></form:checkbox>		                   
 		                </div> 	
 	                </div>               
-                </div>   
-                <form:hidden path="dealWantedId"/>                  
+                </div>    
+                
+                <form:hidden path="dealWantedId"/> 
+                                 
                 <a class="btn btn-primary" onclick="submitForm('editDealWantedForm')" href="#">Save Changes</a>
-             <!--  <input class="btn btn-primary" value="Sign up" type="submit"/> -->
             </form:form>
         </div>

@@ -104,7 +104,7 @@
             }
 
             var closeOnContent = mfp.st.closeOnContentClick;
-            var closeOnBg = mfp.st.closeOnBgClick;
+            var closeOnBg = mfp.st.closeOnBgClick;        
 
             if (closeOnContent && closeOnBg) {
                 return true;
@@ -112,15 +112,11 @@
 
                 // We close the popup if click is on close button or on preloader. Or if there is no content.
                 if (!mfp.content || $(target).hasClass('mfp-close') || (mfp.preloader && target === mfp.preloader[0])) {
-                	cleanErrors(true); //Added by me
-                	hideDealLocationFields(); //Added by me
-                    return true;
+                   return true;
                 }
 
                 // if click is outside the content
-                if ((target !== mfp.content[0] && !$.contains(mfp.content[0], target))) {
-                	cleanErrors(true); //Added by me
-                	hideDealLocationFields(); //Added by me
+                if ((target !== mfp.content[0] && !$.contains(mfp.content[0], target))) {                	
                     if (closeOnBg) {
                         // last check, if the clicked element is in DOM, (in case it's removed onclick)
                         if ($.contains(document, target)) {
@@ -683,7 +679,8 @@
         _openClick: function(e, el, options) {
             var midClick = options.midClick !== undefined ? options.midClick : $.magnificPopup.defaults.midClick;
 
-
+            cleanErrors(true); //Added by me
+            hideDealLocationFields(); //Added by me
             if (!midClick && (e.which === 2 || e.ctrlKey || e.metaKey)) {
                 return;
             }
