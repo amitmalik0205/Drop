@@ -21,6 +21,7 @@ import com.drop.dao.domain.User;
 import com.drop.enums.POST_DEAL_TYPE;
 import com.drop.service.IDealPostService;
 import com.drop.util.DropUtil;
+import com.drop.util.WebUtil;
 
 @Controller
 public class PostDropController {
@@ -33,14 +34,20 @@ public class PostDropController {
 	@Autowired
 	@Qualifier("validationConfig")
 	private Properties validationConfig;
+	
+	@Autowired
+	private HttpSession session;
 
 	@RequestMapping(value = "/postdrop", method = RequestMethod.POST)
 	public @ResponseBody
 	String registerUser(@Valid DealPostForm form, BindingResult result,
 			ModelMap map, HttpServletRequest request) {
 		
-		try {
-			
+		if(!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+		
+		try {			
 			String dealType = form.getDealType();
 			
 			if(dealType != null) {

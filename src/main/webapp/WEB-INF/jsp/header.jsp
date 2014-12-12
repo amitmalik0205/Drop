@@ -26,25 +26,27 @@
                             <ul class="nav nav-pills flexnav" id="flexnav" data-breakpoint="800">
                                 <li id="homeli">
                                     <a href="home.htm">Home</a>
-                        		</li>                                
-                                <li id="myaccountli"><a href="#">My Account</a>
-                                    <ul>
-                                               <li>
-                                                	<a href="showAccountSettings.htm">My Profile</a>
-                                                </li>
-                                                <li>
-                                                	<a href="showAddressBook.htm">Address Book</a>
-                                                <li>
-                                                	<a href="myStatistics.htm">My Statistics</a>
-                                                </li>
-                                                <li>
-                                                	<a href="showMyDropWanted.htm">My Drop Wanted</a>
-                                                </li>                                                
-                                                <li>
-                                                	<a href="#">Manage Posts</a>
-                                                </li>                                        
-                                    </ul>
-                                </li>
+                        		</li> 
+                        		<c:if test="${sessionScope.user ne null}">                               
+	                                <li id="myaccountli"><a href="showAccountSettings.htm">My Account</a>
+	                                    <ul>
+	                                               <li>
+	                                                	<a href="showAccountSettings.htm">My Profile</a>
+	                                                </li>
+	                                                <li>
+	                                                	<a href="showAddressBook.htm">Address Book</a>
+	                                                <li>
+	                                                	<a href="myStatistics.htm">My Statistics</a>
+	                                                </li>
+	                                                <li>
+	                                                	<a href="showMyDropWanted.htm">My Drop Wanted</a>
+	                                                </li>                                                
+	                                                <li>
+	                                                	<a href="#">Manage Posts</a>
+	                                                </li>                                        
+	                                    </ul>
+	                                </li>
+                                </c:if>
                             </ul>
                         </nav>
                         <!-- END MAIN NAVIGATION -->

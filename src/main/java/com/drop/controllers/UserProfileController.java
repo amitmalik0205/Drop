@@ -51,6 +51,9 @@ public class UserProfileController {
 	@Autowired
 	private IMailingAddressService mailingAddressService;
 	
+	@Autowired
+	private HttpSession session;
+	
 	
 	private void initializeFormModels(ModelMap map) {
 		
@@ -67,6 +70,10 @@ public class UserProfileController {
 
 	@RequestMapping(value = "/showAccountSettings", method = RequestMethod.GET)
 	public ModelAndView showAccountSettingsPage(ModelMap map, HttpSession session) {
+		
+		if(!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
 		
 		ModelAndView modelAndView = new ModelAndView("accountSettings");
 		
@@ -98,6 +105,10 @@ public class UserProfileController {
 			@Valid @ModelAttribute("accountSettingsForm") AccountSettingsForm form,
 			BindingResult result, ModelMap map, HttpServletRequest request) {
 		
+		if(!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+		
 		try {
 			if (result.hasErrors()) {
 				return "accountSettings";
@@ -115,6 +126,10 @@ public class UserProfileController {
 	
 	@RequestMapping(value = "/showAddressBook", method = RequestMethod.GET)
 	public ModelAndView showAddressBook(ModelMap map, HttpSession session) {
+		
+		if(!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
 		
 		ModelAndView modelAndView = new ModelAndView("accountAddress");
 		
@@ -141,6 +156,10 @@ public class UserProfileController {
 	String addAddress(
 			@Valid @ModelAttribute("addressForm") AddressBookForm form,
 			BindingResult result, ModelMap map, HttpServletRequest request) {
+		
+		if(!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
 
 		if (result.hasErrors()) {
 			return DropUtil.getErrorString(result);
@@ -160,6 +179,10 @@ public class UserProfileController {
 		
 	@RequestMapping(value = "/showEditAddress", method = RequestMethod.GET)
 	public ModelAndView showEditAddressForm(@RequestParam("addressId") Long addressId,  ModelMap map, HttpSession session) {
+		
+		if(!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
 		
 		ModelAndView modelAndView = new ModelAndView("editAddress");
 		
@@ -203,6 +226,10 @@ public class UserProfileController {
 	String updateAddress(@Valid AddressBookForm form, BindingResult result,
 			ModelMap map, HttpSession session) {
 		
+		if(!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+		
 		try {
 			
 			if (result.hasErrors()) {
@@ -243,7 +270,13 @@ public class UserProfileController {
 	
 	@RequestMapping(value = "/showDeleteConfirmDialog", method = RequestMethod.GET)
 	public String showDialog(@RequestParam Long addressId, ModelMap map, HttpSession session) {
+		
+		if(!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+		
 		map.addAttribute("addressIdToDelete", addressId);
+		
 		return "deleteConfirmationDialog";
 	}
 	
@@ -251,8 +284,11 @@ public class UserProfileController {
 	@RequestMapping(value = "/deleteAddress", method = RequestMethod.GET)
 	public String deleteAddress(@RequestParam Long addressId, ModelMap map, HttpSession session) {
 		
-		try {
-	
+		if(!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+		
+		try {	
 			User user = WebUtil.getSessionUser(session);
 			MailingAddress userAddress = null;
 			
@@ -282,7 +318,13 @@ public class UserProfileController {
 	
 	@RequestMapping(value = "/myStatistics", method = RequestMethod.GET)
 	public String showStatisticsPage(ModelMap map, HttpSession session) {
+		
+		if(!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+		
 		initializeFormModels(map);
+		
 		return "myStatistics";
 	}
 	

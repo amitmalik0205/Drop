@@ -31,16 +31,19 @@ import com.drop.util.WebUtil;
 
 @Controller
 public class WantDropController {
-	
-	private static final Logger logger = Logger.getLogger(WantDropController.class);
-	
+
+	private static final Logger logger = Logger
+			.getLogger(WantDropController.class);
+
 	@Autowired
 	private IDealWantedService dealWantedService;
-	
+
 	@Autowired
 	private IDealCategoryService categoryService;
-	
-	
+
+	@Autowired
+	private HttpSession session;
+
 	private void initializeFormModels(ModelMap map) {
 
 		DealWantedForm dealWantedForm = new DealWantedForm();
@@ -53,12 +56,15 @@ public class WantDropController {
 		map.addAttribute("dealWantedForm", dealWantedForm);
 		map.addAttribute("dealPostForm", dealPostForm);
 	}
-	
 
 	@RequestMapping(value = "/wantdrop", method = RequestMethod.POST)
 	public @ResponseBody
 	String saveDropWanted(@Valid DealWantedForm form, BindingResult result,
 			ModelMap map, HttpServletRequest request) {
+
+		if (!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
 
 		if (result.hasErrors()) {
 			return DropUtil.getErrorString(result);
@@ -66,7 +72,7 @@ public class WantDropController {
 			try {
 				form.setIpAddress(DropUtil.getIPAddress(request));
 				HttpSession session = request.getSession(false);
-				User user = (User)session.getAttribute("user");
+				User user = (User) session.getAttribute("user");
 				form.setUserId(user.getUserId());
 				dealWantedService.saveDealWanted(form);
 			} catch (Exception e) {
@@ -77,10 +83,13 @@ public class WantDropController {
 		}
 		return "SUCCESS";
 	}
-	
-	
+
 	@RequestMapping(value = "/showMyDropWanted", method = RequestMethod.GET)
 	public ModelAndView showMyDropWanted(ModelMap map, HttpSession session) {
+
+		if (!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
 
 		ModelAndView modelAndView = new ModelAndView("myDropWanted");
 
@@ -98,27 +107,33 @@ public class WantDropController {
 		}
 		return modelAndView;
 	}
-	
-	
+
 	@RequestMapping(value = "/showEditDropWanted", method = RequestMethod.GET)
-	public ModelAndView showEditDropWantedForm(@RequestParam("dropWantedId") Long dropWantedId,  ModelMap map, HttpSession session) {
-		
+	public ModelAndView showEditDropWantedForm(
+			@RequestParam("dropWantedId") Long dropWantedId, ModelMap map,
+			HttpSession session) {
+
+		if (!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
+
 		ModelAndView modelAndView = new ModelAndView("editDealWanted");
-		
+
 		try {
-			User user = WebUtil.getSessionUser(session);			
+			User user = WebUtil.getSessionUser(session);
 			DealWanted userDealWanted = null;
-			
-			List<DealWanted> dealWantedList = dealWantedService.getAllDealWantedForUser(user.getUserId());
-			for(DealWanted dealWanted : dealWantedList) {
-				if(dealWanted.getId() == dropWantedId) {
+
+			List<DealWanted> dealWantedList = dealWantedService
+					.getAllDealWantedForUser(user.getUserId());
+			for (DealWanted dealWanted : dealWantedList) {
+				if (dealWanted.getId() == dropWantedId) {
 					userDealWanted = dealWanted;
 					break;
 				}
 			}
-			
+
 			// If deal belongs to user then allow edit
-			if(userDealWanted != null) {
+			if (userDealWanted != null) {
 				DealWantedForm form = new DealWantedForm();
 				form.setTitle(userDealWanted.getTitle());
 				form.setDescription(userDealWanted.getDescription());
@@ -133,10 +148,10 @@ public class WantDropController {
 				form.setRefurbishedOK(userDealWanted.getRefurbishedOK());
 				form.setDealCategories(categoryService.getAllDealCategories());
 				form.setDealWantedId(userDealWanted.getId());
-				
+
 				modelAndView.addObject("editDealWantedForm", form);
 			}
-	
+
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			e.printStackTrace();
@@ -144,42 +159,46 @@ public class WantDropController {
 		}
 		return modelAndView;
 	}
-	
-	
+
 	@RequestMapping(value = "/updateWantdrop", method = RequestMethod.POST)
 	public @ResponseBody
 	String updateDropWanted(@Valid DealWantedForm form, BindingResult result,
 			ModelMap map, HttpServletRequest request, HttpSession session) {
-			try {
-				
-				if (result.hasErrors()) {
-					return DropUtil.getErrorString(result);
-				}
-				
-				form.setIpAddress(DropUtil.getIPAddress(request));
-				User user = WebUtil.getSessionUser(session);
-				form.setUserId(user.getUserId());
-				dealWantedService.saveOrUpdate(form);
-				
-			} catch (Exception e) {
-				logger.fatal(DropUtil.getExceptionDescriptionString(e));
-				e.printStackTrace();
-				return "ERROR";
+
+		if (!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+
+		try {
+
+			if (result.hasErrors()) {
+				return DropUtil.getErrorString(result);
 			}
+
+			form.setIpAddress(DropUtil.getIPAddress(request));
+			User user = WebUtil.getSessionUser(session);
+			form.setUserId(user.getUserId());
+			dealWantedService.saveOrUpdate(form);
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			return "ERROR";
+		}
 		return "SUCCESS";
 	}
-	
-	
+
 	@RequestMapping(value = "/showReasonToDeleteDialog", method = RequestMethod.GET)
-	public ModelAndView showDialog(@RequestParam Long dealId, ModelMap map, HttpSession session) {
-		
+	public ModelAndView showDialog(@RequestParam Long dealId, ModelMap map,
+			HttpSession session) {
+
 		ModelAndView modelAndView = new ModelAndView("deleteDropWantedDialog");
-		
+
 		try {
 			ReasonToDeleteForm reasonToDeleteForm = new ReasonToDeleteForm();
 			reasonToDeleteForm.setDealId(dealId);
 			modelAndView.addObject("reasonToDeleteForm", reasonToDeleteForm);
-			
+
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			e.printStackTrace();
@@ -187,37 +206,44 @@ public class WantDropController {
 		}
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/deleteDropWanted", method = RequestMethod.POST)
 	public @ResponseBody
-	String deleteDropWanted(@Valid ReasonToDeleteForm form, BindingResult result,
-			ModelMap map, HttpServletRequest request, HttpSession session) {
-			try {
-				
-				if (result.hasErrors()) {
-					return DropUtil.getErrorString(result);
-				}
+	String deleteDropWanted(@Valid ReasonToDeleteForm form,
+			BindingResult result, ModelMap map, HttpServletRequest request,
+			HttpSession session) {
 
-				User user = WebUtil.getSessionUser(session);			
-				DealWanted userDealWanted = null;
-				
-				List<DealWanted> dealWantedList = dealWantedService.getAllDealWantedForUser(user.getUserId());
-				for(DealWanted dealWanted : dealWantedList) {
-					if(dealWanted.getId() == form.getDealId()) {
-						userDealWanted = dealWanted;
-						break;
-					}
-				}
-				
-				if(userDealWanted != null) {
-					dealWantedService.deleteDealWanted(form);
-				}
-				
-			} catch (Exception e) {
-				logger.fatal(DropUtil.getExceptionDescriptionString(e));
-				e.printStackTrace();
-				return "ERROR";
+		if (!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+
+		try {
+
+			if (result.hasErrors()) {
+				return DropUtil.getErrorString(result);
 			}
+
+			User user = WebUtil.getSessionUser(session);
+			DealWanted userDealWanted = null;
+
+			List<DealWanted> dealWantedList = dealWantedService
+					.getAllDealWantedForUser(user.getUserId());
+			for (DealWanted dealWanted : dealWantedList) {
+				if (dealWanted.getId() == form.getDealId()) {
+					userDealWanted = dealWanted;
+					break;
+				}
+			}
+
+			if (userDealWanted != null) {
+				dealWantedService.deleteDealWanted(form);
+			}
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			return "ERROR";
+		}
 		return "SUCCESS";
 	}
 }
