@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,81 +14,34 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import com.drop.util.DropUtil;
 
 @Entity
 @Table(name = "deal_post")
+@NamedQueries({
+    @NamedQuery(name = "DealPost.getAllActiveDealPostForUser", 
+    		query = "FROM DealPost dp join fetch dp.dealCategory dc WHERE dp.user.userId = :userId and dp.active=true")
+})
+
 public class DealPost implements Serializable {
 
 	private static final long serialVersionUID = 3534368434423368L;
 
+	
+	private Long id;
+	
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
-	private Long id;
-
-	@Column(name = "sale_price")
-	private BigDecimal salePrice;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "deal_category_id")
-	private DealCategory dealCategory;
-
-	@Column(name = "title")
-	private String title;
-
-	@Column(name = "description")
-	private String description;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
-
-	@Column(name = "expires")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date expires;
-
-	@Column(name = "starts")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date starts;
-
-	@Column(name = "discount_percent")
-	private Double discountPercent;
-
-	@Column(name = "retail_price")
-	private BigDecimal retailPrice;
-
-	@Column(name = "online_deal")
-	private Boolean onlineDeal;
-
-	@Column(name = "local_deal")
-	private Boolean localDeal;
-
-	@Column(name = "special_instructions")
-	private String specialInstructions;
-
-	@Column(name = "coupons_required")
-	private Boolean couponsRequired;
-
-	@Column(name = "membership_required")
-	private Boolean membershipRequired;
-
-	@Column(name = "active")
-	private Boolean active;
-
-	@Column(name = "reason_for_deleting")
-	private String reasonForDeleting;
-
-	@Column(name = "ip_address")
-	private String ipAddress; // location of user's IP when they posted this
-
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "location_id")
-	private Location location;
-
+	@Access(AccessType.PROPERTY)
 	public Long getId() {
 		return id;
 	}
@@ -95,6 +50,10 @@ public class DealPost implements Serializable {
 		this.id = id;
 	}
 
+	
+	private BigDecimal salePrice;
+	
+	@Column(name = "sale_price")
 	public BigDecimal getSalePrice() {
 		return salePrice;
 	}
@@ -102,7 +61,12 @@ public class DealPost implements Serializable {
 	public void setSalePrice(BigDecimal salePrice) {
 		this.salePrice = salePrice;
 	}
+
+
+	private DealCategory dealCategory;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "deal_category_id")
 	public DealCategory getDealCategory() {
 		return dealCategory;
 	}
@@ -111,6 +75,9 @@ public class DealPost implements Serializable {
 		this.dealCategory = dealCategory;
 	}
 
+	private String title;
+	
+	@Column(name = "title")
 	public String getTitle() {
 		return title;
 	}
@@ -119,6 +86,10 @@ public class DealPost implements Serializable {
 		this.title = title;
 	}
 
+	
+	private String description;
+	
+	@Column(name = "description")
 	public String getDescription() {
 		return description;
 	}
@@ -126,7 +97,11 @@ public class DealPost implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
+	private User user;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
 	public User getUser() {
 		return user;
 	}
@@ -135,6 +110,11 @@ public class DealPost implements Serializable {
 		this.user = user;
 	}
 
+	
+	private Date expires;
+	
+	@Column(name = "expires")
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getExpires() {
 		return expires;
 	}
@@ -143,6 +123,11 @@ public class DealPost implements Serializable {
 		this.expires = expires;
 	}
 
+	
+	private Date starts;
+	
+	@Column(name = "starts")
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getStarts() {
 		return starts;
 	}
@@ -150,7 +135,11 @@ public class DealPost implements Serializable {
 	public void setStarts(Date starts) {
 		this.starts = starts;
 	}
+	
 
+	private Double discountPercent;
+	
+	@Column(name = "discount_percent")
 	public Double getDiscountPercent() {
 		return discountPercent;
 	}
@@ -159,6 +148,10 @@ public class DealPost implements Serializable {
 		this.discountPercent = discountPercent;
 	}
 
+	
+	private BigDecimal retailPrice;
+	
+	@Column(name = "retail_price")
 	public BigDecimal getRetailPrice() {
 		return retailPrice;
 	}
@@ -166,7 +159,11 @@ public class DealPost implements Serializable {
 	public void setRetailPrice(BigDecimal retailPrice) {
 		this.retailPrice = retailPrice;
 	}
+	
 
+	private Boolean onlineDeal;
+	
+	@Column(name = "online_deal")
 	public Boolean getOnlineDeal() {
 		return onlineDeal;
 	}
@@ -174,7 +171,11 @@ public class DealPost implements Serializable {
 	public void setOnlineDeal(Boolean onlineDeal) {
 		this.onlineDeal = onlineDeal;
 	}
+	
 
+	private Boolean localDeal;
+	
+	@Column(name = "local_deal")
 	public Boolean getLocalDeal() {
 		return localDeal;
 	}
@@ -182,7 +183,11 @@ public class DealPost implements Serializable {
 	public void setLocalDeal(Boolean localDeal) {
 		this.localDeal = localDeal;
 	}
-
+	
+	
+	private String specialInstructions;
+	
+	@Column(name = "special_instructions")
 	public String getSpecialInstructions() {
 		return specialInstructions;
 	}
@@ -190,7 +195,11 @@ public class DealPost implements Serializable {
 	public void setSpecialInstructions(String specialInstructions) {
 		this.specialInstructions = specialInstructions;
 	}
+	
 
+	private Boolean couponsRequired;
+	
+	@Column(name = "coupons_required")
 	public Boolean getCouponsRequired() {
 		return couponsRequired;
 	}
@@ -198,7 +207,11 @@ public class DealPost implements Serializable {
 	public void setCouponsRequired(Boolean couponsRequired) {
 		this.couponsRequired = couponsRequired;
 	}
-
+	
+	
+	private Boolean membershipRequired;
+	
+	@Column(name = "membership_required")
 	public Boolean getMembershipRequired() {
 		return membershipRequired;
 	}
@@ -206,7 +219,11 @@ public class DealPost implements Serializable {
 	public void setMembershipRequired(Boolean membershipRequired) {
 		this.membershipRequired = membershipRequired;
 	}
-
+	
+	
+	private Boolean active;
+	
+	@Column(name = "active")
 	public Boolean getActive() {
 		return active;
 	}
@@ -215,6 +232,10 @@ public class DealPost implements Serializable {
 		this.active = active;
 	}
 
+	
+	private String reasonForDeleting;
+	
+	@Column(name = "reason_for_deleting")
 	public String getReasonForDeleting() {
 		return reasonForDeleting;
 	}
@@ -223,6 +244,10 @@ public class DealPost implements Serializable {
 		this.reasonForDeleting = reasonForDeleting;
 	}
 
+
+	private String ipAddress; // location of user's IP when they posted this
+	
+	@Column(name = "ip_address")
 	public String getIpAddress() {
 		return ipAddress;
 	}
@@ -231,6 +256,10 @@ public class DealPost implements Serializable {
 		this.ipAddress = ipAddress;
 	}
 
+	private Location location;
+	
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "location_id")
 	public Location getLocation() {
 		return location;
 	}
@@ -239,5 +268,41 @@ public class DealPost implements Serializable {
 		this.location = location;
 	}
 
+	private Date createdOn;
+	
+	@Column(name = "created_on")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(Date createdOn) {
+		this.createdOn = createdOn;
+		this.date = DropUtil.convertDateToString(createdOn);
+	}
+	
+	private String date;
+
+	@Transient
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
+	
+	private Date updatedOn;
+
+	@Column(name = "updated_on")
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(Date updatedOn) {
+		this.updatedOn = updatedOn;
+	}
 	
 }

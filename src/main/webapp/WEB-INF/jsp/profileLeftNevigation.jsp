@@ -13,8 +13,8 @@
 			<li id="mydropwantedli">
 				<a href="showMyDropWanted.htm">My Drop Wanted</a>
 			</li>
-			<li>
-				<a href="#">Manage Posts</a>
+			<li id="managepostli">
+				<a href="showMyDropPost.htm">Manage Posts</a>
 			</li>
 		</ul>
 	</aside>

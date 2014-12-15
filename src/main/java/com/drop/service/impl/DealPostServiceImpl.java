@@ -1,6 +1,7 @@
 package com.drop.service.impl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.drop.controller.form.DealPostForm;
+import com.drop.controller.form.ReasonToDeleteForm;
 import com.drop.dao.IDealCategoryDao;
 import com.drop.dao.IDealPostDao;
 import com.drop.dao.IUserDao;
 import com.drop.dao.domain.DealPost;
+import com.drop.dao.domain.DealWanted;
 import com.drop.dao.domain.Location;
 import com.drop.dao.domain.MailingAddress;
 import com.drop.enums.POST_DEAL_TYPE;
@@ -56,6 +59,7 @@ public class DealPostServiceImpl implements IDealPostService {
 		entity.setActive(true);
 		entity.setDealCategory(categoryDao.loadEntity(form.getCategory()));		
 		entity.setUser(userDao.loadEntity(form.getUserId()));
+		entity.setCreatedOn(new Date());
 		
 		String dateFormat = msgConfig.getProperty("date.format");
 		Date starts = DropUtil.convertStringToDate(form.getStarts(), dateFormat);
@@ -92,4 +96,29 @@ public class DealPostServiceImpl implements IDealPostService {
 		solrSearchService.add(entity);
 	}
 
+	@Override
+	@Transactional
+	public List<DealPost> getAllActiveDealPostForUser(Long userId) {
+		return dealPostDao.getAllActiveDealPostForUser(userId);
+	}
+	
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void deleteDealPost(ReasonToDeleteForm form) {
+		
+		DealPost savedDealPost = dealPostDao.getEntity(form.getDealId());
+		
+		if(savedDealPost != null) {
+			savedDealPost.setActive(false);
+			savedDealPost.setReasonForDeleting(form.getReason());
+			
+			dealPostDao.saveOrUpdate(savedDealPost);
+		}
+	}
+	
+	@Override
+	@Transactional
+	public DealPost getDealPostbyId(long dealPostId) {
+		return dealPostDao.getEntity(dealPostId);
+	}
 }

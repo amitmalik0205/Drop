@@ -693,7 +693,7 @@
         	
         	$('.dateTimePicker').datetimepicker({
                 pick12HourFormat: false,
-            });        		
+            });   
         </script>
     </div>
 </body>

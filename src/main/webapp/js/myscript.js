@@ -88,6 +88,8 @@ function submitForm(formID) {
 						window.location.href="./showMyDropWanted.htm";
 					} else if(formID == "deleteDropWantedForm") {
 						window.location.href="./showMyDropWanted.htm";
+					}  else if(formID == "deleteDropPostForm") {
+						window.location.href="./showMyDropPost.htm";
 					}
 				} else {
 					var items = res.split(',');

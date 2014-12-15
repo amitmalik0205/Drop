@@ -1,5 +1,9 @@
 package com.drop.dao.impl;
 
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.drop.dao.IDealPostDao;
@@ -7,5 +11,18 @@ import com.drop.dao.domain.DealPost;
 
 @Repository
 public class DealPostDaoImpl extends GenericDaoImpl<DealPost> implements IDealPostDao {
+	
+	public DealPostDaoImpl() {
+		super(DealPost.class);
+	}
 
+	@Override
+	public List<DealPost> getAllActiveDealPostForUser(Long userId) {
+		Session session = getCurrentSession();
+		List<DealPost> list = null;		
+		Query query = session.getNamedQuery("DealPost.getAllActiveDealPostForUser");
+		query.setParameter("userId", userId);
+		list = query.list();
+		return list;
+	}
 }

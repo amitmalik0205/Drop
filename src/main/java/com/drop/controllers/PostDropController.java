@@ -1,5 +1,6 @@
 package com.drop.controllers;
 
+import java.util.List;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +15,20 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.drop.controller.form.DealPostForm;
+import com.drop.controller.form.DealWantedForm;
+import com.drop.controller.form.ReasonToDeleteForm;
+import com.drop.dao.domain.DealCategory;
+import com.drop.dao.domain.DealPost;
+import com.drop.dao.domain.DealWanted;
 import com.drop.dao.domain.User;
 import com.drop.enums.POST_DEAL_TYPE;
+import com.drop.exception.DropException;
+import com.drop.service.IDealCategoryService;
 import com.drop.service.IDealPostService;
 import com.drop.util.DropUtil;
 import com.drop.util.WebUtil;
@@ -37,6 +47,24 @@ public class PostDropController {
 	
 	@Autowired
 	private HttpSession session;
+	
+	@Autowired
+	private IDealCategoryService categoryService;
+	
+	
+	private void initializeFormModels(ModelMap map) {
+
+		DealWantedForm dealWantedForm = new DealWantedForm();
+		DealPostForm dealPostForm = new DealPostForm();
+
+		List<DealCategory> categories = categoryService.getAllDealCategories();
+		dealWantedForm.setDealCategories(categories);
+		dealPostForm.setDealCategories(categories);
+
+		map.addAttribute("dealWantedForm", dealWantedForm);
+		map.addAttribute("dealPostForm", dealPostForm);
+	}
+	
 
 	@RequestMapping(value = "/postdrop", method = RequestMethod.POST)
 	public @ResponseBody
@@ -95,6 +123,88 @@ public class PostDropController {
 				dealPostService.saveDealPost(form);
 			}
 			
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			return "ERROR";
+		}
+		return "SUCCESS";
+	}
+	
+	
+	@RequestMapping(value = "/showMyDropPost", method = RequestMethod.GET)
+	public ModelAndView showMyDropWanted(ModelMap map, HttpSession session) {
+
+		if (!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
+
+		ModelAndView modelAndView = new ModelAndView("myDropPost");
+
+		try {
+			User user = WebUtil.getSessionUser(session);
+			List<DealPost> dealPostList = dealPostService.getAllActiveDealPostForUser(user.getUserId());
+			modelAndView.addObject("dealPostList", dealPostList);
+			initializeFormModels(map);
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			throw new DropException();
+		}
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/showDeleteDropPost", method = RequestMethod.GET)
+	public ModelAndView showDialog(@RequestParam Long dealId, ModelMap map,
+			HttpSession session) {
+
+		ModelAndView modelAndView = new ModelAndView("deleteDropPostDialog");
+
+		try {
+			ReasonToDeleteForm reasonToDeleteForm = new ReasonToDeleteForm();
+			reasonToDeleteForm.setDealId(dealId);
+			modelAndView.addObject("reasonToDeleteForm", reasonToDeleteForm);
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			throw new DropException();
+		}
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/deleteDropPost", method = RequestMethod.POST)
+	public @ResponseBody
+	String deleteDropWanted(@Valid ReasonToDeleteForm form,
+			BindingResult result, ModelMap map, HttpServletRequest request,
+			HttpSession session) {
+
+		if (!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+
+		try {
+
+			if (result.hasErrors()) {
+				return DropUtil.getErrorString(result);
+			}
+
+			User user = WebUtil.getSessionUser(session);
+			DealPost userDealPost = null;
+
+			List<DealPost> dealPostList = dealPostService.getAllActiveDealPostForUser(user.getUserId());
+			for (DealPost dealPost : dealPostList) {
+				if (dealPost.getId() == form.getDealId()) {
+					userDealPost = dealPost;
+					break;
+				}
+			}
+
+			if (userDealPost != null) {
+				dealPostService.deleteDealPost(form);
+			}
+
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			e.printStackTrace();
