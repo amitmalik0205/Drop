@@ -1,6 +1,7 @@
 package com.drop.service.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -10,6 +11,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.UpdateResponse;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;
+import com.drop.service.IDealPostService;
 import com.drop.service.ISolrSearchService;
 import com.drop.util.DropConstants;
 
@@ -25,6 +28,9 @@ import com.drop.util.DropConstants;
 public class SolrSearchServiceImpl implements ISolrSearchService {
 
 	SolrServer solrServer;
+
+	@Autowired
+	private IDealPostService dealPostService;
 
 	public SolrSearchServiceImpl() {
 		solrServer = new HttpSolrServer(DropConstants.SOLR_SEARCH_URL);
@@ -63,22 +69,28 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 			return null;
 		}
 
-		SolrQuery parameters = new SolrQuery();
-		parameters.set("q", "salePrice:" + dealWanted.getMaxPrice().toString()
-				+ ", onlineDeal:" + dealWanted.getWouldBuyOnline()
-				+ ", localDeal:" + dealWanted.getWouldBuyLocally()
-				+ ", dealCategory:" + dealWanted.getDealCategory().getName()
-				+ ", title:" + dealWanted.getTitle());
+		List<DealPost> postsList = new ArrayList<>();
+		SolrQuery parameters = new SolrQuery("salePrice:"
+				+ dealWanted.getMaxPrice().toString() + " onlineDeal:"
+				+ dealWanted.getWouldBuyOnline() + " localDeal:"
+				+ dealWanted.getWouldBuyLocally() + " dealCategory:"
+				+ dealWanted.getDealCategory().getName() + " title:"
+				+ dealWanted.getTitle());
 		parameters.setRequestHandler("/select");
 		try {
 			QueryResponse response = solrServer.query(parameters);
 			SolrDocumentList solrDocumentList = response.getResults();
+			for (SolrDocument solrDocument : solrDocumentList) {
+				DealPost dealPost = dealPostService
+						.getDealPostbyId((Long) solrDocument
+								.getFieldValue("id"));
+				postsList.add(dealPost);
+			}
 			System.out.println("SolrDocument" + solrDocumentList.size());
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return postsList;
 	}
-
 }
