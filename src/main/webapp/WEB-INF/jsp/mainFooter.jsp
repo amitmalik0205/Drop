@@ -9,7 +9,7 @@
                     <div class="row row-wrap">
                         <div class="col-md-4">
                             <a href="home.htm">
-                                <img src="img/drop_blue.png" alt="logo" title="logo" class="logo">
+                                <img src="img/logos/dropblue_footer.png" alt="logo" title="logo" class="logo">
                             </a>
                             <ul class="list list-social">
                                 <li>
@@ -30,19 +30,7 @@
                             </ul>
                             <p>Himenaeos tempus nascetur morbi eros convallis hendrerit vitae nostra interdum hac luctus et placerat cras ridiculus nec lacus scelerisque bibendum</p>
                         </div>
-                        <div class="col-md-4">
-                            <h4>Sign Up to the Newsletter</h4>
-                            <div class="box">
-                                <form>
-                                    <div class="form-group mb10">
-                                        <label>E-mail</label>
-                                        <input type="text" class="form-control" />
-                                    </div>
-                                    <p class="mb10">Class pharetra mus nibh dignissim taciti viverra</p>
-                                    <input type="submit" class="btn btn-primary" value="Sign Up" />
-                                </form>
-                            </div>
-                        </div>
+                      
                        <!--  <div class="col-md-3">
                             <h4>Couponia on Twitter</h4>
                             START TWITTER
