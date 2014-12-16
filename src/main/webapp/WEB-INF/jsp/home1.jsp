@@ -191,7 +191,7 @@
             <div class="bg-blur" style="background-image:url(img/backgrounds/phone.jpg)"></div>
             <div class="container bg-holder-content">
                 <div class="gap gap-big text-center">
-                    <h1 class="mb30 text-white">Weekly Featured Items</h1>
+                    <h1 class="mb30 text-white">Find These Deals For People, Get Paid</h1>
                     <div class="row row-wrap">
                         <a class="col-md-3" href="#">
                             <div class="product-thumb">
@@ -288,7 +288,7 @@
         <div class="gap"></div>
         <div class="container">
             <div class="text-center">
-                <h2 class="mb30">New Deals in Your City</h2>
+                <h2 class="mb30">Most Recent Found Drops</h2>
                 <div class="row row-wrap" id="masonry">
                     <a class="col-md-2 col-masonry" href="#">
                         <div class="product-thumb">
