@@ -14,7 +14,7 @@
 				<a href="showMyDropWanted.htm">My Drop Wanted</a>
 			</li>
 			<li id="managepostli">
-				<a href="showMyDropPost.htm">Manage Posts</a>
+				<a href="showMyDropPost.htm">My Drops</a>
 			</li>
 		</ul>
 	</aside>

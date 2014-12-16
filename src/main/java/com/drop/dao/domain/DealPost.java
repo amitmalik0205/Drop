@@ -28,7 +28,7 @@ import com.drop.util.DropUtil;
 @Table(name = "deal_post")
 @NamedQueries({
     @NamedQuery(name = "DealPost.getAllActiveDealPostForUser", 
-    		query = "FROM DealPost dp join fetch dp.dealCategory dc WHERE dp.user.userId = :userId and dp.active=true")
+    		query = "FROM DealPost dp join fetch dp.dealCategory dc join fetch dp.user u WHERE u.userId = :userId and dp.active=true")
 })
 
 public class DealPost implements Serializable {
@@ -305,4 +305,29 @@ public class DealPost implements Serializable {
 		this.updatedOn = updatedOn;
 	}
 	
+	
+	private String startedDateString;
+	
+	@Transient
+	public String getStartedDateString() {
+		return startedDateString;
+	}
+
+	public void setStartedDateString(String startedDateString) {
+		this.startedDateString = startedDateString;
+		this.startedDateString = DropUtil.convertDateToString(starts);
+	}
+
+
+	private String endDateString;
+
+	@Transient
+	public String getEndDateString() {
+		return endDateString;
+	}
+
+	public void setEndDateString(String endDateString) {
+		this.endDateString = endDateString;
+		this.endDateString = DropUtil.convertDateToString(expires);
+	}
 }

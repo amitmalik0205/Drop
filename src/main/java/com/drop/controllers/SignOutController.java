@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.drop.dao.domain.User;
+import com.drop.util.WebUtil;
 
 @Controller
 public class SignOutController {
@@ -17,11 +18,15 @@ public class SignOutController {
 
 	@RequestMapping(value = "/signOut", method = RequestMethod.GET)
 	public String signOut(HttpSession session) {
-		logger.info("Signing out user :"
-				+ ((User) session.getAttribute("user")).getEmail());
-		session.invalidate();
+		
+		User user = WebUtil.getSessionUser(session);
+		
+		if(user != null) {
+			logger.info("Signing out user :"
+					+ ((User) session.getAttribute("user")).getEmail());
+			session.invalidate();
+		}		
+		
 		return "redirect:/home.htm";
 	}
-
-
 }

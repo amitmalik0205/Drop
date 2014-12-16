@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -15,13 +17,14 @@ import com.drop.dao.IDealCategoryDao;
 import com.drop.dao.IDealPostDao;
 import com.drop.dao.IUserDao;
 import com.drop.dao.domain.DealPost;
-import com.drop.dao.domain.DealWanted;
 import com.drop.dao.domain.Location;
 import com.drop.dao.domain.MailingAddress;
+import com.drop.dao.domain.User;
 import com.drop.enums.POST_DEAL_TYPE;
 import com.drop.service.IDealPostService;
 import com.drop.service.ISolrSearchService;
 import com.drop.util.DropUtil;
+import com.drop.util.WebUtil;
 
 @Service
 public class DealPostServiceImpl implements IDealPostService {
@@ -42,37 +45,43 @@ public class DealPostServiceImpl implements IDealPostService {
 	@Autowired
 	private ISolrSearchService solrSearchService;
 	
+	@Autowired
+	private HttpSession session;
+	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void saveDealPost(DealPostForm form) {
 		DealPost entity = new DealPost();
-		
+
 		entity.setTitle(form.getTitle());
 		entity.setDescription(form.getDescription());
 		entity.setSalePrice(form.getSalePrice());
 		entity.setRetailPrice(form.getRetailPrice());
-		entity.setDiscountPercent(form.getDiscountPercent());
+		entity.setDiscountPercent(DropUtil.calculateDiscount(
+				form.getSalePrice(), form.getRetailPrice()));
 		entity.setSpecialInstructions(form.getSpecialInstructions());
 		entity.setCouponsRequired(form.getCouponsRequired());
 		entity.setMembershipRequired(form.getMembershipRequired());
 		entity.setIpAddress(form.getIpAddress());
 		entity.setActive(true);
-		entity.setDealCategory(categoryDao.loadEntity(form.getCategory()));		
+		entity.setDealCategory(categoryDao.loadEntity(form.getCategory()));
 		entity.setUser(userDao.loadEntity(form.getUserId()));
 		entity.setCreatedOn(new Date());
-		
+
 		String dateFormat = msgConfig.getProperty("date.format");
-		Date starts = DropUtil.convertStringToDate(form.getStarts(), dateFormat);
-		Date expires = DropUtil.convertStringToDate(form.getExpires(), dateFormat);
-		
+		Date starts = DropUtil
+				.convertStringToDate(form.getStarts(), dateFormat);
+		Date expires = DropUtil.convertStringToDate(form.getExpires(),
+				dateFormat);
+
 		entity.setStarts(starts);
 		entity.setExpires(expires);
-		
+
 		Location location = new Location();
 		String dealType = form.getDealType();
-		
-		if(dealType != null) {
-			if(dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) { 				
+
+		if (dealType != null) {
+			if (dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
 				entity.setLocalDeal(true);
 				MailingAddress address = new MailingAddress();
 				address.setAddressLine1(form.getAddressLine1());
@@ -80,19 +89,26 @@ public class DealPostServiceImpl implements IDealPostService {
 				address.setState(form.getState());
 				address.setCity(form.getCity());
 				address.setZip(form.getZip());
-				
+
 				location.setMailingAddress(address);
-				
-			} else if(dealType.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {				
+
+			} else if (dealType
+					.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {
 				entity.setOnlineDeal(true);
 				location.setUrl(form.getUrl());
 			}
-		}	
-			
+		}
+
 		entity.setLocation(location);
-		
+
 		dealPostDao.create(entity);
-		
+
+		User user = userDao.getEntity(form.getUserId());
+		user.setTotalPosts(user.getTotalPosts() + 1);
+		userDao.saveOrUpdate(user);
+
+		WebUtil.updateSessionUser(session);
+
 		solrSearchService.add(entity);
 	}
 
@@ -120,5 +136,67 @@ public class DealPostServiceImpl implements IDealPostService {
 	@Transactional
 	public DealPost getDealPostbyId(long dealPostId) {
 		return dealPostDao.getEntity(dealPostId);
+	}
+	
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void saveOrUpdate(DealPostForm form) {
+
+		DealPost savedDealPost = dealPostDao.getEntity(form.getDealPostId());
+
+		if (savedDealPost != null) {
+			savedDealPost.setTitle(form.getTitle());
+			savedDealPost.setDescription(form.getDescription());
+			savedDealPost.setSalePrice(form.getSalePrice());
+			savedDealPost.setRetailPrice(form.getRetailPrice());
+			savedDealPost.setDiscountPercent(DropUtil.calculateDiscount(
+					form.getSalePrice(), form.getRetailPrice()));
+			savedDealPost.setSpecialInstructions(form.getSpecialInstructions());
+			savedDealPost.setCouponsRequired(form.getCouponsRequired());
+			savedDealPost.setMembershipRequired(form.getMembershipRequired());
+			savedDealPost.setIpAddress(form.getIpAddress());
+			savedDealPost.setDealCategory(categoryDao.loadEntity(form
+					.getCategory()));
+			savedDealPost.setUpdatedOn(new Date());
+
+			String dateFormat = msgConfig.getProperty("date.format");
+			Date starts = DropUtil.convertStringToDate(form.getStarts(),
+					dateFormat);
+			Date expires = DropUtil.convertStringToDate(form.getExpires(),
+					dateFormat);
+
+			savedDealPost.setStarts(starts);
+			savedDealPost.setExpires(expires);
+
+			Location location = savedDealPost.getLocation();
+			String dealType = form.getDealType();
+
+			if (dealType != null) {
+				if (dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
+					if (location != null) {
+						MailingAddress address = location.getMailingAddress();
+						if (address != null) {
+							savedDealPost.setLocalDeal(true);
+							address.setAddressLine1(form.getAddressLine1());
+							address.setAddressLine2(form.getAddressLine2());
+							address.setState(form.getState());
+							address.setCity(form.getCity());
+							address.setZip(form.getZip());
+
+							location.setMailingAddress(address);
+						}
+					}
+
+				} else if (dealType.equals(POST_DEAL_TYPE.ONLINE_DEAL
+						.getDealType())) {
+					if (location != null) {
+						savedDealPost.setOnlineDeal(true);
+						location.setUrl(form.getUrl());
+					}
+				}
+			}
+
+			savedDealPost.setLocation(location);
+		}
 	}
 }

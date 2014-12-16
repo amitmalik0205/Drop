@@ -15,4 +15,6 @@ public interface IDealPostService {
 	public void deleteDealPost(ReasonToDeleteForm form);
 	
 	public DealPost getDealPostbyId(long dealPostId);
+	
+	public void saveOrUpdate(DealPostForm form);
 }

@@ -1,13 +1,11 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-        <!--Deal Post Dialog -->
-        <div id="post-drop-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix broadPopup scrollPopup">
+        <div id="post-drop-dialog" class="mfp-with-anim mfp-dialog clearfix broadPopup scrollPopup">
             <i class="fa fa-edit dialog-icon"></i>
-            <h3>Drop</h3>
-            <h5>Want to get best offers? Don't worry just post what you want to sell</h5>
+            <h3>Edit Drop</h3>         
             <span class="formFieldError" id="errorSpan" style="display: none;"></span>
-            <form:form method="POST" commandName="dealPostForm" action="postdrop.htm" cssClass="dialog-form" id="dealPostForm">
+            <form:form method="POST" commandName="editDealPostForm" action="updatePostDrop.htm" cssClass="dialog-form" id="editDealPostForm">
             	<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
@@ -21,7 +19,7 @@
 							<form:select path="category" cssClass="form-control dummy-form-control">
 								<form:option value="0" label="--Select Category--" />
 								<form:options itemValue="id" itemLabel="name"
-									items="${dealPostForm.dealCategories}" />
+									items="${editDealPostForm.dealCategories}" />
 							</form:select>
 						</div>
 					</div>
@@ -152,6 +150,9 @@
 					<label>Deal URL</label>
 					<form:input path="url" placeholder="Deal URL" cssClass="form-control dummy-form-control" />
 				</div>
-				<a class="btn btn-primary" onclick="submitForm('dealPostForm')" href="#">Publish</a>
+				
+				<form:hidden path="dealPostId"/> 
+				
+				<a class="btn btn-primary" onclick="submitForm('editDealPostForm')" href="#">Publish</a>
             </form:form>
         </div>

@@ -2,6 +2,9 @@ package com.drop.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +20,7 @@ import org.springframework.validation.FieldError;
 import com.drop.exception.DropException;
 
 public class DropUtil {
-	
+
 	private static final Logger logger = Logger.getLogger(DropUtil.class);
 
 	/*
@@ -30,27 +33,30 @@ public class DropUtil {
 		e.printStackTrace(printWriter);
 		return stringWriter.toString();
 	}
-	
-	/* Method will return comma separated string of Errors
+
+	/*
+	 * Method will return comma separated string of Errors
+	 * 
 	 * @param result
+	 * 
 	 * @return
 	 */
 	public static String getErrorString(BindingResult result) {
 		StringBuilder builder = new StringBuilder("");
-        List<FieldError> fieldErrors = result.getFieldErrors();
-        int size = fieldErrors.size();
-        int counter = 0;
-        
-        for (FieldError fieldError : fieldErrors) {
-        	 counter++;
-	         builder.append(fieldError.getDefaultMessage());
-	         if(counter < size) {
-	        	 builder.append(",");
-	         }
-        }
-        return builder.toString();   
+		List<FieldError> fieldErrors = result.getFieldErrors();
+		int size = fieldErrors.size();
+		int counter = 0;
+
+		for (FieldError fieldError : fieldErrors) {
+			counter++;
+			builder.append(fieldError.getDefaultMessage());
+			if (counter < size) {
+				builder.append(",");
+			}
+		}
+		return builder.toString();
 	}
-	
+
 	public static String getIPAddress(HttpServletRequest request) {
 		String ipAddress = request.getHeader("X-FORWARDED-FOR");
 		if (ipAddress == null) {
@@ -58,7 +64,7 @@ public class DropUtil {
 		}
 		return ipAddress;
 	}
-	
+
 	/**
 	 * Utility method to convert a String to date
 	 * 
@@ -80,11 +86,23 @@ public class DropUtil {
 		}
 		return date;
 	}
-	
+
 	public static String convertDateToString(Date date) {
 		String dateStr = "";
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		dateStr = dateFormat.format(date);
 		return dateStr;
+	}
+	
+
+	public static double calculateDiscount(BigDecimal salePrice,
+			BigDecimal retailPrice) {
+
+		BigDecimal discount = retailPrice.subtract(salePrice);
+		BigDecimal discountFraction = discount.divide(retailPrice,
+				new MathContext(4));
+		BigDecimal discountPercent = discountFraction.multiply(new BigDecimal(
+				100), new MathContext(4));
+		return discountPercent.doubleValue();
 	}
 }

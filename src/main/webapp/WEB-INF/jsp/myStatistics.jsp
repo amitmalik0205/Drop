@@ -97,7 +97,7 @@
                                         </c:choose>                                                                            
                                     </tr>
                                     <tr>
-                                        <td>Total Posts</td>
+                                        <td>Total Drops</td>
                                         <c:choose>
                                         	<c:when test="${sessionScope.user.totalPosts gt 0}">                                                                          
                                         		<td>${sessionScope.user.totalPosts}</td>

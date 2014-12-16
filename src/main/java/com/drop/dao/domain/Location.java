@@ -19,7 +19,7 @@ public class Location {
 	@Column(name = "id")
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "mailing_address")
 	private MailingAddress mailingAddress;
 	

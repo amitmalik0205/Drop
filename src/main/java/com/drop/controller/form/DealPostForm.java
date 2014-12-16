@@ -30,6 +30,9 @@ public class DealPostForm {
 	@Max(value = Long.MAX_VALUE, message = "Sale Price is out of range")
 	private BigDecimal salePrice;
 	
+	@NotNull(message = "Retail Price is required")
+	@Min(value = 1, message = "Retail Price must be greater then 1")
+	@Max(value = Long.MAX_VALUE, message = "Retail Price is out of range")
 	private BigDecimal retailPrice;
 	
 	private Double discountPercent;
@@ -62,6 +65,8 @@ public class DealPostForm {
 	private String zip; 
 	
 	private String url;
+	
+	private Long dealPostId;
 
 	public String getTitle() {
 		return title;
@@ -229,5 +234,13 @@ public class DealPostForm {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public Long getDealPostId() {
+		return dealPostId;
+	}
+
+	public void setDealPostId(Long dealPostId) {
+		this.dealPostId = dealPostId;
 	}
 }

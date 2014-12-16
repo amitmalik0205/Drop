@@ -24,7 +24,7 @@ import com.drop.controller.form.DealWantedForm;
 import com.drop.controller.form.ReasonToDeleteForm;
 import com.drop.dao.domain.DealCategory;
 import com.drop.dao.domain.DealPost;
-import com.drop.dao.domain.DealWanted;
+import com.drop.dao.domain.MailingAddress;
 import com.drop.dao.domain.User;
 import com.drop.enums.POST_DEAL_TYPE;
 import com.drop.exception.DropException;
@@ -68,7 +68,7 @@ public class PostDropController {
 
 	@RequestMapping(value = "/postdrop", method = RequestMethod.POST)
 	public @ResponseBody
-	String registerUser(@Valid DealPostForm form, BindingResult result,
+	String postDrop(@Valid DealPostForm form, BindingResult result,
 			ModelMap map, HttpServletRequest request) {
 		
 		if(!WebUtil.userAuthorization(session)) {
@@ -204,6 +204,100 @@ public class PostDropController {
 			if (userDealPost != null) {
 				dealPostService.deleteDealPost(form);
 			}
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			return "ERROR";
+		}
+		return "SUCCESS";
+	}
+	
+	@RequestMapping(value = "/showEditDropPost", method = RequestMethod.GET)
+	public ModelAndView showEditDropWantedForm(
+			@RequestParam("dropPostId") Long dropPostId, ModelMap map,
+			HttpSession session) {
+
+		if (!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
+
+		ModelAndView modelAndView = new ModelAndView("editDealPost");
+
+		try {
+			User user = WebUtil.getSessionUser(session);
+			DealPost userDealPost = null;
+
+			List<DealPost> dealPostList = dealPostService.getAllActiveDealPostForUser(user.getUserId());
+			for (DealPost dealPost : dealPostList) {
+				if (dealPost.getId() == dropPostId) {
+					userDealPost = dealPost;
+					break;
+				}
+			}
+
+			// If deal belongs to user then allow edit
+			if (userDealPost != null) {
+				DealPostForm form = new DealPostForm();
+				form.setTitle(userDealPost.getTitle());
+				form.setDescription(userDealPost.getDescription());
+				form.setCategory(userDealPost.getDealCategory().getId());
+				form.setSalePrice(userDealPost.getSalePrice());
+				form.setRetailPrice(userDealPost.getRetailPrice());
+				form.setDiscountPercent(userDealPost.getDiscountPercent());
+				form.setExpires(DropUtil.convertDateToString(userDealPost.getExpires()));
+				form.setStarts(DropUtil.convertDateToString(userDealPost.getStarts()));
+				form.setSpecialInstructions(userDealPost.getSpecialInstructions());
+				form.setCouponsRequired(userDealPost.getCouponsRequired());
+				form.setMembershipRequired(userDealPost.getMembershipRequired());
+				form.setIpAddress(userDealPost.getIpAddress());
+				form.setUserId(userDealPost.getUser().getUserId());
+				form.setDealCategories(categoryService.getAllDealCategories());
+				form.setDealPostId(userDealPost.getId());
+				
+				MailingAddress address = userDealPost.getLocation().getMailingAddress();
+				if(address != null) {
+					form.setAddressLine1(address.getAddressLine1());
+					form.setAddressLine2(address.getAddressLine2());
+					form.setState(address.getState());
+					form.setCity(address.getCity());
+					form.setZip(address.getZip());
+					form.setDealType("localDeal");
+				} else {
+					form.setUrl(userDealPost.getLocation().getUrl());
+					form.setDealType("onlineDeal");
+				}
+										
+				modelAndView.addObject("editDealPostForm", form);
+			}
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			throw new DropException();
+		}
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/updatePostDrop", method = RequestMethod.POST)
+	public @ResponseBody
+	String updateDropPost(@Valid DealPostForm form, BindingResult result,
+			ModelMap map, HttpServletRequest request, HttpSession session) {
+
+		if (!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+
+		try {
+
+			if (result.hasErrors()) {
+				return DropUtil.getErrorString(result);
+			}
+
+			form.setIpAddress(DropUtil.getIPAddress(request));
+			User user = WebUtil.getSessionUser(session);
+			form.setUserId(user.getUserId());
+			dealPostService.saveOrUpdate(form);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));

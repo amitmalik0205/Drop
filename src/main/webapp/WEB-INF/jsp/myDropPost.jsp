@@ -7,7 +7,7 @@
 <html>
 
 	<head>
-	    <title>Drop - My Drop Post</title>
+	    <title>Drop - My Drops</title>
 	    <!-- meta info -->
 	    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 	    <meta name="keywords" content="Koupon HTML5 Template" />
@@ -95,8 +95,8 @@
 			                                        <td>${dealPost.title}</td>
 			                                        <td>${dealPost.dealCategory.name}</td>
 			                                        <td>${dealPost.date}</td>
-			                                        <td><a class="btn btn-primary" href="#" onclick="editDropWanted(this);" id="${dealPost.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Edit</a></td>
-			                                        <td><a class="btn btn-primary" href="#" onclick="deleteDropWanted(this);" id="${dealPost.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Delete</a></td>
+			                                        <td><a class="btn btn-primary" href="#" onclick="editDropPost(this);" id="${dealPost.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Edit</a></td>
+			                                        <td><a class="btn btn-primary" href="#" onclick="deleteDropPost(this);" id="${dealPost.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Delete</a></td>
 		                                    	</tr>
 		                                	</c:forEach>	                                    
 		                                </tbody>
@@ -153,12 +153,12 @@
             });
         	
         	
-        	function editDropWanted($anchorEditDropWanted) {
+        	function editDropPost($anchorEditDropPost) {
         		
         		$.magnificPopup.open({
         			
         			items: {
-            		      src: 'showEditDropWanted.htm?dropWantedId='+$anchorEditDropWanted.id,
+            		      src: 'showEditDropPost.htm?dropPostId='+$anchorEditDropPost.id,
             		      type: 'ajax'
             		  },
         			
@@ -186,7 +186,7 @@
         		});
         	}
         	
-        	function deleteDropWanted($anchorDeleteDropPost) {
+        	function deleteDropPost($anchorDeleteDropPost) {
         		
         		$.magnificPopup.open({
         			
