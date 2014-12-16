@@ -27,6 +27,9 @@
                                 <li id="homeli">
                                     <a href="home.htm">Home</a>
                         		</li> 
+                        		<li id="aboutusli">
+                                	<a href="aboutus.htm">About Us</a>
+                                </li>
                         		<c:if test="${sessionScope.user ne null}">                               
 	                                <li id="myaccountli"><a href="showAccountSettings.htm">My Account</a>
 	                                    <ul>
@@ -46,7 +49,7 @@
 	                                                </li>                                        
 	                                    </ul>
 	                                </li>
-                                </c:if>
+                                </c:if>                                
                             </ul>
                         </nav>
                         <!-- END MAIN NAVIGATION -->

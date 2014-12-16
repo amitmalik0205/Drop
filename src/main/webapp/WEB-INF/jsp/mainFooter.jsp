@@ -7,30 +7,30 @@
             <div class="footer-top-area">
                 <div class="container">
                     <div class="row row-wrap">
-                        <div class="col-md-3">
-                            <a href="index.html">
-                                <img src="img/logo.png" alt="logo" title="logo" class="logo">
+                        <div class="col-md-4">
+                            <a href="home.htm">
+                                <img src="img/drop_blue.png" alt="logo" title="logo" class="logo">
                             </a>
                             <ul class="list list-social">
                                 <li>
-                                    <a class="fa fa-facebook box-icon" href="#" data-toggle="tooltip" title="Facebook"></a>
+                                    <a class="fa fa-facebook box-icon" href="https://www.facebook.com/dropcom" data-toggle="tooltip" title="Facebook"></a>
                                 </li>
                                 <li>
-                                    <a class="fa fa-twitter box-icon" href="#" data-toggle="tooltip" title="Twitter"></a>
+                                    <a class="fa fa-twitter box-icon" href="https://twitter.com/?lang=en" data-toggle="tooltip" title="Twitter"></a>
                                 </li>
                                 <li>
-                                    <a class="fa fa-flickr box-icon" href="#" data-toggle="tooltip" title="Flickr"></a>
+                                    <a class="fa fa-flickr box-icon" href="https://www.flickr.com" data-toggle="tooltip" title="Flickr"></a>
                                 </li>
                                 <li>
-                                    <a class="fa fa-linkedin box-icon" href="#" data-toggle="tooltip" title="LinkedIn"></a>
+                                    <a class="fa fa-linkedin box-icon" href="https://www.linkedin.com/" data-toggle="tooltip" title="LinkedIn"></a>
                                 </li>
                                 <li>
-                                    <a class="fa fa-tumblr box-icon" href="#" data-toggle="tooltip" title="Tumblr"></a>
+                                    <a class="fa fa-tumblr box-icon" href="https://www.tumblr.com" data-toggle="tooltip" title="Tumblr"></a>
                                 </li>
                             </ul>
                             <p>Himenaeos tempus nascetur morbi eros convallis hendrerit vitae nostra interdum hac luctus et placerat cras ridiculus nec lacus scelerisque bibendum</p>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <h4>Sign Up to the Newsletter</h4>
                             <div class="box">
                                 <form>
@@ -43,13 +43,13 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                       <!--  <div class="col-md-3">
                             <h4>Couponia on Twitter</h4>
-                            <!-- START TWITTER -->
+                            START TWITTER
                             <div class="twitter-ticker" id="twitter-ticker"></div>
-                            <!-- END TWITTER -->
-                        </div>
-                        <div class="col-md-3">
+                            END TWITTER
+                        </div> -->
+                        <div class="col-md-4">
                             <h4>Recent News</h4>
                             <ul class="thumb-list">
                                 <li>
@@ -91,7 +91,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-4">
-                            <p>Copyright © 2014, Your Store, All Rights Reserved</p>
+                            <p>Copyright © 2014, Drop.com, All Rights Reserved</p>
                         </div>
                         <div class="col-md-6 col-md-offset-2">
                             <div class="pull-right">

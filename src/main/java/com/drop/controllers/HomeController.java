@@ -52,4 +52,31 @@ public class HomeController {
 		
 		return "home1";
 	}
+	
+	@RequestMapping(value = "/aboutus", method = RequestMethod.GET)
+	public String aboutUs(ModelMap map) {
+		try {
+			RegistrationForm registerationForm = new RegistrationForm();
+			LoginForm loginForm = new LoginForm();
+			ForgotPasswordForm forgotPasswordForm = new ForgotPasswordForm();
+			DealWantedForm dealWantedForm = new DealWantedForm();
+			DealPostForm dealPostForm = new DealPostForm();
+			
+			List<DealCategory> categories = categoryService.getAllDealCategories();
+			dealWantedForm.setDealCategories(categories);
+			dealPostForm.setDealCategories(categories);
+			
+			map.addAttribute("registerationForm", registerationForm);
+			map.addAttribute("loginForm", loginForm);
+			map.addAttribute("forgotPasswordForm", forgotPasswordForm);
+			map.addAttribute("dealWantedForm", dealWantedForm);
+			map.addAttribute("dealPostForm", dealPostForm);
+			
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+		}
+		
+		return "aboutus";		
+	}
 }
