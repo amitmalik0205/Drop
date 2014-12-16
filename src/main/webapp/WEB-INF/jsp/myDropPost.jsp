@@ -77,7 +77,7 @@
 		                                    	<th></th>
 		                                    	<th>Title</th>
 		                                        <th>Category</th>	                                        
-		                                        <th>PostedOn</th>
+		                                        <th>Posted On</th>
 		                                        <th></th>
 		                                        <th></th>
 		                                        <th></th>

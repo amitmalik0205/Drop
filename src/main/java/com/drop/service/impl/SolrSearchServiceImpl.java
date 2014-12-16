@@ -82,9 +82,10 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 			SolrDocumentList solrDocumentList = response.getResults();
 			for (SolrDocument solrDocument : solrDocumentList) {
 				DealPost dealPost = dealPostService
-						.getDealPostbyId((Long) solrDocument
-								.getFieldValue("id"));
-				postsList.add(dealPost);
+						.getDealPostbyId(new Long((String)solrDocument.getFieldValue("id")));
+				if(dealPost != null) {
+					postsList.add(dealPost);
+				}				
 			}
 			System.out.println("SolrDocument" + solrDocumentList.size());
 		} catch (SolrServerException e) {

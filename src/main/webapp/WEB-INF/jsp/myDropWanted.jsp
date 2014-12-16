@@ -97,7 +97,7 @@
 			                                        <td>${dealWanted.date}</td>
 			                                        <td><a class="btn btn-primary" href="#" onclick="editDropWanted(this);" id="${dealWanted.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Edit</a></td>
 			                                        <td><a class="btn btn-primary" href="#" onclick="deleteDropWanted(this);" id="${dealWanted.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Delete</a></td>
-			                                        <td><a class="btn btn-primary" href="#">Matching Deals</a></td>
+			                                        <td><a class="btn btn-primary" href="getMatchingDeals.htm?dropWantedId=${dealWanted.id}" id="${dealWanted.id}">Matching Deals</a></td>
 		                                    	</tr>
 		                                	</c:forEach>	                                    
 		                                </tbody>

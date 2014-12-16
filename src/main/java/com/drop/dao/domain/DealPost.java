@@ -65,7 +65,7 @@ public class DealPost implements Serializable {
 
 	private DealCategory dealCategory;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "deal_category_id")
 	public DealCategory getDealCategory() {
 		return dealCategory;
