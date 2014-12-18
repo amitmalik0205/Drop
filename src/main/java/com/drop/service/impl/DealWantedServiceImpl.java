@@ -55,7 +55,7 @@ public class DealWantedServiceImpl implements IDealWantedService {
 
 		dealWantedDao.create(entity);
 
-		List<DealPost> dealPostList = solrSearchService.search(entity);
+		List<DealPost> dealPostList = solrSearchService.search(entity,0);
 	}
 
 	@Override

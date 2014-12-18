@@ -35,7 +35,7 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 
 	@Autowired
 	private IDealPostService dealPostService;
-	
+
 	@Autowired
 	private IDealMatchService dealMatchService;
 
@@ -60,6 +60,9 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		document.addField("dealCategory", dealPost.getDealCategory().getName());
 		document.addField("salePrice", dealPost.getSalePrice());
 		document.addField("localDeal", dealPost.getLocalDeal());
+		document.addField("dealExpiry", dealPost.getExpires());
+		document.addField("dealCategory", dealPost.getDealCategory().getName());
+		document.addField("created", dealPost.getCreatedOn());
 		try {
 			UpdateResponse response = solrServer.add(document);
 			solrServer.commit();
@@ -71,31 +74,41 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 
 	}
 
-	public List<DealPost> search(DealWanted dealWanted) {
+	public List<DealPost> search(DealWanted dealWanted, int pageNumber) {
 		if (new Boolean(applicationConfig.getProperty("skipSolr"))) {
 			return null;
 		}
 
 		List<DealPost> postsList = new ArrayList<>();
-		List<DealPost> postsWithMatchesList = new ArrayList<>(); 
-		
-		SolrQuery parameters = new SolrQuery("salePrice:"
-				+ dealWanted.getMaxPrice().toString() + " onlineDeal:"
-				+ dealWanted.getWouldBuyOnline() + " localDeal:"
-				+ dealWanted.getWouldBuyLocally() + " dealCategory:"
-				+ dealWanted.getDealCategory().getName() + " title:"
-				+ dealWanted.getTitle());
-		parameters.setRequestHandler("/select");
+		List<DealPost> postsWithMatchesList = new ArrayList<>();
+
+		StringBuilder query = new StringBuilder();
+		query.append("salePrice:[ * TO " + dealWanted.getMaxPrice().toString()
+				+ " ] AND title:" + dealWanted.getTitle());
+		if (dealWanted.getWouldBuyOnline() && dealWanted.getWouldBuyLocally()) {
+			query.append(" AND (onlineDeal:" + dealWanted.getWouldBuyOnline()
+					+ " OR localDeal:" + dealWanted.getWouldBuyLocally() + ")");
+		} else if (dealWanted.getWouldBuyOnline()) {
+			query.append(" AND onlineDeal:" + dealWanted.getWouldBuyOnline());
+		} else if (dealWanted.getWouldBuyLocally()) {
+			query.append(" AND localDeal:" + dealWanted.getWouldBuyLocally());
+		}
+		query.append(" AND dealCategory:"
+				+ dealWanted.getDealCategory().getName());
+		query.append(" AND dealExpiry: [NOW TO *]");
+
+		SolrQuery parameters = new SolrQuery(query.toString());
+		parameters.setStart(pageNumber * 10);
 		try {
-			
+
 			QueryResponse response = solrServer.query(parameters);
 			SolrDocumentList solrDocumentList = response.getResults();
-			
+
 			for (SolrDocument solrDocument : solrDocumentList) {
-				
-				DealPost dealPost = dealPostService
-						.getDealPostbyId(new Long((String)solrDocument.getFieldValue("id")));
-			
+
+				DealPost dealPost = dealPostService.getDealPostbyId(new Long(
+						(String) solrDocument.getFieldValue("id")));
+
 				// Find a Deal Match for Deal Post
 				if (dealPost != null) {
 					DealMatch dealMatch = dealMatchService
@@ -103,9 +116,10 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 									dealWanted.getId(), dealPost.getId());
 
 					if (dealMatch != null) {
-						
-						if(dealMatch.getStatus() == DEAL_MATCH_STATUS.ACCEPTED) {
-							Set<DealMatch> dealMatches = dealPost.getDealMatches();
+
+						if (dealMatch.getStatus() == DEAL_MATCH_STATUS.ACCEPTED) {
+							Set<DealMatch> dealMatches = dealPost
+									.getDealMatches();
 							dealMatches.add(dealMatch);
 							postsWithMatchesList.add(dealPost);
 							continue;
@@ -116,9 +130,9 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 					postsList.add(dealPost);
 				}
 			}
-			
+
 			postsWithMatchesList.addAll(postsList);
-			
+
 			System.out.println("SolrDocument" + solrDocumentList.size());
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block

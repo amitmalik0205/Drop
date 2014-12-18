@@ -29,30 +29,29 @@ import com.drop.util.WebUtil;
 
 @Service
 public class DealPostServiceImpl implements IDealPostService {
-	
+
 	@Autowired
 	private IDealPostDao dealPostDao;
-	
+
 	@Autowired
 	private IDealCategoryDao categoryDao;
-	
+
 	@Autowired
 	private IUserDao userDao;
-	
+
 	@Autowired
 	@Qualifier("msgConfig")
 	private Properties msgConfig;
 
 	@Autowired
 	private ISolrSearchService solrSearchService;
-	
+
 	@Autowired
 	private HttpSession session;
-		
+
 	@Autowired
 	private IMailingAddressService mailingAddressService;
-	
-	
+
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void saveDealPost(DealPostForm form) {
@@ -109,7 +108,12 @@ public class DealPostServiceImpl implements IDealPostService {
 		dealPostDao.create(entity);
 
 		User user = userDao.getEntity(form.getUserId());
-		user.setTotalPosts(user.getTotalPosts() + 1);
+		if (null != user.getTotalPosts()) {
+			user.setTotalPosts(user.getTotalPosts() + 1);
+		} else {
+			user.setTotalPosts(1);
+
+		}
 		userDao.saveOrUpdate(user);
 
 		WebUtil.updateSessionUser(session);
@@ -122,27 +126,27 @@ public class DealPostServiceImpl implements IDealPostService {
 	public List<DealPost> getAllActiveDealPostForUser(Long userId) {
 		return dealPostDao.getAllActiveDealPostForUser(userId);
 	}
-	
+
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void deleteDealPost(ReasonToDeleteForm form) {
-		
+
 		DealPost savedDealPost = dealPostDao.getEntity(form.getDealId());
-		
-		if(savedDealPost != null) {
+
+		if (savedDealPost != null) {
 			savedDealPost.setActive(false);
 			savedDealPost.setReasonForDeleting(form.getReason());
-			
+
 			dealPostDao.saveOrUpdate(savedDealPost);
 		}
 	}
-	
+
 	@Override
 	@Transactional
 	public DealPost getDealPostbyId(long dealPostId) {
 		return dealPostDao.getEntity(dealPostId);
 	}
-	
+
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void saveOrUpdate(DealPostForm form) {
@@ -164,35 +168,36 @@ public class DealPostServiceImpl implements IDealPostService {
 					.getCategory()));
 			savedDealPost.setUpdatedOn(new Date());
 
-			/*String dateFormat = msgConfig.getProperty("date.format");
-			Date starts = DropUtil.convertStringToDate(form.getStarts(),
-					dateFormat);
-			Date expires = DropUtil.convertStringToDate(form.getExpires(),
-					dateFormat);
-
-			savedDealPost.setStarts(starts);
-			savedDealPost.setExpires(expires);*/
+			/*
+			 * String dateFormat = msgConfig.getProperty("date.format"); Date
+			 * starts = DropUtil.convertStringToDate(form.getStarts(),
+			 * dateFormat); Date expires =
+			 * DropUtil.convertStringToDate(form.getExpires(), dateFormat);
+			 * 
+			 * savedDealPost.setStarts(starts);
+			 * savedDealPost.setExpires(expires);
+			 */
 
 			Location location = savedDealPost.getLocation();
-			
+
 			String editedDealType = form.getDealType();
-						
-			
-			if(editedDealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
-				
-				MailingAddress address = null;				
-				
-				if(savedDealPost.getLocalDeal()) {														
-					//saved deal type is local so update mailing address
-					address = location.getMailingAddress();									
+
+			if (editedDealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
+
+				MailingAddress address = null;
+
+				if (savedDealPost.getLocalDeal()) {
+					// saved deal type is local so update mailing address
+					address = location.getMailingAddress();
 				} else {
-					//Saved Deal type is online so delete it and set a new mailing address	
+					// Saved Deal type is online so delete it and set a new
+					// mailing address
 					address = new MailingAddress();
 					savedDealPost.setLocalDeal(true);
 					savedDealPost.setOnlineDeal(false);
-					location.setUrl(null);										
+					location.setUrl(null);
 				}
-				
+
 				address.setAddressLine1(form.getAddressLine1());
 				address.setAddressLine2(form.getAddressLine2());
 				address.setState(form.getState());
@@ -200,23 +205,24 @@ public class DealPostServiceImpl implements IDealPostService {
 				address.setZip(form.getZip());
 
 				location.setMailingAddress(address);
-				
-			} else if(editedDealType.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {								
-				
-				if(!savedDealPost.getOnlineDeal()) {
-					
+
+			} else if (editedDealType.equals(POST_DEAL_TYPE.ONLINE_DEAL
+					.getDealType())) {
+
+				if (!savedDealPost.getOnlineDeal()) {
+
 					savedDealPost.setOnlineDeal(true);
 					savedDealPost.setLocalDeal(false);
-					MailingAddress address = location.getMailingAddress();	
+					MailingAddress address = location.getMailingAddress();
 					mailingAddressService.delete(address);
 					location.setMailingAddress(null);
-				} 
-				
+				}
+
 				location.setUrl(form.getUrl());
 			}
 
 			savedDealPost.setLocation(location);
-			
+
 			dealPostDao.saveOrUpdate(savedDealPost);
 		}
 	}

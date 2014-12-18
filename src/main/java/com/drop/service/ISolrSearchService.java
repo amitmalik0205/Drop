@@ -9,6 +9,6 @@ public interface ISolrSearchService {
 
 	public void add(DealPost dealPost);
 
-	public List<DealPost> search(DealWanted dealWanted);
+	public List<DealPost> search(DealWanted dealWanted, int pageNumber);
 
 }

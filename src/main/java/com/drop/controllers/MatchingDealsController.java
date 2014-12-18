@@ -85,7 +85,7 @@ public class MatchingDealsController {
 
 		try {
 			DealWanted dealWanted = dealWantedService.getDealWantedById(dropWantedId);
-			List<DealPost> matchingDealPostList = solrSearchService.search(dealWanted);
+			List<DealPost> matchingDealPostList = solrSearchService.search(dealWanted,0);
 			map.addAttribute("dealWantedToMatch", dealWanted);
 			map.addAttribute("matchingDealPostList", matchingDealPostList);
 			initializeFormModels(map);
