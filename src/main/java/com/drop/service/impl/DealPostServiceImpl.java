@@ -22,6 +22,7 @@ import com.drop.dao.domain.MailingAddress;
 import com.drop.dao.domain.User;
 import com.drop.enums.POST_DEAL_TYPE;
 import com.drop.service.IDealPostService;
+import com.drop.service.IMailingAddressService;
 import com.drop.service.ISolrSearchService;
 import com.drop.util.DropUtil;
 import com.drop.util.WebUtil;
@@ -47,6 +48,10 @@ public class DealPostServiceImpl implements IDealPostService {
 	
 	@Autowired
 	private HttpSession session;
+		
+	@Autowired
+	private IMailingAddressService mailingAddressService;
+	
 	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -159,44 +164,60 @@ public class DealPostServiceImpl implements IDealPostService {
 					.getCategory()));
 			savedDealPost.setUpdatedOn(new Date());
 
-			String dateFormat = msgConfig.getProperty("date.format");
+			/*String dateFormat = msgConfig.getProperty("date.format");
 			Date starts = DropUtil.convertStringToDate(form.getStarts(),
 					dateFormat);
 			Date expires = DropUtil.convertStringToDate(form.getExpires(),
 					dateFormat);
 
 			savedDealPost.setStarts(starts);
-			savedDealPost.setExpires(expires);
+			savedDealPost.setExpires(expires);*/
 
 			Location location = savedDealPost.getLocation();
-			String dealType = form.getDealType();
-
-			if (dealType != null) {
-				if (dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
-					if (location != null) {
-						MailingAddress address = location.getMailingAddress();
-						if (address != null) {
-							savedDealPost.setLocalDeal(true);
-							address.setAddressLine1(form.getAddressLine1());
-							address.setAddressLine2(form.getAddressLine2());
-							address.setState(form.getState());
-							address.setCity(form.getCity());
-							address.setZip(form.getZip());
-
-							location.setMailingAddress(address);
-						}
-					}
-
-				} else if (dealType.equals(POST_DEAL_TYPE.ONLINE_DEAL
-						.getDealType())) {
-					if (location != null) {
-						savedDealPost.setOnlineDeal(true);
-						location.setUrl(form.getUrl());
-					}
+			
+			String editedDealType = form.getDealType();
+						
+			
+			if(editedDealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
+				
+				MailingAddress address = null;				
+				
+				if(savedDealPost.getLocalDeal()) {														
+					//saved deal type is local so update mailing address
+					address = location.getMailingAddress();									
+				} else {
+					//Saved Deal type is online so delete it and set a new mailing address	
+					address = new MailingAddress();
+					savedDealPost.setLocalDeal(true);
+					savedDealPost.setOnlineDeal(false);
+					location.setUrl(null);										
 				}
+				
+				address.setAddressLine1(form.getAddressLine1());
+				address.setAddressLine2(form.getAddressLine2());
+				address.setState(form.getState());
+				address.setCity(form.getCity());
+				address.setZip(form.getZip());
+
+				location.setMailingAddress(address);
+				
+			} else if(editedDealType.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {								
+				
+				if(!savedDealPost.getOnlineDeal()) {
+					
+					savedDealPost.setOnlineDeal(true);
+					savedDealPost.setLocalDeal(false);
+					MailingAddress address = location.getMailingAddress();	
+					mailingAddressService.delete(address);
+					location.setMailingAddress(null);
+				} 
+				
+				location.setUrl(form.getUrl());
 			}
 
 			savedDealPost.setLocation(location);
+			
+			dealPostDao.saveOrUpdate(savedDealPost);
 		}
 	}
 }

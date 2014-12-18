@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
@@ -18,8 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.drop.dao.domain.DealMatch;
 import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;
+import com.drop.enums.DEAL_MATCH_STATUS;
+import com.drop.service.IDealMatchService;
 import com.drop.service.IDealPostService;
 import com.drop.service.ISolrSearchService;
 import com.drop.util.DropConstants;
@@ -31,6 +35,9 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 
 	@Autowired
 	private IDealPostService dealPostService;
+	
+	@Autowired
+	private IDealMatchService dealMatchService;
 
 	public SolrSearchServiceImpl() {
 		solrServer = new HttpSolrServer(DropConstants.SOLR_SEARCH_URL);
@@ -70,6 +77,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		}
 
 		List<DealPost> postsList = new ArrayList<>();
+		List<DealPost> postsWithMatchesList = new ArrayList<>(); 
+		
 		SolrQuery parameters = new SolrQuery("salePrice:"
 				+ dealWanted.getMaxPrice().toString() + " onlineDeal:"
 				+ dealWanted.getWouldBuyOnline() + " localDeal:"
@@ -78,20 +87,43 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 				+ dealWanted.getTitle());
 		parameters.setRequestHandler("/select");
 		try {
+			
 			QueryResponse response = solrServer.query(parameters);
 			SolrDocumentList solrDocumentList = response.getResults();
+			
 			for (SolrDocument solrDocument : solrDocumentList) {
+				
 				DealPost dealPost = dealPostService
 						.getDealPostbyId(new Long((String)solrDocument.getFieldValue("id")));
-				if(dealPost != null) {
+			
+				// Find a Deal Match for Deal Post
+				if (dealPost != null) {
+					DealMatch dealMatch = dealMatchService
+							.getDealMatchByDealWantedAndDealPost(
+									dealWanted.getId(), dealPost.getId());
+
+					if (dealMatch != null) {
+						
+						if(dealMatch.getStatus() == DEAL_MATCH_STATUS.ACCEPTED) {
+							Set<DealMatch> dealMatches = dealPost.getDealMatches();
+							dealMatches.add(dealMatch);
+							postsWithMatchesList.add(dealPost);
+							continue;
+						} else {
+							continue;
+						}
+					}
 					postsList.add(dealPost);
-				}				
+				}
 			}
+			
+			postsWithMatchesList.addAll(postsList);
+			
 			System.out.println("SolrDocument" + solrDocumentList.size());
 		} catch (SolrServerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return postsList;
+		return postsWithMatchesList;
 	}
 }

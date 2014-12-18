@@ -158,6 +158,10 @@ public class PostDropController {
 	@RequestMapping(value = "/showDeleteDropPost", method = RequestMethod.GET)
 	public ModelAndView showDialog(@RequestParam Long dealId, ModelMap map,
 			HttpSession session) {
+		
+		if (!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
 
 		ModelAndView modelAndView = new ModelAndView("deleteDropPostDialog");
 
@@ -245,8 +249,8 @@ public class PostDropController {
 				form.setSalePrice(userDealPost.getSalePrice());
 				form.setRetailPrice(userDealPost.getRetailPrice());
 				form.setDiscountPercent(userDealPost.getDiscountPercent());
-				form.setExpires(DropUtil.convertDateToString(userDealPost.getExpires()));
-				form.setStarts(DropUtil.convertDateToString(userDealPost.getStarts()));
+				/*form.setExpires(DropUtil.convertDateToString(userDealPost.getExpires()));
+				form.setStarts(DropUtil.convertDateToString(userDealPost.getStarts()));*/
 				form.setSpecialInstructions(userDealPost.getSpecialInstructions());
 				form.setCouponsRequired(userDealPost.getCouponsRequired());
 				form.setMembershipRequired(userDealPost.getMembershipRequired());

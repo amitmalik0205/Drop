@@ -3,6 +3,7 @@ package com.drop.dao.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -16,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -329,5 +331,17 @@ public class DealPost implements Serializable {
 	public void setEndDateString(String endDateString) {
 		this.endDateString = endDateString;
 		this.endDateString = DropUtil.convertDateToString(expires);
+	}
+	
+	
+	private Set<DealMatch> dealMatches;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dealPost")
+	public Set<DealMatch> getDealMatches() {
+		return dealMatches;
+	}
+
+	public void setDealMatches(Set<DealMatch> dealMatches) {
+		this.dealMatches = dealMatches;
 	}
 }

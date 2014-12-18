@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 
         <div id="post-drop-dialog" class="mfp-with-anim mfp-dialog clearfix broadPopup scrollPopup">
             <i class="fa fa-edit dialog-icon"></i>
@@ -100,7 +101,7 @@
 		                </div> 	
 	                </div>                
                 </div>
-				<div class="row">
+				<div class="row">					 
 					<div class="col-md-6">						
 						<div class="radio">
 							<form:radiobutton path="dealType" value="localDeal" label="Local Deal" cssClass="dummyChkBoxClass" id="localDealRadio" onclick="showDealLocation()"></form:radiobutton>
@@ -126,33 +127,76 @@
                 		</div>
                 	</div>
                 </div>  
-                <div class="row">
-                	<div class="col-md-6">
-                		<div class="form-group hiddenTag adderssDummyClass">
-                    		<label>City</label>
-                    		<form:input path="city" placeholder="City" cssClass="form-control dummy-form-control"/>
-                		</div>
-                	</div>
-                	<div class="col-md-6 hiddenTag adderssDummyClass">
-                		<div class="form-group">
-                    		<label>State</label>
-                    		<form:input path="state" placeholder="State" cssClass="form-control dummy-form-control"/>
-                		</div>
-                	</div>
-                	<div class="col-md-4 hiddenTag adderssDummyClass">
-                		<div class="form-group">
-                    		<label>ZIP</label>
-                    		<form:input path="zip" placeholder="ZIP" cssClass="form-control dummy-form-control"/>
-                		</div>
-                	</div>
-                </div>
-				<div class="form-group hiddenTag urlDummyClass">
-					<label>Deal URL</label>
-					<form:input path="url" placeholder="Deal URL" cssClass="form-control dummy-form-control" />
-				</div>
+                 <c:if test="${requestScope.editDealPostForm.dealType eq 'localDeal'}">
+	                <div class="row">
+	                	<div class="col-md-6">
+	                		<div class="form-group adderssDummyClass">
+	                    		<label>City</label>
+	                    		<form:input path="city" placeholder="City" cssClass="form-control dummy-form-control"/>
+	                		</div>
+	                	</div>
+	                	<div class="col-md-6 adderssDummyClass">
+	                		<div class="form-group">
+	                    		<label>State</label>
+	                    		<form:input path="state" placeholder="State" cssClass="form-control dummy-form-control"/>
+	                		</div>
+	                	</div>
+	                	<div class="col-md-4 adderssDummyClass">
+	                		<div class="form-group">
+	                    		<label>ZIP</label>
+	                    		<form:input path="zip" placeholder="ZIP" cssClass="form-control dummy-form-control"/>
+	                		</div>
+	                	</div>
+	                </div>
+	            </c:if>
+	            <c:if test="${requestScope.editDealPostForm.dealType ne 'localDeal'}">
+	                <div class="row">
+	                	<div class="col-md-6">
+	                		<div class="form-group hiddenTag adderssDummyClass">
+	                    		<label>City</label>
+	                    		<form:input path="city" placeholder="City" cssClass="form-control dummy-form-control"/>
+	                		</div>
+	                	</div>
+	                	<div class="col-md-6 hiddenTag adderssDummyClass">
+	                		<div class="form-group">
+	                    		<label>State</label>
+	                    		<form:input path="state" placeholder="State" cssClass="form-control dummy-form-control"/>
+	                		</div>
+	                	</div>
+	                	<div class="col-md-4 hiddenTag adderssDummyClass">
+	                		<div class="form-group">
+	                    		<label>ZIP</label>
+	                    		<form:input path="zip" placeholder="ZIP" cssClass="form-control dummy-form-control"/>
+	                		</div>
+	                	</div>
+	                </div>
+	            </c:if>
+                <c:if test="${requestScope.editDealPostForm.dealType eq 'onlineDeal'}">
+					<div class="form-group urlDummyClass">
+						<label>Deal URL</label>
+						<form:input path="url" placeholder="Deal URL" cssClass="form-control dummy-form-control" />
+					</div>
+				</c:if>
+				<c:if test="${requestScope.editDealPostForm.dealType ne 'onlineDeal'}">
+					<div class="form-group hiddenTag urlDummyClass">
+						<label>Deal URL</label>
+						<form:input path="url" placeholder="Deal URL" cssClass="form-control dummy-form-control" />
+					</div>
+				</c:if>				
 				
 				<form:hidden path="dealPostId"/> 
 				
 				<a class="btn btn-primary" onclick="submitForm('editDealPostForm')" href="#">Publish</a>
             </form:form>
+            
+            <script src="js/custom.js"></script>
+       		<script src="js/myscript.js"></script>
+			<script src='js/moment.min.js'></script>
+			<script src='js/bootstrap-datetimepicker.min.js'></script>
+            
+            <script type="text/javascript">	        	
+	        	$('.dateTimePicker').datetimepicker({
+	                pick12HourFormat: false,
+	            });
+            </script>
         </div>

@@ -76,10 +76,10 @@ function submitForm(formID) {
 						$("#anchorPostDrop").show();
 						$("#anchorSignOut").show();
 						window.location.href="./home.htm";
-					} else if(formID == "dealPostForm") {
-						
+					} else if(formID == "dealPostForm") {						
+						window.location.href="./showMyDropPost.htm";
 					} else if(formID == "dealWantedForm") {
-						
+						window.location.href="./showMyDropWanted.htm";
 					} else if(formID == "addressForm") {
 						window.location.href="./showAddressBook.htm";
 					} else if(formID == "editAddressForm") {
@@ -88,8 +88,10 @@ function submitForm(formID) {
 						window.location.href="./showMyDropWanted.htm";
 					} else if(formID == "deleteDropWantedForm") {
 						window.location.href="./showMyDropWanted.htm";
-					}  else if(formID == "deleteDropPostForm") {
+					} else if(formID == "deleteDropPostForm") {
 						window.location.href="./showMyDropPost.htm";
+					} else if(formID == "rejectMatchingDealForm") {
+						window.location.href="./getMatchingDeals.htm?dropWantedId="+$("#txtDealWantedToMatchHidden").val();
 					}
 				} else {
 					var items = res.split(',');

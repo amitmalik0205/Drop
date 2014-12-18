@@ -1,18 +1,25 @@
 package com.drop.dao.domain;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.drop.enums.DEAL_MATCH_STATUS;
 
 /**
  * You can have many matches and the user can accept one or more.   Matches are always displayed FIFO and only one match is shown at a time. 
@@ -24,8 +31,19 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "deal_match")
-public class DealMatch {
+
+@NamedQueries({
+    @NamedQuery(name = "DealMatch.getDealMatchByDealWantedAndDealPost", 
+    		query = "FROM DealMatch dm WHERE dm.dealWanted.id=:dealWantedId AND dm.dealPost.id=:dealPostId"),
+    		
+    @NamedQuery(name = "DealMatch.getDealMatchWithUserByDealWanted", 
+    		query = "FROM DealMatch dm JOIN FETCH dm.dealWanted dw JOIN FETCH dw.user u WHERE dw.id=:dealWantedId AND dm.dealPost.id=:dealPostId")
+})
+
+public class DealMatch implements Serializable {
 	
+	private static final long serialVersionUID = -6572223479626654798L;
+
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
@@ -43,8 +61,9 @@ public class DealMatch {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date matchCreated;
 	
-	@Column(name = "matchAccepted")	
-	private Boolean matchAccepted;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "status")	
+	private DEAL_MATCH_STATUS status;
 	
 	@Column(name = "acceptedDate")		
 	private Date acceptedDate;
@@ -82,12 +101,12 @@ public class DealMatch {
 		this.matchCreated = matchCreated;
 	}
 
-	public Boolean getMatchAccepted() {
-		return matchAccepted;
+	public DEAL_MATCH_STATUS getStatus() {
+		return status;
 	}
 
-	public void setMatchAccepted(Boolean matchAccepted) {
-		this.matchAccepted = matchAccepted;
+	public void setStatus(DEAL_MATCH_STATUS status) {
+		this.status = status;
 	}
 
 	public Date getAcceptedDate() {

@@ -68,9 +68,13 @@
                             <div class="product-info box">
                                 <h3>${requestScope.dealWantedToMatch.title}</h3>
                                 <p class="product-info-price">$${requestScope.dealWantedToMatch.maxPrice}</p>
-                                <p class="text-smaller text-muted">${requestScope.dealWantedToMatch.description}</p>
-                                <a href="showMyDropWanted.htm" class="btn btn-primary">Back to My Drop Wanted</a>
-                            </div>
+                                <p class="text-smaller text-muted">${requestScope.dealWantedToMatch.description}</p>  
+                                <div class="row">
+                                	<div class="col-md-offset-9 col-md-3">
+                                		<a href="showMyDropWanted.htm" class="btn btn-primary" style="float: right;">Back to My Drop Wanted</a> </div>
+                            		</div>                                                             
+                            	</div> 
+                            	<input id="txtDealWantedToMatchHidden" type="hidden" value="${requestScope.dealWantedToMatch.id}"/>                           
                         </div>
                     </div>
                     <div class="gap"></div>
@@ -109,15 +113,16 @@
                         </div>
                     </div> -->
                     
-                    <c:forEach var="dealPost" items="${requestScope.matchingDealPostList}">
-                    	<a class="product-thumb product-thumb-horizontal" href="#">
+                    <c:forEach var="dealPost" items="${requestScope.matchingDealPostList}" varStatus="counter">
+                    	<div class="product-thumb product-thumb-horizontal">
 	                        <header class="product-header">
 	                            <img src="img/800x600.png" alt="Image Alternative text" title="The Violin" />
 	                        </header>
 	                        <div class="product-inner">
 	                            <h5 class="product-title">${dealPost.title}</h5>
 	                            <div class="product-desciption">${dealPost.description}</div>
-	                            <div class="product-meta"><span class="product-time"><i class="fa fa-clock-o"></i> 7 days 28 h remaining</span>
+	                            
+	                            <div class="product-meta" style="width: 55%"><span class="product-time"><i class="fa fa-clock-o"></i> 7 days 28 h remaining</span>
 	                                <ul class="product-price-list">
 	                                    <li><span class="product-price">$${dealPost.salePrice}</span>
 	                                    </li>
@@ -125,11 +130,37 @@
 	                                    </li>
 	                                    <li><span class="product-save">${dealPost.discountPercent}%</span>
 	                                    </li>
-	                                </ul>
-	                            </div>	                           
+	                                </ul>	
+	                                <ul class="product-actions-list">
+	                                	<!-- Enable Accept button only for first deal -->
+				                    	<c:if test="${counter.count eq 1}">
+				                    	    <li>
+				                    		  <a onclick="hideViewDetails(${dealPost.id})" id="btnAcceptDeal${dealPost.id}" class="btn btn-primary">Accept the Deal</a>
+				                    		</li>
+				                    	</c:if>
+				                    	<c:if test="${counter.count ne 1}">
+				                    		<li>
+				                    			<a onclick="hideViewDetails(${dealPost.id})" id="btnAcceptDeal${dealPost.id}" class="btn btn-primary" style="display: none">Accept the Deal</a>
+				                    		</li>
+				                    	</c:if>
+	                                	<li>
+	                                		<a href="#"  id="btnViewDealDetails${dealPost.id}" class="btn btn-primary" style="display: none">View Details</a>
+	                                	</li>
+	                                	<li>
+	                                		<a href="#"  id="btnGotIt${dealPost.id}" class="btn btn-primary" style="display: none">Got It</a>
+	                                	</li>	                                	                           	 
+                    					<li>
+                    						<a onclick="rejectMatchingDeal(${dealPost.id})" style="display: none" id="btnRejectDeal${dealPost.id}" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Reject</a>
+                    					</li>                    					   
+	                                </ul>                              
+	                            </div>		                                                      
 	                        </div>
-                    </a>                    
-                    </c:forEach>                   
+                    	</div>                     	                                        	        
+                    </c:forEach>            
+                    
+                    			<c:if test="${fn:length(requestScope.matchingDealPostList) lt 1}">
+	                        		No Matches found
+	                        	</c:if>       
 
 <!--                     <ul class="pagination">
                         <li class="prev disabled">
@@ -189,6 +220,74 @@
 
         <!-- Custom scripts -->
         <script src="js/custom.js"></script>
+        <script src="js/myscript.js"></script>
+		<script src='js/moment.min.js'></script>
+		<script src='js/bootstrap-datetimepicker.min.js'></script>
+        
+        <script type="text/javascript">
+        
+	        $('.dateTimePicker').datetimepicker({
+	            pick12HourFormat: false,
+	        });  
+        
+        	function hideViewDetails(id) { 
+        		var dealPostId = id;
+				var dealWantedId = $("#txtDealWantedToMatchHidden").val();
+
+        		var data = { dealPostId : dealPostId , dealWantedId : dealWantedId};
+        		
+        		$.ajax({
+	         		   url : "acceptDeal.htm",
+	         		   dataType: "text",
+	         		   data : data,
+	         		   type : "POST",	         		   
+	         		   success : function(response) {
+	         			  $("#btnViewDealDetails"+id).show();
+	              		  $("#btnRejectDeal"+id).show();
+	              		  $("#btnGotIt"+id).show();
+	              		  $("#btnAcceptDeal"+id).hide();
+	         		   },
+	         		   error : function(jqXHR, textStatus, errorThrown) {
+	         			 	alert("Some error");		         			
+	         		   }
+	         		  });
+        	}	 
+        	
+        	function rejectMatchingDeal($dealPostId) {        		
+        		
+        		$.magnificPopup.open({
+        			
+        			items: {
+            		      src: 'showReasonToRejectDialog.htm?dealPostId='+$dealPostId+"&dealWantedId="+$("#txtDealWantedToMatchHidden").val(),
+            		      type: 'ajax'
+            		  },
+        			
+            		  ajax: {
+              			  
+             			   // Ajax settings object that will extend default one - http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings
+             			  // For example-- settings: {cache:false, async:false}
+             			  settings: null, 
+             			            			 
+             			   // CSS class that will be added to body during the loading (adds "progress" cursor)
+             			  cursor: 'mfp-ajax-cur',
+             			  
+             			  //  Error message, can contain %curr% and %total% tags if gallery is enabled
+             			  tError: '<a href="%url%">The content</a> could not be loaded.....' 
+             			},
+             		  	
+           			callbacks: {
+           				beforeOpen: function () { }
+             		},
+           
+           			closeBtnInside: true,
+           			
+           			closeOnContentClick : false
+        			
+        		});
+        	}
+        	
+        </script>
+        
     </div>
 
 </body>
