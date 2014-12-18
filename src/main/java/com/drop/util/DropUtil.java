@@ -105,4 +105,12 @@ public class DropUtil {
 				100), new MathContext(4));
 		return discountPercent.doubleValue();
 	}
+	
+	
+	public static String convertDateToString(Date date, String pattern) {
+		String dateStr = "";
+		DateFormat dateFormat = new SimpleDateFormat(pattern);
+		dateStr = dateFormat.format(date);
+		return dateStr;
+	}
 }

@@ -51,6 +51,9 @@ public class PostDropController {
 	@Autowired
 	private IDealCategoryService categoryService;
 	
+	@Autowired
+	@Qualifier("msgConfig")
+	private Properties msgConfig;
 	
 	private void initializeFormModels(ModelMap map) {
 
@@ -249,8 +252,8 @@ public class PostDropController {
 				form.setSalePrice(userDealPost.getSalePrice());
 				form.setRetailPrice(userDealPost.getRetailPrice());
 				form.setDiscountPercent(userDealPost.getDiscountPercent());
-				/*form.setExpires(DropUtil.convertDateToString(userDealPost.getExpires()));
-				form.setStarts(DropUtil.convertDateToString(userDealPost.getStarts()));*/
+				form.setExpires(DropUtil.convertDateToString(userDealPost.getExpires(), msgConfig.getProperty("calendar.date.format")));
+				form.setStarts(DropUtil.convertDateToString(userDealPost.getStarts(), msgConfig.getProperty("calendar.date.format")));
 				form.setSpecialInstructions(userDealPost.getSpecialInstructions());
 				form.setCouponsRequired(userDealPost.getCouponsRequired());
 				form.setMembershipRequired(userDealPost.getMembershipRequired());
