@@ -61,7 +61,6 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		document.addField("salePrice", dealPost.getSalePrice());
 		document.addField("localDeal", dealPost.getLocalDeal());
 		document.addField("dealExpiry", dealPost.getExpires());
-		document.addField("dealCategory", dealPost.getDealCategory().getName());
 		document.addField("created", dealPost.getCreatedOn());
 		try {
 			UpdateResponse response = solrServer.add(document);
@@ -84,7 +83,7 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 
 		StringBuilder query = new StringBuilder();
 		query.append("salePrice:[ * TO " + dealWanted.getMaxPrice().toString()
-				+ " ] AND title:" + dealWanted.getTitle());
+				+ " ] AND title: * " + dealWanted.getTitle() + " *");
 		if (dealWanted.getWouldBuyOnline() && dealWanted.getWouldBuyLocally()) {
 			query.append(" AND (onlineDeal:" + dealWanted.getWouldBuyOnline()
 					+ " OR localDeal:" + dealWanted.getWouldBuyLocally() + ")");
@@ -93,8 +92,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		} else if (dealWanted.getWouldBuyLocally()) {
 			query.append(" AND localDeal:" + dealWanted.getWouldBuyLocally());
 		}
-		query.append(" AND dealCategory:"
-				+ dealWanted.getDealCategory().getName());
+		/*query.append(" AND dealCategory:"
+				+ dealWanted.getDealCategory().getName());*/
 		query.append(" AND dealExpiry: [NOW TO *]");
 
 		SolrQuery parameters = new SolrQuery(query.toString());
@@ -117,15 +116,12 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 
 					if (dealMatch != null) {
 
-						if (dealMatch.getStatus() == DEAL_MATCH_STATUS.ACCEPTED) {
-							Set<DealMatch> dealMatches = dealPost
-									.getDealMatches();
-							dealMatches.add(dealMatch);
-							postsWithMatchesList.add(dealPost);
-							continue;
-						} else {
-							continue;
-						}
+						if (dealMatch.getStatus() == DEAL_MATCH_STATUS.ACCEPTED) {		
+							dealPost.setDealMatch(dealMatch);
+							postsWithMatchesList.add(dealPost);							
+						} 
+						
+						continue;
 					}
 					postsList.add(dealPost);
 				}

@@ -133,25 +133,42 @@
 	                                </ul>	
 	                                <ul class="product-actions-list">
 	                                	<!-- Enable Accept button only for first deal -->
-				                    	<c:if test="${counter.count eq 1}">
-				                    	    <li>
-				                    		  <a onclick="hideViewDetails(${dealPost.id})" id="btnAcceptDeal${dealPost.id}" class="btn btn-primary">Accept the Deal</a>
-				                    		</li>
-				                    	</c:if>
-				                    	<c:if test="${counter.count ne 1}">
-				                    		<li>
-				                    			<a onclick="hideViewDetails(${dealPost.id})" id="btnAcceptDeal${dealPost.id}" class="btn btn-primary" style="display: none">Accept the Deal</a>
-				                    		</li>
-				                    	</c:if>
-	                                	<li>
-	                                		<a href="#"  id="btnViewDealDetails${dealPost.id}" class="btn btn-primary" style="display: none">View Details</a>
-	                                	</li>
-	                                	<li>
-	                                		<a href="#"  id="btnGotIt${dealPost.id}" class="btn btn-primary" style="display: none">Got It</a>
-	                                	</li>	                                	                           	 
-                    					<li>
-                    						<a onclick="rejectMatchingDeal(${dealPost.id})" style="display: none" id="btnRejectDeal${dealPost.id}" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Reject</a>
-                    					</li>                    					   
+	                                	
+	                                	<c:if test="${dealPost.dealMatch ne null}">
+	                                		<li>
+	                                			<a href="#"  id="btnViewDealDetails${dealPost.id}" class="btn btn-primary">View Details</a>
+	                                		</li>
+	                                		<li>
+	                                			<a href="#"  id="btnGotIt${dealPost.id}" class="btn btn-primary">Got It</a>
+	                                		</li>	                                	                           	 
+                    						<li>
+                    							<a onclick="rejectMatchingDeal(${dealPost.id})" id="btnRejectDeal${dealPost.id}" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Reject</a>
+                    						</li> 	                                	
+	                                	</c:if>
+	                                	
+	                                	<c:if test="${dealPost.dealMatch eq null}"> 
+											<c:if test="${counter.count eq 1}">
+					                    	    <li>
+					                    		  <a onclick="hideViewDetails(${dealPost.id})" id="btnAcceptDeal${dealPost.id}" class="btn btn-primary">Accept the Deal</a>
+					                    		</li>
+					                    	</c:if>
+					                    	<c:if test="${counter.count ne 1}">
+					                    		<li>
+					                    			<a onclick="hideViewDetails(${dealPost.id})" id="btnAcceptDeal${dealPost.id}" class="btn btn-primary" style="display: none">Accept the Deal</a>
+					                    		</li>
+					                    	</c:if>
+		                                	<li>
+		                                		<a href="#"  id="btnViewDealDetails${dealPost.id}" class="btn btn-primary" style="display: none">View Details</a>
+		                                	</li>
+		                                	<li>
+		                                		<a href="#"  id="btnGotIt${dealPost.id}" class="btn btn-primary" style="display: none">Got It</a>
+		                                	</li>	                                	                           	 
+	                    					<li>
+	                    						<a onclick="rejectMatchingDeal(${dealPost.id})" style="display: none" id="btnRejectDeal${dealPost.id}" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Reject</a>
+	                    					</li>	                                	
+	                                	
+	                                	</c:if>
+	                                					                    	                    					   
 	                                </ul>                              
 	                            </div>		                                                      
 	                        </div>

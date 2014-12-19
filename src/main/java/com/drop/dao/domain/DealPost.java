@@ -321,14 +321,14 @@ public class DealPost implements Serializable {
 	}
 
 
-	private Set<DealMatch> dealMatches;
+	private DealMatch dealMatch;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dealPost")
-	public Set<DealMatch> getDealMatches() {
-		return dealMatches;
+	@Transient
+	public DealMatch getDealMatch() {
+		return dealMatch;
 	}
 
-	public void setDealMatches(Set<DealMatch> dealMatches) {
-		this.dealMatches = dealMatches;
+	public void setDealMatch(DealMatch dealMatch) {
+		this.dealMatch = dealMatch;
 	}
 }
