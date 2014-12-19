@@ -4,10 +4,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -112,5 +112,61 @@ public class DropUtil {
 		DateFormat dateFormat = new SimpleDateFormat(pattern);
 		dateStr = dateFormat.format(date);
 		return dateStr;
+	}
+	
+	public static String getDealTimeToExpire(Date date) {
+
+		long milliSeconds = date.getTime() - new Date().getTime();
+		long minutes = milliSeconds / (60 * 1000);
+		long hours = milliSeconds / (60 * 60 * 1000);
+		int days = (int) (hours / 24);
+
+		String ageString = "";
+
+		String ageDays = null;
+		String ageHours = null;
+		String ageMinutes = null;
+		
+		if (days > 0) {
+			ageDays = days == 1 ? days + " day" : days + " days";
+		}
+		
+		if (hours > 0) {
+			hours = hours - (24 * days);
+			ageHours = hours == 1 ? hours + " hour" : hours + " hours";
+		}
+		if (minutes > 0) {
+			minutes = minutes - (60 * (hours + (24 * days)));
+			ageMinutes = minutes == 1 ? minutes + " minute" : minutes
+					+ " minutes";
+		}
+
+		if (ageDays != null) {
+			ageString = ageDays;
+		}
+		if (ageHours != null) {
+			if ("".equalsIgnoreCase(ageString)) {
+				ageString = ageHours;
+			} else {
+				ageString = ageString + " " + ageHours;
+			}
+		}
+		if (ageMinutes != null) {
+			if ("".equalsIgnoreCase(ageString)) {
+				ageString = ageMinutes;
+			} else {
+				ageString = ageString + " " + ageMinutes;
+			}
+		}
+
+		if (!"".equalsIgnoreCase(ageString)) {
+			ageString = ageString + " " + "remaining";
+		}
+		
+		if ("".equalsIgnoreCase(ageString)) {
+			ageString = "Deal Expired";
+		}
+		
+		return ageString;
 	}
 }

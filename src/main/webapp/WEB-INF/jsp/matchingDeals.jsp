@@ -122,7 +122,7 @@
 	                            <h5 class="product-title">${dealPost.title}</h5>
 	                            <div class="product-desciption">${dealPost.description}</div>
 	                            
-	                            <div class="product-meta" style="width: 55%"><span class="product-time"><i class="fa fa-clock-o"></i> 7 days 28 h remaining</span>
+	                            <div class="product-meta" style="width: 55%"><span class="product-time"><i class="fa fa-clock-o"></i>${dealPost.timeToExpire}</span>
 	                                <ul class="product-price-list">
 	                                    <li><span class="product-price">$${dealPost.salePrice}</span>
 	                                    </li>

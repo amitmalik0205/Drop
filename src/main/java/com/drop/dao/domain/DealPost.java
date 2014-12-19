@@ -123,6 +123,7 @@ public class DealPost implements Serializable {
 
 	public void setExpires(Date expires) {
 		this.expires = expires;
+		this.setTimeToExpire(DropUtil.getDealTimeToExpire(expires));
 	}
 
 	
@@ -307,33 +308,19 @@ public class DealPost implements Serializable {
 		this.updatedOn = updatedOn;
 	}
 	
-	
-	private String startedDateString;
-	
-	@Transient
-	public String getStartedDateString() {
-		return startedDateString;
-	}
 
-	public void setStartedDateString(String startedDateString) {
-		this.startedDateString = startedDateString;
-		this.startedDateString = DropUtil.convertDateToString(starts);
-	}
-
-
-	private String endDateString;
+	private String timeToExpire;
 
 	@Transient
-	public String getEndDateString() {
-		return endDateString;
+	public String getTimeToExpire() {
+		return timeToExpire;
 	}
 
-	public void setEndDateString(String endDateString) {
-		this.endDateString = endDateString;
-		this.endDateString = DropUtil.convertDateToString(expires);
+	public void setTimeToExpire(String timeToExpire) {
+		this.timeToExpire = timeToExpire;
 	}
-	
-	
+
+
 	private Set<DealMatch> dealMatches;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "dealPost")
