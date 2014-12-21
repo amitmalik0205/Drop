@@ -91,4 +91,14 @@ public class GenericDaoImpl<T extends Serializable> implements IGenericDao<T> {
 	public void saveOrUpdate(T entity) {
 		getCurrentSession().saveOrUpdate(entity);
 	}
+	
+	@Override
+	public List<T> getFirstNEntities(int startIndex, int noOfEntities) {
+		Session session = getCurrentSession();
+		String queryString = "from " + clazz.getName();
+		Query query = session.createQuery(queryString);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(noOfEntities);
+		return query.list();
+	}
 }

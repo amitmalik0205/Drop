@@ -167,4 +167,38 @@ public class MatchingDealsController {
 		}
 		return "SUCCESS";
 	}
+	
+	
+	@RequestMapping(value = "/viewDealDetails", method = RequestMethod.GET)
+	public ModelAndView viewDealDetails(@RequestParam Long dealPostId, @RequestParam Long dealWantedId, ModelMap map) {
+		
+		if(!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
+		
+		ModelAndView modelAndView = new ModelAndView("dealDetails");
+		
+		try {			
+			//Check if deal is accepted by the user
+			User sessionUser = WebUtil.getSessionUser(session);
+			DealMatch savedDealMatch = dealMatchService.getDealMatchWithUserByDealWanted(dealWantedId, dealPostId);
+			
+			if (savedDealMatch != null
+					&& savedDealMatch.getDealWanted().getUser().getUserId() == sessionUser
+							.getUserId()
+					&& savedDealMatch.getStatus() == DEAL_MATCH_STATUS.ACCEPTED) {
+				
+				DealPost dealPost = dealPostService.getDealPostWithUser(dealPostId);
+				map.addAttribute("dealPostDetail", dealPost);
+				map.addAttribute("dealWantedToMatch", savedDealMatch.getDealWanted());
+				initializeFormModels(map);
+			} 
+			
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			throw new DropException();
+		}		
+		return modelAndView;
+	}
 }

@@ -3,7 +3,6 @@ package com.drop.dao.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -17,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -30,7 +28,10 @@ import com.drop.util.DropUtil;
 @Table(name = "deal_post")
 @NamedQueries({
     @NamedQuery(name = "DealPost.getAllActiveDealPostForUser", 
-    		query = "FROM DealPost dp join fetch dp.dealCategory dc join fetch dp.user u WHERE u.userId = :userId and dp.active=true")
+    		query = "FROM DealPost dp join fetch dp.dealCategory dc join fetch dp.user u WHERE u.userId = :userId and dp.active=true"),
+    		
+    @NamedQuery(name = "DealPost.getDealPostWithUser",
+    		query = "FROM DealPost dp JOIN FETCH dp.user u WHERE dp.id = :dealPostId")
 })
 
 public class DealPost implements Serializable {

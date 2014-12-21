@@ -112,4 +112,10 @@ public class DealWantedServiceImpl implements IDealWantedService {
 			dealWantedDao.saveOrUpdate(savedDealWanted);
 		}
 	}
+	
+	@Override
+	@Transactional
+	public List<DealWanted> getAllDealWanted() {
+		return dealWantedDao.getFirstNEntities(0, 4);
+	}
 }

@@ -22,4 +22,6 @@ public interface IGenericDao<T extends Serializable> {
 	public T getByProperty(final String propertyName, final String value);
 	
 	public void saveOrUpdate(final T entity);
+	
+	public List<T> getFirstNEntities(int startIndex, int noOfEntities);
 }

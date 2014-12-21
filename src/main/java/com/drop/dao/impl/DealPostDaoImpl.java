@@ -15,7 +15,7 @@ public class DealPostDaoImpl extends GenericDaoImpl<DealPost> implements IDealPo
 	public DealPostDaoImpl() {
 		super(DealPost.class);
 	}
-
+	
 	@Override
 	public List<DealPost> getAllActiveDealPostForUser(Long userId) {
 		Session session = getCurrentSession();
@@ -24,5 +24,15 @@ public class DealPostDaoImpl extends GenericDaoImpl<DealPost> implements IDealPo
 		query.setParameter("userId", userId);
 		list = query.list();
 		return list;
+	}
+	
+	@Override
+	public DealPost getDealPostWithUser(Long dealPostId) {
+		Session session = getCurrentSession();
+		DealPost dealPost = null;		
+		Query query = session.getNamedQuery("DealPost.getDealPostWithUser");
+		query.setParameter("dealPostId", dealPostId);
+		dealPost = (DealPost)query.uniqueResult();
+		return dealPost;
 	}
 }

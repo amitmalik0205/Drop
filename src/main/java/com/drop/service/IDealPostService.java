@@ -17,4 +17,8 @@ public interface IDealPostService {
 	public DealPost getDealPostbyId(long dealPostId);
 	
 	public void saveOrUpdate(DealPostForm form);
+	
+	public DealPost getDealPostWithUser(Long dealPostId);
+	
+	public List<DealPost> getAllDealPost();
 }

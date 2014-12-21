@@ -80,6 +80,8 @@ public class UserServiceImpl implements IUserService {
 		user.setEmail(form.getEmail());
 		user.setFirstName(form.getFirstName());
 		user.setLastName(form.getLastName());
+		user.setPhoneNumber(form.getPhone());
+		user.setSkypeName(form.getSkypeName());
 		
 		userDao.saveOrUpdate(user);	
 	}

@@ -122,7 +122,7 @@
 	                            <h5 class="product-title">${dealPost.title}</h5>
 	                            <div class="product-desciption">${dealPost.description}</div>
 	                            
-	                            <div class="product-meta" style="width: 55%"><span class="product-time"><i class="fa fa-clock-o"></i>${dealPost.timeToExpire}</span>
+	                            <div class="product-meta" style="width: 55%"><span class="product-time"><i class="fa fa-clock-o"></i> ${dealPost.timeToExpire}</span>
 	                                <ul class="product-price-list">
 	                                    <li><span class="product-price">$${dealPost.salePrice}</span>
 	                                    </li>
@@ -136,7 +136,7 @@
 	                                	
 	                                	<c:if test="${dealPost.dealMatch ne null}">
 	                                		<li>
-	                                			<a href="#"  id="btnViewDealDetails${dealPost.id}" class="btn btn-primary">View Details</a>
+	                                			<a href="viewDealDetails.htm?dealPostId=${dealPost.id}&dealWantedId=${requestScope.dealWantedToMatch.id}"  id="btnViewDealDetails${dealPost.id}" class="btn btn-primary">View Details</a>
 	                                		</li>
 	                                		<li>
 	                                			<a href="#"  id="btnGotIt${dealPost.id}" class="btn btn-primary">Got It</a>
@@ -158,7 +158,7 @@
 					                    		</li>
 					                    	</c:if>
 		                                	<li>
-		                                		<a href="#"  id="btnViewDealDetails${dealPost.id}" class="btn btn-primary" style="display: none">View Details</a>
+		                                		<a href="viewDealDetails.htm?dealPostId=${dealPost.id}&dealWantedId=${requestScope.dealWantedToMatch.id}" id="btnViewDealDetails${dealPost.id}" class="btn btn-primary" style="display: none">View Details</a>
 		                                	</li>
 		                                	<li>
 		                                		<a href="#"  id="btnGotIt${dealPost.id}" class="btn btn-primary" style="display: none">Got It</a>

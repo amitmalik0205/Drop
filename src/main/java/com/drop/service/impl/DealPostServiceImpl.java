@@ -226,4 +226,16 @@ public class DealPostServiceImpl implements IDealPostService {
 			dealPostDao.saveOrUpdate(savedDealPost);
 		}
 	}
+	
+	@Override
+	@Transactional
+	public DealPost getDealPostWithUser(Long dealPostId) {
+		return dealPostDao.getDealPostWithUser(dealPostId);
+	}
+	
+	@Override
+	@Transactional
+	public List<DealPost> getAllDealPost() {
+		return dealPostDao.getFirstNEntities(0, 18);
+	}
 }
