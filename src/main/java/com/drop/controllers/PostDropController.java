@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.drop.controller.form.DealPostForm;
-import com.drop.controller.form.DealWantedForm;
 import com.drop.controller.form.ReasonToDeleteForm;
 import com.drop.dao.domain.DealCategory;
 import com.drop.dao.domain.DealPost;
@@ -55,21 +54,101 @@ public class PostDropController {
 	@Qualifier("msgConfig")
 	private Properties msgConfig;
 	
-	private void initializeFormModels(ModelMap map) {
+	
+	@RequestMapping(value = "/showDealPostPage", method = RequestMethod.GET)
+	public ModelAndView showDealPostPage(ModelMap map) {
+		
+		if (!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
 
-		DealWantedForm dealWantedForm = new DealWantedForm();
-		DealPostForm dealPostForm = new DealPostForm();
+		ModelAndView modelAndView = new ModelAndView("dealPostPage");
 
-		List<DealCategory> categories = categoryService.getAllDealCategories();
-		dealWantedForm.setDealCategories(categories);
-		dealPostForm.setDealCategories(categories);
+		try {
 
-		map.addAttribute("dealWantedForm", dealWantedForm);
-		map.addAttribute("dealPostForm", dealPostForm);
+			DealPostForm dealPostForm = new DealPostForm();
+			
+			List<DealCategory> categories = categoryService.getAllDealCategories();
+			dealPostForm.setDealCategories(categories);
+			
+			map.addAttribute("dealPostForm", dealPostForm);
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			throw new DropException();
+		}
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value = "/postdrop", method = RequestMethod.POST)
+	public String postDrop(@Valid DealPostForm form, BindingResult result,
+			ModelMap map, HttpServletRequest request) {
+		
+		if(!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+		
+		try {			
+			String dealType = form.getDealType();
+			
+			if(dealType != null) {
+				
+				if(dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
+					
+					String addressLine1 = form.getAddressLine1();
+					String addressLine2 = form.getAddressLine2();
+					String state = form.getState();
+					String city = form.getCity();
+					String zip = form.getZip();
+					
+					if(!(addressLine1 != null && addressLine1.length() > 0)) {
+						result.rejectValue("addressLine1", "NotEmpty.dealPostForm.addressLine1");
+					} 
+					if (!(addressLine2 != null && addressLine2.length() > 0)) {
+						result.rejectValue("addressLine2", "NotEmpty.dealPostForm.addressLine2");
+					}
+					if (!(state != null && state.length() > 0)) {
+						result.rejectValue("state", "NotEmpty.dealPostForm.state");
+					}
+					if (!(city != null && city.length() > 0)) {
+						result.rejectValue("city", "NotEmpty.dealPostForm.city");
+					}
+					if (!(zip != null && zip.length() > 0)) {
+						result.rejectValue("zip", "NotEmpty.dealPostForm.zip");
+					}
+					
+				} else if(dealType.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {
+					String url = form.getUrl();
+					if (!(url != null && url.length() > 0)) {
+						result.rejectValue("url", "NotEmpty.dealPostForm.url");
+					}
+				}
+			}
+			
+			if (result.hasErrors()) {
+				form.setDealCategories(categoryService.getAllDealCategories());
+				return "dealPostPage";
+			} else {
+				
+				form.setIpAddress(DropUtil.getIPAddress(request));
+				HttpSession session = request.getSession(false);
+				User user = (User)session.getAttribute("user");
+				form.setUserId(user.getUserId());
+				dealPostService.saveDealPost(form);
+			}
+			
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			return "error";
+		}
+		return "redirect:/showMyDropPost.htm";
 	}
 	
 
-	@RequestMapping(value = "/postdrop", method = RequestMethod.POST)
+/*	@RequestMapping(value = "/postdrop", method = RequestMethod.POST)
 	public @ResponseBody
 	String postDrop(@Valid DealPostForm form, BindingResult result,
 			ModelMap map, HttpServletRequest request) {
@@ -132,7 +211,7 @@ public class PostDropController {
 			return "ERROR";
 		}
 		return "SUCCESS";
-	}
+	}*/
 	
 	
 	@RequestMapping(value = "/showMyDropPost", method = RequestMethod.GET)
@@ -148,7 +227,6 @@ public class PostDropController {
 			User user = WebUtil.getSessionUser(session);
 			List<DealPost> dealPostList = dealPostService.getAllActiveDealPostForUser(user.getUserId());
 			modelAndView.addObject("dealPostList", dealPostList);
-			initializeFormModels(map);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));

@@ -9,12 +9,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.drop.controller.form.DealPostForm;
-import com.drop.controller.form.DealWantedForm;
 import com.drop.controller.form.ForgotPasswordForm;
 import com.drop.controller.form.LoginForm;
 import com.drop.controller.form.RegistrationForm;
-import com.drop.dao.domain.DealCategory;
 import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;
 import com.drop.service.IDealCategoryService;
@@ -70,22 +67,13 @@ public class HomeController {
 	}
 	
 	
-	private void prepareModelForHomePage(ModelMap map) {
-		
+	private void prepareModelForHomePage(ModelMap map) {		
 		RegistrationForm registerationForm = new RegistrationForm();
 		LoginForm loginForm = new LoginForm();
 		ForgotPasswordForm forgotPasswordForm = new ForgotPasswordForm();
-		DealWantedForm dealWantedForm = new DealWantedForm();
-		DealPostForm dealPostForm = new DealPostForm();
-		
-		List<DealCategory> categories = categoryService.getAllDealCategories();
-		dealWantedForm.setDealCategories(categories);
-		dealPostForm.setDealCategories(categories);
 		
 		map.addAttribute("registerationForm", registerationForm);
 		map.addAttribute("loginForm", loginForm);
 		map.addAttribute("forgotPasswordForm", forgotPasswordForm);
-		map.addAttribute("dealWantedForm", dealWantedForm);
-		map.addAttribute("dealPostForm", dealPostForm);
 	}
 }

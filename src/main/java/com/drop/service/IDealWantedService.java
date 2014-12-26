@@ -8,7 +8,7 @@ import com.drop.dao.domain.DealWanted;
 
 public interface IDealWantedService {
 
-	public void saveDealWanted(DealWantedForm form);
+	public Long saveDealWanted(DealWantedForm form);
 	
 	public List<DealWanted> getAllDealWantedForUser(Long userId);
 	

@@ -12,7 +12,6 @@ import com.drop.controller.form.ReasonToDeleteForm;
 import com.drop.dao.IDealCategoryDao;
 import com.drop.dao.IDealWantedDao;
 import com.drop.dao.IUserDao;
-import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;
 import com.drop.service.IDealWantedService;
 import com.drop.service.ISolrSearchService;
@@ -34,7 +33,7 @@ public class DealWantedServiceImpl implements IDealWantedService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void saveDealWanted(DealWantedForm form) {
+	public Long saveDealWanted(DealWantedForm form) {
 		DealWanted entity = new DealWanted();
 
 		entity.setTitle(form.getTitle());
@@ -54,8 +53,8 @@ public class DealWantedServiceImpl implements IDealWantedService {
 		entity.setCreatedOn(new Date(System.currentTimeMillis()));
 
 		dealWantedDao.create(entity);
-
-		List<DealPost> dealPostList = solrSearchService.search(entity,0);
+		
+		return entity.getId();
 	}
 
 	@Override

@@ -118,12 +118,6 @@
                 <!-- <input type="submit" value="Request new password" class="btn btn-primary"> -->
             </form:form>
         </div>
-        
-        <jsp:include page="dealWantedDialog.jsp"/>
-        
-        
-        <jsp:include page="dealPostDialog.jsp"/>
-  
 		
 		<jsp:include page="search.jsp"/>
 	

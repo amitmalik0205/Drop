@@ -1,6 +1,5 @@
 package com.drop.controllers;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drop.controller.form.AccountSettingsForm;
 import com.drop.controller.form.AddressBookForm;
-import com.drop.controller.form.DealPostForm;
-import com.drop.controller.form.DealWantedForm;
-import com.drop.dao.domain.DealCategory;
 import com.drop.dao.domain.MailingAddress;
 import com.drop.dao.domain.User;
 import com.drop.exception.DropException;
@@ -53,20 +49,7 @@ public class UserProfileController {
 	
 	@Autowired
 	private HttpSession session;
-	
-	
-	private void initializeFormModels(ModelMap map) {
-		
-		DealWantedForm dealWantedForm = new DealWantedForm();
-		DealPostForm dealPostForm = new DealPostForm();
-		
-		List<DealCategory> categories = categoryService.getAllDealCategories();
-		dealWantedForm.setDealCategories(categories);
-		dealPostForm.setDealCategories(categories);
-		
-		map.addAttribute("dealWantedForm", dealWantedForm);
-		map.addAttribute("dealPostForm", dealPostForm);
-	}
+
 
 	@RequestMapping(value = "/showAccountSettings", method = RequestMethod.GET)
 	public ModelAndView showAccountSettingsPage(ModelMap map, HttpSession session) {
@@ -89,7 +72,6 @@ public class UserProfileController {
 			form.setSkypeName(user.getSkypeName());
 			
 			modelAndView.addObject("accountSettingsForm", form);
-			initializeFormModels(map);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -140,7 +122,6 @@ public class UserProfileController {
 			form.setAddressList(user.getAddresses());
 			
 			modelAndView.addObject("addressForm", form);
-			initializeFormModels(map);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -209,9 +190,7 @@ public class UserProfileController {
 				form.setAddressId(userAddress.getId());
 				
 				modelAndView.addObject("editAddressForm", form);
-			}
-						
-			initializeFormModels(map);
+			}						
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -322,9 +301,7 @@ public class UserProfileController {
 		if(!WebUtil.userAuthorization(session)) {
 			return "redirect:/home.htm";
 		}
-		
-		initializeFormModels(map);
-		
+	
 		return "myStatistics";
 	}
 	

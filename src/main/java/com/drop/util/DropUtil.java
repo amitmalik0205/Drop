@@ -47,9 +47,15 @@ public class DropUtil {
 		int size = fieldErrors.size();
 		int counter = 0;
 
-		for (FieldError fieldError : fieldErrors) {
+		for (FieldError fieldError : fieldErrors) {			
 			counter++;
-			builder.append(fieldError.getDefaultMessage());
+			
+			if(fieldError.getDefaultMessage() != null) {
+				builder.append(fieldError.getDefaultMessage());
+			} else {
+				builder.append((fieldError.getCodes())[3]);
+			}
+								
 			if (counter < size) {
 				builder.append(",");
 			}

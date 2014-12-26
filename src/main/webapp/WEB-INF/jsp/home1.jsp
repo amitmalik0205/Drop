@@ -122,13 +122,7 @@
                 <!-- <input type="submit" value="Request new password" class="btn btn-primary"> -->
             </form:form>
         </div>
-        
-        <jsp:include page="dealWantedDialog.jsp"/>
-        
-        
-        <jsp:include page="dealPostDialog.jsp"/>
-        
-        
+                    
         <!-- TOP AREA -->
         <div class="top-area">
             <div class="owl-carousel owl-slider" id="owl-carousel-slider" data-inner-pagination="true" data-white-pagination="true">

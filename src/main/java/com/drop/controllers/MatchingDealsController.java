@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.drop.controller.form.DealMatchForm;
-import com.drop.controller.form.DealPostForm;
-import com.drop.controller.form.DealWantedForm;
-import com.drop.dao.domain.DealCategory;
 import com.drop.dao.domain.DealMatch;
 import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;
@@ -56,7 +53,7 @@ public class MatchingDealsController {
 	@Autowired
 	private IDealMatchService dealMatchService;
 	
-	private void initializeFormModels(ModelMap map) {
+/*	private void initializeFormModels(ModelMap map) {
 
 		DealWantedForm dealWantedForm = new DealWantedForm();
 		DealPostForm dealPostForm = new DealPostForm();
@@ -67,7 +64,7 @@ public class MatchingDealsController {
 
 		map.addAttribute("dealWantedForm", dealWantedForm);
 		map.addAttribute("dealPostForm", dealPostForm);
-	}
+	}*/
 	
 	
 	@RequestMapping(value = "/getMatchingDeals", method = RequestMethod.GET)
@@ -83,8 +80,7 @@ public class MatchingDealsController {
 			DealWanted dealWanted = dealWantedService.getDealWantedById(dropWantedId);
 			List<DealPost> matchingDealPostList = solrSearchService.search(dealWanted,0);
 			map.addAttribute("dealWantedToMatch", dealWanted);
-			map.addAttribute("matchingDealPostList", matchingDealPostList);
-			initializeFormModels(map);
+			map.addAttribute("matchingDealPostList", matchingDealPostList);			
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -191,7 +187,6 @@ public class MatchingDealsController {
 				DealPost dealPost = dealPostService.getDealPostWithUser(dealPostId);
 				map.addAttribute("dealPostDetail", dealPost);
 				map.addAttribute("dealWantedToMatch", savedDealMatch.getDealWanted());
-				initializeFormModels(map);
 			} 
 			
 		} catch (Exception e) {

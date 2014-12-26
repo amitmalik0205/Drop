@@ -52,14 +52,7 @@
 	
 			<jsp:include page="search.jsp"/>
 	
-	        <div class="gap"></div>
-	        
-	        
-	        <jsp:include page="dealWantedDialog.jsp"/>
-        
-        
-           <jsp:include page="dealPostDialog.jsp"/>
-	        
+	        <div class="gap"></div>	      	        
 	        
 	        <div class="container">
 	        

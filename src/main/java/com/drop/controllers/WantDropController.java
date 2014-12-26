@@ -57,7 +57,65 @@ public class WantDropController {
 		map.addAttribute("dealPostForm", dealPostForm);
 	}
 
+	
+	@RequestMapping(value = "/showDealWantedPage", method = RequestMethod.GET)
+	public ModelAndView showDealWantedPage(ModelMap map) {
+		
+		if (!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
+
+		ModelAndView modelAndView = new ModelAndView("dealWantedPage");
+
+		try {
+
+			DealWantedForm dealWantedForm = new DealWantedForm();
+			
+			List<DealCategory> categories = categoryService.getAllDealCategories();
+			dealWantedForm.setDealCategories(categories);
+			
+			map.addAttribute("dealWantedForm", dealWantedForm);
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			throw new DropException();
+		}
+		return modelAndView;
+	}
+	
+	
 	@RequestMapping(value = "/wantdrop", method = RequestMethod.POST)
+	public String saveDropWanted(@Valid DealWantedForm form, BindingResult result,
+			ModelMap map, HttpServletRequest request) {
+
+		Long dealWantedId;
+		
+		if (!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+
+		if (result.hasErrors()) {			
+			form.setDealCategories(categoryService.getAllDealCategories());
+			return "dealWantedPage";
+		} else {
+			try {
+				form.setIpAddress(DropUtil.getIPAddress(request));
+				HttpSession session = request.getSession(false);
+				User user = (User) session.getAttribute("user");
+				form.setUserId(user.getUserId());
+				dealWantedId = dealWantedService.saveDealWanted(form);
+			} catch (Exception e) {
+				logger.fatal(DropUtil.getExceptionDescriptionString(e));
+				e.printStackTrace();
+				return "error";
+			}
+		}
+		return "redirect:/getMatchingDeals.htm?dropWantedId="+dealWantedId;
+	}
+	
+	
+/*	@RequestMapping(value = "/wantdrop", method = RequestMethod.POST)
 	public @ResponseBody
 	String saveDropWanted(@Valid DealWantedForm form, BindingResult result,
 			ModelMap map, HttpServletRequest request) {
@@ -82,7 +140,7 @@ public class WantDropController {
 			}
 		}
 		return "SUCCESS";
-	}
+	}*/
 
 	@RequestMapping(value = "/showMyDropWanted", method = RequestMethod.GET)
 	public ModelAndView showMyDropWanted(ModelMap map, HttpSession session) {
