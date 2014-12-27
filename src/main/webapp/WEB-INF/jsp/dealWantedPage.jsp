@@ -76,14 +76,14 @@
 										<div class="form-group">
 											<label>Title</label>
 											<form:input path="title" placeholder="Title" cssClass="form-control dummy-form-control" />
-											<form:errors path="title"></form:errors>
+											<form:errors path="title" cssClass="error"></form:errors>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label>Description</label>
 											<form:textarea path="description" placeholder="Describe what you want" cssClass="form-control dummy-form-control" />
-											<form:errors path="description"></form:errors>
+											<form:errors path="description" cssClass="error"></form:errors>
 										</div>
 									</div>
 								</div>
@@ -96,21 +96,21 @@
 												<form:options itemValue="id" itemLabel="name"
 													items="${dealWantedForm.dealCategories}" />
 											</form:select>
-											<form:errors path="category"></form:errors>
+											<form:errors path="category" cssClass="error"></form:errors>
 										</div>
 									</div>
 									<div class="col-md-3">
 										<div class="form-group">
 											<label>Maximum Price</label>
 											<form:input path="maxPrice" placeholder="Maximum Price" cssClass="form-control dummy-form-control" />
-											<form:errors path="maxPrice"></form:errors>
+											<form:errors path="maxPrice" cssClass="error"></form:errors>
 										</div>
 									</div>
 									<div class="col-md-3">
 										<div class="form-group">
 											<label>Tip Amount</label>
 											<form:input path="tipAmount" placeholder="Tip Amount" cssClass="form-control dummy-form-control" />
-											<form:errors path="tipAmount"></form:errors>
+											<form:errors path="tipAmount" cssClass="error"></form:errors>
 										</div>
 									</div>
 								</div>

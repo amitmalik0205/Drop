@@ -51,18 +51,11 @@
         <div class="container">                    	
                  	
                  	<div class="row">
-                    	<div class="col-md-6"></div>
+                    	<div class="col-md-5"></div>
                     	 <div class="col-md-6">                    	 		
-            				<h3>Drop</h3>           					
+            				<h3>Edit Drop</h3>           					
                     	 </div>
-                    </div>
-                 	
-                    <div class="row">
-                    	<div class="col-md-4"></div>
-                    	 <div class="col-md-8">                    	 		
-            					<h5>Want to get best offers? Don't worry just post what you want to sell</h5>            					
-                    	 </div>
-                    </div>
+                    </div>                 	              
                     
                     <div class="gap"></div>
                     
@@ -71,7 +64,7 @@
                         
                         <div class="col-md-8">
                         
-				           <form:form method="POST" commandName="dealPostForm" action="postdrop.htm" cssClass="dialog-form" id="dealPostForm">
+				           <form:form method="POST" commandName="editDealPostForm" action="updatePostDrop.htm" cssClass="dialog-form" id="editDealPostForm">
 				            	<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
@@ -86,7 +79,7 @@
 											<form:select path="category" cssClass="form-control dummy-form-control">
 												<form:option value="0" label="--Select Category--" />
 												<form:options itemValue="id" itemLabel="name"
-													items="${dealPostForm.dealCategories}" />
+													items="${editDealPostForm.dealCategories}" />
 											</form:select>
 											<form:errors path="category" cssClass="error"></form:errors>
 										</div>
@@ -177,54 +170,114 @@
 						                </div>   
 					                </div>	                               
 				                </div> 
-				                <form:errors path="dealType"></form:errors>
-				                <div class="row">
+				                <form:errors path="dealType" cssClass="error"></form:errors>
+				                
+				               <c:if test="${requestScope.editDealPostForm.dealType eq 'localDeal'}">
+					                 <div class="row">
+					                	<div class="col-md-6">
+					                		<div class="form-group adderssDummyClass">
+					                    		<label>Address Line1</label>
+					                    		<form:input path="addressLine1" placeholder="Address Line1" cssClass="form-control dummy-form-control"/>
+					                    		<form:errors path="addressLine1" cssClass="error"></form:errors>
+					                		</div>
+					                	</div>
+					                	<div class="col-md-6">
+					                		<div class="form-group adderssDummyClass">
+					                    		<label>Address Line2</label>
+					                    		<form:input path="addressLine2" placeholder="Address Line2" cssClass="form-control dummy-form-control"/>
+					                    		<form:errors path="addressLine2" cssClass="error"></form:errors>
+					                		</div>
+					                	</div>
+					                </div>
+					                <div class="row">
+					                	<div class="col-md-6">
+					                		<div class="form-group adderssDummyClass">
+					                    		<label>City</label>
+					                    		<form:input path="city" placeholder="City" cssClass="form-control dummy-form-control"/>
+					                    		<form:errors path="city" cssClass="error"></form:errors>
+					                		</div>
+					                	</div>
+					                	<div class="col-md-6 adderssDummyClass">
+					                		<div class="form-group">
+					                    		<label>State</label>
+					                    		<form:input path="state" placeholder="State" cssClass="form-control dummy-form-control"/>
+					                    		<form:errors path="state" cssClass="error"></form:errors>
+					                		</div>
+					                	</div>
+					                	<div class="col-md-4 adderssDummyClass">
+					                		<div class="form-group">
+					                    		<label>ZIP</label>
+					                    		<form:input path="zip" placeholder="ZIP" cssClass="form-control dummy-form-control"/>
+					                    		<form:errors path="zip" cssClass="error"></form:errors>
+					                		</div>
+					                	</div>
+					                </div>
+	           				 </c:if>
+	            
+	           				 <c:if test="${requestScope.editDealPostForm.dealType ne 'localDeal'}">
+				            	<div class="row">
 				                	<div class="col-md-6">
 				                		<div class="form-group hiddenTag adderssDummyClass">
 				                    		<label>Address Line1</label>
 				                    		<form:input path="addressLine1" placeholder="Address Line1" cssClass="form-control dummy-form-control"/>
-				                    		<form:errors path="addressLine1" cssClass="error"></form:errors>
 				                		</div>
 				                	</div>
 				                	<div class="col-md-6">
 				                		<div class="form-group hiddenTag adderssDummyClass">
 				                    		<label>Address Line2</label>
 				                    		<form:input path="addressLine2" placeholder="Address Line2" cssClass="form-control dummy-form-control"/>
-				                    		<form:errors path="addressLine2" cssClass="error"></form:errors>
 				                		</div>
 				                	</div>
-				                </div>  
+				                </div>
 				                <div class="row">
 				                	<div class="col-md-6">
 				                		<div class="form-group hiddenTag adderssDummyClass">
 				                    		<label>City</label>
 				                    		<form:input path="city" placeholder="City" cssClass="form-control dummy-form-control"/>
-				                    		<form:errors path="city" cssClass="error"></form:errors>
 				                		</div>
 				                	</div>
 				                	<div class="col-md-6 hiddenTag adderssDummyClass">
 				                		<div class="form-group">
 				                    		<label>State</label>
 				                    		<form:input path="state" placeholder="State" cssClass="form-control dummy-form-control"/>
-				                    		<form:errors path="state" cssClass="error"></form:errors>
 				                		</div>
 				                	</div>
 				                	<div class="col-md-4 hiddenTag adderssDummyClass">
 				                		<div class="form-group">
 				                    		<label>ZIP</label>
-				                    		<form:input path="zip" placeholder="ZIP" cssClass="form-control dummy-form-control"/>		
-				                    		<form:errors path="zip" cssClass="error"></form:errors>		                    		
+				                    		<form:input path="zip" placeholder="ZIP" cssClass="form-control dummy-form-control"/>
 				                		</div>
 				                	</div>
 				                </div>
+	            			</c:if>
+	            			
+                			<c:if test="${requestScope.editDealPostForm.dealType eq 'onlineDeal'}">
+								<div class="form-group urlDummyClass">
+									<label>Deal URL</label>
+									<form:input path="url" placeholder="Deal URL" cssClass="form-control dummy-form-control" />
+									<form:errors path="url" cssClass="error"></form:errors>
+								</div>
+							</c:if>
+							<c:if test="${requestScope.editDealPostForm.dealType ne 'onlineDeal'}">
 								<div class="form-group hiddenTag urlDummyClass">
 									<label>Deal URL</label>
 									<form:input path="url" placeholder="Deal URL" cssClass="form-control dummy-form-control" />
-									<form:errors path="url" cssClass="error"></form:errors>	
 								</div>
-								<button class="btn btn-primary" type="submit">Publish</button>
-								<!-- <a class="btn btn-primary" onclick="submitForm('dealPostForm')" href="#">Publish</a> -->
-				            </form:form>
+							</c:if>				
+				
+								<form:hidden path="dealPostId"/> 		
+								
+								<div class="gap-mini"></div>
+				                
+				                <div class="row">
+				                	<div class="col-md-4">
+				                		<button class="btn btn-primary" type="submit">Save Changes</button>
+				                	</div>				                	
+				                	<div class="col-md-4">
+				                		 <a class="btn btn-primary" href="showMyDropPost.htm">Back to My Drops</a>
+				                	</div>
+				                </div>		                							
+				          </form:form>
 				                                      
                         </div>
                     </div>
@@ -266,7 +319,8 @@
 		<script src='js/moment.min.js'></script>
 		<script src='js/bootstrap-datetimepicker.min.js'></script>
         
-        <script type="text/javascript">      
+        <script type="text/javascript"> 
+
         	$('.dateTimePicker').datetimepicker({
                 pick12HourFormat: false,
             });

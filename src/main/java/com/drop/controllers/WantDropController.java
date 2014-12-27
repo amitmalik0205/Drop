@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -219,7 +220,7 @@ public class WantDropController {
 	}
 
 	@RequestMapping(value = "/updateWantdrop", method = RequestMethod.POST)
-	public String updateDropWanted(@Valid DealWantedForm form, BindingResult result,
+	public String updateDropWanted(@Valid @ModelAttribute("editDealWantedForm") DealWantedForm form, BindingResult result,
 			ModelMap map, HttpServletRequest request, HttpSession session) {
 
 		if (!WebUtil.userAuthorization(session)) {
@@ -229,6 +230,7 @@ public class WantDropController {
 		try {
 
 			if (result.hasErrors()) {
+				form.setDealCategories(categoryService.getAllDealCategories());
 				return "editDealWantedPage";
 			}
 

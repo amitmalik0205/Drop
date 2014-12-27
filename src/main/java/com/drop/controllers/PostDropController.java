@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -307,7 +308,7 @@ public class PostDropController {
 			return new ModelAndView("redirect:/home.htm");
 		}
 
-		ModelAndView modelAndView = new ModelAndView("editDealPost");
+		ModelAndView modelAndView = new ModelAndView("editDealPostPage");
 
 		try {
 			User user = WebUtil.getSessionUser(session);
@@ -365,8 +366,7 @@ public class PostDropController {
 	}
 	
 	@RequestMapping(value = "/updatePostDrop", method = RequestMethod.POST)
-	public @ResponseBody
-	String updateDropPost(@Valid DealPostForm form, BindingResult result,
+	public String updateDropPost(@Valid @ModelAttribute("editDealPostForm") DealPostForm form, BindingResult result,
 			ModelMap map, HttpServletRequest request, HttpSession session) {
 
 		if (!WebUtil.userAuthorization(session)) {
@@ -374,9 +374,46 @@ public class PostDropController {
 		}
 
 		try {
+			
+			String dealType = form.getDealType();
+			
+			if(dealType != null) {
+				
+				if(dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
+					
+					String addressLine1 = form.getAddressLine1();
+					String addressLine2 = form.getAddressLine2();
+					String state = form.getState();
+					String city = form.getCity();
+					String zip = form.getZip();
+					
+					if(!(addressLine1 != null && addressLine1.length() > 0)) {
+						result.rejectValue("addressLine1", "NotEmpty.dealPostForm.addressLine1");
+					} 
+					if (!(addressLine2 != null && addressLine2.length() > 0)) {
+						result.rejectValue("addressLine2", "NotEmpty.dealPostForm.addressLine2");
+					}
+					if (!(state != null && state.length() > 0)) {
+						result.rejectValue("state", "NotEmpty.dealPostForm.state");
+					}
+					if (!(city != null && city.length() > 0)) {
+						result.rejectValue("city", "NotEmpty.dealPostForm.city");
+					}
+					if (!(zip != null && zip.length() > 0)) {
+						result.rejectValue("zip", "NotEmpty.dealPostForm.zip");
+					}
+					
+				} else if(dealType.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {
+					String url = form.getUrl();
+					if (!(url != null && url.length() > 0)) {
+						result.rejectValue("url", "NotEmpty.dealPostForm.url");
+					}
+				}
+			}
 
 			if (result.hasErrors()) {
-				return DropUtil.getErrorString(result);
+				form.setDealCategories(categoryService.getAllDealCategories());
+				return "editDealPostPage";
 			}
 
 			form.setIpAddress(DropUtil.getIPAddress(request));
@@ -387,8 +424,8 @@ public class PostDropController {
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			e.printStackTrace();
-			return "ERROR";
+			return "error";
 		}
-		return "SUCCESS";
+		return "redirect:/showMyDropPost.htm";
 	}
 }

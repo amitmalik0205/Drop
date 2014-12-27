@@ -113,21 +113,22 @@
 		                </div>   
 	                </div>	                               
                 </div> 
-                <div class="row">
-                	<div class="col-md-6">
-                		<div class="form-group hiddenTag adderssDummyClass">
-                    		<label>Address Line1</label>
-                    		<form:input path="addressLine1" placeholder="Address Line1" cssClass="form-control dummy-form-control"/>
-                		</div>
-                	</div>
-                	<div class="col-md-6">
-                		<div class="form-group hiddenTag adderssDummyClass">
-                    		<label>Address Line2</label>
-                    		<form:input path="addressLine2" placeholder="Address Line2" cssClass="form-control dummy-form-control"/>
-                		</div>
-                	</div>
-                </div>  
+                  
                  <c:if test="${requestScope.editDealPostForm.dealType eq 'localDeal'}">
+	                 <div class="row">
+	                	<div class="col-md-6">
+	                		<div class="form-group adderssDummyClass">
+	                    		<label>Address Line1</label>
+	                    		<form:input path="addressLine1" placeholder="Address Line1" cssClass="form-control dummy-form-control"/>
+	                		</div>
+	                	</div>
+	                	<div class="col-md-6">
+	                		<div class="form-group adderssDummyClass">
+	                    		<label>Address Line2</label>
+	                    		<form:input path="addressLine2" placeholder="Address Line2" cssClass="form-control dummy-form-control"/>
+	                		</div>
+	                	</div>
+	                </div>
 	                <div class="row">
 	                	<div class="col-md-6">
 	                		<div class="form-group adderssDummyClass">
@@ -149,7 +150,22 @@
 	                	</div>
 	                </div>
 	            </c:if>
+	            
 	            <c:if test="${requestScope.editDealPostForm.dealType ne 'localDeal'}">
+	            	<div class="row">
+	                	<div class="col-md-6">
+	                		<div class="form-group hiddenTag adderssDummyClass">
+	                    		<label>Address Line1</label>
+	                    		<form:input path="addressLine1" placeholder="Address Line1" cssClass="form-control dummy-form-control"/>
+	                		</div>
+	                	</div>
+	                	<div class="col-md-6">
+	                		<div class="form-group hiddenTag adderssDummyClass">
+	                    		<label>Address Line2</label>
+	                    		<form:input path="addressLine2" placeholder="Address Line2" cssClass="form-control dummy-form-control"/>
+	                		</div>
+	                	</div>
+	                </div>
 	                <div class="row">
 	                	<div class="col-md-6">
 	                		<div class="form-group hiddenTag adderssDummyClass">

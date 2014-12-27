@@ -15,3 +15,11 @@
 	display: none;
 }
 
+.error {
+	color: #ff0000;
+	font-size: 16px;
+	height: auto;
+	margin-bottom: 10px;
+	padding: -1px 9px;
+}
+

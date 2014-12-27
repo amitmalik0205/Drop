@@ -88,7 +88,7 @@
 			                                        <td>${dealPost.title}</td>
 			                                        <td>${dealPost.dealCategory.name}</td>
 			                                        <td>${dealPost.date}</td>
-			                                        <td><a class="btn btn-primary" href="#" onclick="editDropPost(this);" id="${dealPost.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Edit</a></td>
+			                                        <td><a class="btn btn-primary" href="showEditDropPost.htm?dropPostId=${dealPost.id}"  id="${dealPost.id}">Edit</a></td>
 			                                        <td><a class="btn btn-primary" href="#" onclick="deleteDropPost(this);" id="${dealPost.id}" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Delete</a></td>
 		                                    	</tr>
 		                                	</c:forEach>	                                    
