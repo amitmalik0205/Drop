@@ -175,7 +175,7 @@ public class WantDropController {
 			return new ModelAndView("redirect:/home.htm");
 		}
 
-		ModelAndView modelAndView = new ModelAndView("editDealWanted");
+		ModelAndView modelAndView = new ModelAndView("editDealWantedPage");
 
 		try {
 			User user = WebUtil.getSessionUser(session);
@@ -219,8 +219,7 @@ public class WantDropController {
 	}
 
 	@RequestMapping(value = "/updateWantdrop", method = RequestMethod.POST)
-	public @ResponseBody
-	String updateDropWanted(@Valid DealWantedForm form, BindingResult result,
+	public String updateDropWanted(@Valid DealWantedForm form, BindingResult result,
 			ModelMap map, HttpServletRequest request, HttpSession session) {
 
 		if (!WebUtil.userAuthorization(session)) {
@@ -230,7 +229,7 @@ public class WantDropController {
 		try {
 
 			if (result.hasErrors()) {
-				return DropUtil.getErrorString(result);
+				return "editDealWantedPage";
 			}
 
 			form.setIpAddress(DropUtil.getIPAddress(request));
@@ -241,9 +240,9 @@ public class WantDropController {
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			e.printStackTrace();
-			return "ERROR";
+			return "error";
 		}
-		return "SUCCESS";
+		return "redirect:/showMyDropWanted.htm";
 	}
 
 	@RequestMapping(value = "/showReasonToDeleteDialog", method = RequestMethod.GET)
