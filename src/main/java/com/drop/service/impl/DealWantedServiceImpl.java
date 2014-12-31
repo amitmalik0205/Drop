@@ -53,7 +53,9 @@ public class DealWantedServiceImpl implements IDealWantedService {
 		entity.setCreatedOn(new Date(System.currentTimeMillis()));
 
 		dealWantedDao.create(entity);
-		
+
+		solrSearchService.add(entity);
+
 		return entity.getId();
 	}
 
@@ -111,7 +113,7 @@ public class DealWantedServiceImpl implements IDealWantedService {
 			dealWantedDao.saveOrUpdate(savedDealWanted);
 		}
 	}
-	
+
 	@Override
 	@Transactional
 	public List<DealWanted> getAllDealWanted() {
