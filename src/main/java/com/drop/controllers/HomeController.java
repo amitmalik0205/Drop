@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.drop.controller.form.ForgotPasswordForm;
 import com.drop.controller.form.LoginForm;
 import com.drop.controller.form.RegistrationForm;
+import com.drop.controller.form.SearchDealForm;
 import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;
 import com.drop.service.IDealCategoryService;
@@ -71,9 +72,11 @@ public class HomeController {
 		RegistrationForm registerationForm = new RegistrationForm();
 		LoginForm loginForm = new LoginForm();
 		ForgotPasswordForm forgotPasswordForm = new ForgotPasswordForm();
+		SearchDealForm dealForm = new SearchDealForm();		
 		
 		map.addAttribute("registerationForm", registerationForm);
 		map.addAttribute("loginForm", loginForm);
 		map.addAttribute("forgotPasswordForm", forgotPasswordForm);
+		map.addAttribute("searchDealForm", dealForm);
 	}
 }
