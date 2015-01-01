@@ -111,6 +111,7 @@ public class DealWantedServiceImpl implements IDealWantedService {
 			savedDealWanted.setReasonForDeleting(form.getReason());
 
 			dealWantedDao.saveOrUpdate(savedDealWanted);
+			solrSearchService.delete(savedDealWanted.getId(), false);
 		}
 	}
 

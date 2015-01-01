@@ -1,11 +1,14 @@
 package com.drop.service.impl;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -57,13 +60,14 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		SolrInputDocument document = new SolrInputDocument();
 		document.addField("id", dealPost.getId());
 		document.addField("title", dealPost.getTitle());
-		document.addField("retailPrice", dealPost.getRetailPrice().toString());
+		document.addField("retailPrice", dealPost.getRetailPrice());
 		document.addField("onlineDeal", dealPost.getOnlineDeal());
 		document.addField("dealCategory", dealPost.getDealCategory().getName());
 		document.addField("salePrice", dealPost.getSalePrice());
 		document.addField("localDeal", dealPost.getLocalDeal());
 		document.addField("dealExpiry", dealPost.getExpires());
 		document.addField("created", dealPost.getCreatedOn());
+		document.addField("description", dealPost.getDescription());
 		document.addField("isDrop", true);
 
 		try {
@@ -93,6 +97,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		document.addField("salePrice", dealWanted.getMaxPrice());
 		document.addField("localDeal", dealWanted.getWouldBuyLocally());
 		document.addField("created", dealWanted.getCreatedOn());
+		document.addField("description", dealWanted.getDescription());
+
 		try {
 			UpdateResponse response = solrServer.add(document);
 			solrServer.commit();
@@ -112,9 +118,11 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		List<DealPost> postsList = new ArrayList<>();
 		List<DealPost> postsWithMatchesList = new ArrayList<>();
 
+		long price = dealWanted.getMaxPrice().longValue();
+
 		StringBuilder query = new StringBuilder();
-		query.append("salePrice:[ * TO " + dealWanted.getMaxPrice().toString()
-				+ " ] AND title: * " + dealWanted.getTitle() + " *");
+		query.append("salePrice:[ * TO " + price + " ] AND title: * "
+				+ dealWanted.getTitle() + " *");
 		if (dealWanted.getWouldBuyOnline() && dealWanted.getWouldBuyLocally()) {
 			query.append(" AND (onlineDeal:" + dealWanted.getWouldBuyOnline()
 					+ " OR localDeal:" + dealWanted.getWouldBuyLocally() + ")");
@@ -123,11 +131,12 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		} else if (dealWanted.getWouldBuyLocally()) {
 			query.append(" AND localDeal:" + dealWanted.getWouldBuyLocally());
 		}
-		/*
-		 * query.append(" AND dealCategory:" +
-		 * dealWanted.getDealCategory().getName());
-		 */
+
+		query.append(" AND dealCategory:"
+				+ dealWanted.getDealCategory().getName());
+
 		query.append(" AND dealExpiry: [NOW TO *]");
+		query.append(" AND isDrop:true");
 
 		SolrQuery parameters = new SolrQuery(query.toString());
 		parameters.setStart(pageNumber * 10);
@@ -176,21 +185,58 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		List<DealWantedDTO> dealWantedList = new ArrayList<>();
 
 		StringBuilder query = new StringBuilder();
-		query.append("title: * " + dealWantedString + " *");
-		query.append("AND isDrop:false");
+		if (null != dealWantedString && !dealWantedString.equalsIgnoreCase("")) {
+			query.append("title:*" + dealWantedString + "*");
+		} else {
+			query.append("title:* ");
+		}
+		query.append(" AND isDrop:"+false);
 		if (null != categoryName) {
 			query.append(" AND dealCategory:" + categoryName);
 		}
 
 		SolrQuery parameters = new SolrQuery(query.toString());
 		parameters.setStart(pageNumber * 18);
+		parameters.setRows(18);
+		switch (sortType) {
+
+		case PRICE:
+			parameters.setSort("salePrice", ORDER.desc);
+			break;
+
+		case TITLE:
+			parameters.setSort("title", ORDER.asc);
+			break;
+
+		case DATE:
+			parameters.setSort("created", ORDER.desc);
+			break;
+
+		default:
+			break;
+
+		}
+
 		try {
 
 			QueryResponse response = solrServer.query(parameters);
 			SolrDocumentList solrDocumentList = response.getResults();
 
 			for (SolrDocument solrDocument : solrDocumentList) {
-
+				DealWantedDTO dealWantedDTO = new DealWantedDTO();
+				dealWantedDTO.setCreatedOn((Date) solrDocument
+						.getFieldValue("created"));
+				dealWantedDTO.setDealCategory((String) solrDocument
+						.getFieldValue("dealCategory"));
+				dealWantedDTO.setDescription((String) solrDocument
+						.getFieldValue("description"));
+				dealWantedDTO.setId(new Long((String) solrDocument
+						.getFieldValue("id")));
+				dealWantedDTO.setMaxPrice(new BigDecimal((Integer) solrDocument
+						.getFieldValue("retailPrice")));
+				dealWantedDTO.setTitle((String) solrDocument
+						.getFieldValue("title"));
+				dealWantedList.add(dealWantedDTO);
 			}
 
 			System.out.println("SolrDocument" + solrDocumentList.size());
@@ -208,21 +254,59 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		List<DealPostDTO> dealPostList = new ArrayList<>();
 
 		StringBuilder query = new StringBuilder();
-		query.append("title: * " + dealPostString + " *");
-		query.append("AND isDrop:true");
+		if (null != dealPostString && !dealPostString.equalsIgnoreCase("")) {
+			query.append("title:*" + dealPostString + "*");
+		} else {
+			query.append("title:*");
+		}
+		query.append(" AND isDrop:"+true);
 		if (null != categoryName) {
 			query.append(" AND dealCategory:" + categoryName);
 		}
-
 		SolrQuery parameters = new SolrQuery(query.toString());
 		parameters.setStart(pageNumber * 18);
+		switch (sortType) {
+
+		case PRICE:
+			parameters.setSort("salePrice", ORDER.asc);
+			break;
+
+		case TITLE:
+			parameters.setSort("title", ORDER.asc);
+			break;
+
+		case DATE:
+			parameters.setSort("created", ORDER.desc);
+			break;
+
+		default:
+			break;
+
+		}
+		parameters.setRows(18);
+
 		try {
 
 			QueryResponse response = solrServer.query(parameters);
 			SolrDocumentList solrDocumentList = response.getResults();
 
 			for (SolrDocument solrDocument : solrDocumentList) {
-
+				DealPostDTO dealPostDTO = new DealPostDTO();
+				dealPostDTO.setCreatedOn((Date) solrDocument
+						.getFieldValue("created"));
+				dealPostDTO.setDealCategory((String) solrDocument
+						.getFieldValue("dealCategory"));
+				dealPostDTO.setDescription((String) solrDocument
+						.getFieldValue("description"));
+				dealPostDTO.setId(new Long((String) solrDocument
+						.getFieldValue("id")));
+				dealPostDTO.setRetailPrice(new BigDecimal(
+						(Integer) solrDocument.getFieldValue("retailPrice")));
+				dealPostDTO.setSalePrice(new BigDecimal((Integer) solrDocument
+						.getFieldValue("salePrice")));
+				dealPostDTO.setTitle((String) solrDocument
+						.getFieldValue("title"));
+				dealPostList.add(dealPostDTO);
 			}
 
 			System.out.println("SolrDocument" + solrDocumentList.size());
@@ -231,6 +315,26 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 			e.printStackTrace();
 		}
 		return dealPostList;
+
+	}
+
+	public void delete(long id, boolean isDrop) {
+
+		StringBuilder query = new StringBuilder();
+		query.append("id:" + id);
+
+		query.append(" AND isDrop:" + isDrop);
+		try {
+
+			solrServer.deleteByQuery(query.toString());
+			solrServer.commit();
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

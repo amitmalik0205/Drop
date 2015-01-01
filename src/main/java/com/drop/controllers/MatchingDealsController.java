@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.drop.controller.form.DealMatchForm;
+import com.drop.controller.form.SearchDealForm;
 import com.drop.dao.domain.DealMatch;
 import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;
@@ -82,6 +83,9 @@ public class MatchingDealsController {
 			map.addAttribute("dealWantedToMatch", dealWanted);
 			map.addAttribute("matchingDealPostList", matchingDealPostList);			
 
+			SearchDealForm dealForm = new SearchDealForm();		
+			map.addAttribute("searchDealForm", dealForm);
+			
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			e.printStackTrace();
@@ -188,6 +192,9 @@ public class MatchingDealsController {
 				map.addAttribute("dealPostDetail", dealPost);
 				map.addAttribute("dealWantedToMatch", savedDealMatch.getDealWanted());
 			} 
+			
+			SearchDealForm dealForm = new SearchDealForm();		
+			map.addAttribute("searchDealForm", dealForm);
 			
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));

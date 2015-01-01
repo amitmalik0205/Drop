@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.drop.controller.form.DealPostForm;
 import com.drop.controller.form.DealWantedForm;
 import com.drop.controller.form.ReasonToDeleteForm;
+import com.drop.controller.form.SearchDealForm;
 import com.drop.dao.domain.DealCategory;
 import com.drop.dao.domain.DealWanted;
 import com.drop.dao.domain.User;
@@ -56,6 +57,9 @@ public class WantDropController {
 
 		map.addAttribute("dealWantedForm", dealWantedForm);
 		map.addAttribute("dealPostForm", dealPostForm);
+		
+		SearchDealForm dealForm = new SearchDealForm();		
+		map.addAttribute("searchDealForm", dealForm);
 	}
 
 	
@@ -76,6 +80,9 @@ public class WantDropController {
 			dealWantedForm.setDealCategories(categories);
 			
 			map.addAttribute("dealWantedForm", dealWantedForm);
+			
+			SearchDealForm dealForm = new SearchDealForm();		
+			map.addAttribute("searchDealForm", dealForm);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -210,6 +217,8 @@ public class WantDropController {
 
 				modelAndView.addObject("editDealWantedForm", form);
 			}
+			SearchDealForm dealForm = new SearchDealForm();		
+			map.addAttribute("searchDealForm", dealForm);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));

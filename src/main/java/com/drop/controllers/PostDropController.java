@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drop.controller.form.DealPostForm;
 import com.drop.controller.form.ReasonToDeleteForm;
+import com.drop.controller.form.SearchDealForm;
 import com.drop.dao.domain.DealCategory;
 import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.MailingAddress;
@@ -36,29 +37,29 @@ import com.drop.util.WebUtil;
 @Controller
 public class PostDropController {
 
-	private static final Logger logger = Logger.getLogger(PostDropController.class);
-	
+	private static final Logger logger = Logger
+			.getLogger(PostDropController.class);
+
 	@Autowired
 	private IDealPostService dealPostService;
-	
+
 	@Autowired
 	@Qualifier("validationConfig")
 	private Properties validationConfig;
-	
+
 	@Autowired
 	private HttpSession session;
-	
+
 	@Autowired
 	private IDealCategoryService categoryService;
-	
+
 	@Autowired
 	@Qualifier("msgConfig")
 	private Properties msgConfig;
-	
-	
+
 	@RequestMapping(value = "/showDealPostPage", method = RequestMethod.GET)
 	public ModelAndView showDealPostPage(ModelMap map) {
-		
+
 		if (!WebUtil.userAuthorization(session)) {
 			return new ModelAndView("redirect:/home.htm");
 		}
@@ -68,11 +69,15 @@ public class PostDropController {
 		try {
 
 			DealPostForm dealPostForm = new DealPostForm();
-			
-			List<DealCategory> categories = categoryService.getAllDealCategories();
+
+			List<DealCategory> categories = categoryService
+					.getAllDealCategories();
 			dealPostForm.setDealCategories(categories);
-			
+
 			map.addAttribute("dealPostForm", dealPostForm);
+
+			SearchDealForm dealForm = new SearchDealForm();
+			map.addAttribute("searchDealForm", dealForm);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -81,37 +86,39 @@ public class PostDropController {
 		}
 		return modelAndView;
 	}
-	
-	
+
 	@RequestMapping(value = "/postdrop", method = RequestMethod.POST)
 	public String postDrop(@Valid DealPostForm form, BindingResult result,
 			ModelMap map, HttpServletRequest request) {
-		
-		if(!WebUtil.userAuthorization(session)) {
+
+		if (!WebUtil.userAuthorization(session)) {
 			return "redirect:/home.htm";
 		}
-		
-		try {			
+
+		try {
 			String dealType = form.getDealType();
-			
-			if(dealType != null) {
-				
-				if(dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
-					
+
+			if (dealType != null) {
+
+				if (dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
+
 					String addressLine1 = form.getAddressLine1();
 					String addressLine2 = form.getAddressLine2();
 					String state = form.getState();
 					String city = form.getCity();
 					String zip = form.getZip();
-					
-					if(!(addressLine1 != null && addressLine1.length() > 0)) {
-						result.rejectValue("addressLine1", "NotEmpty.dealPostForm.addressLine1");
-					} 
+
+					if (!(addressLine1 != null && addressLine1.length() > 0)) {
+						result.rejectValue("addressLine1",
+								"NotEmpty.dealPostForm.addressLine1");
+					}
 					if (!(addressLine2 != null && addressLine2.length() > 0)) {
-						result.rejectValue("addressLine2", "NotEmpty.dealPostForm.addressLine2");
+						result.rejectValue("addressLine2",
+								"NotEmpty.dealPostForm.addressLine2");
 					}
 					if (!(state != null && state.length() > 0)) {
-						result.rejectValue("state", "NotEmpty.dealPostForm.state");
+						result.rejectValue("state",
+								"NotEmpty.dealPostForm.state");
 					}
 					if (!(city != null && city.length() > 0)) {
 						result.rejectValue("city", "NotEmpty.dealPostForm.city");
@@ -119,27 +126,28 @@ public class PostDropController {
 					if (!(zip != null && zip.length() > 0)) {
 						result.rejectValue("zip", "NotEmpty.dealPostForm.zip");
 					}
-					
-				} else if(dealType.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {
+
+				} else if (dealType.equals(POST_DEAL_TYPE.ONLINE_DEAL
+						.getDealType())) {
 					String url = form.getUrl();
 					if (!(url != null && url.length() > 0)) {
 						result.rejectValue("url", "NotEmpty.dealPostForm.url");
 					}
 				}
 			}
-			
+
 			if (result.hasErrors()) {
 				form.setDealCategories(categoryService.getAllDealCategories());
 				return "dealPostPage";
 			} else {
-				
+
 				form.setIpAddress(DropUtil.getIPAddress(request));
 				HttpSession session = request.getSession(false);
-				User user = (User)session.getAttribute("user");
+				User user = (User) session.getAttribute("user");
 				form.setUserId(user.getUserId());
 				dealPostService.saveDealPost(form);
 			}
-			
+
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			e.printStackTrace();
@@ -147,74 +155,55 @@ public class PostDropController {
 		}
 		return "redirect:/showMyDropPost.htm";
 	}
-	
 
-/*	@RequestMapping(value = "/postdrop", method = RequestMethod.POST)
-	public @ResponseBody
-	String postDrop(@Valid DealPostForm form, BindingResult result,
-			ModelMap map, HttpServletRequest request) {
-		
-		if(!WebUtil.userAuthorization(session)) {
-			return "redirect:/home.htm";
-		}
-		
-		try {			
-			String dealType = form.getDealType();
-			
-			if(dealType != null) {
-				
-				if(dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
-					
-					String addressLine1 = form.getAddressLine1();
-					String addressLine2 = form.getAddressLine2();
-					String state = form.getState();
-					String city = form.getCity();
-					String zip = form.getZip();
-					
-					if(!(addressLine1 != null && addressLine1.length() > 0)) {
-						result.rejectValue("addressLine1", validationConfig.getProperty("NotEmpty.dealPostForm.addressLine1"));
-					} 
-					if (!(addressLine2 != null && addressLine2.length() > 0)) {
-						result.rejectValue("addressLine2", validationConfig.getProperty("NotEmpty.dealPostForm.addressLine2"));
-					}
-					if (!(state != null && state.length() > 0)) {
-						result.rejectValue("state", validationConfig.getProperty("NotEmpty.dealPostForm.state"));
-					}
-					if (!(city != null && city.length() > 0)) {
-						result.rejectValue("city", validationConfig.getProperty("NotEmpty.dealPostForm.city"));
-					}
-					if (!(zip != null && zip.length() > 0)) {
-						result.rejectValue("zip", validationConfig.getProperty("NotEmpty.dealPostForm.zip"));
-					}
-					
-				} else if(dealType.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {
-					String url = form.getUrl();
-					if (!(url != null && url.length() > 0)) {
-						result.rejectValue("url", validationConfig.getProperty("NotEmpty.dealPostForm.url"));
-					}
-				}
-			}
-			
-			if (result.hasErrors()) {
-				return DropUtil.getErrorString(result);
-			} else {
-				
-				form.setIpAddress(DropUtil.getIPAddress(request));
-				HttpSession session = request.getSession(false);
-				User user = (User)session.getAttribute("user");
-				form.setUserId(user.getUserId());
-				dealPostService.saveDealPost(form);
-			}
-			
-		} catch (Exception e) {
-			logger.fatal(DropUtil.getExceptionDescriptionString(e));
-			e.printStackTrace();
-			return "ERROR";
-		}
-		return "SUCCESS";
-	}*/
-	
-	
+	/*
+	 * @RequestMapping(value = "/postdrop", method = RequestMethod.POST) public
+	 * @ResponseBody String postDrop(@Valid DealPostForm form, BindingResult
+	 * result, ModelMap map, HttpServletRequest request) {
+	 * 
+	 * if(!WebUtil.userAuthorization(session)) { return "redirect:/home.htm"; }
+	 * 
+	 * try { String dealType = form.getDealType();
+	 * 
+	 * if(dealType != null) {
+	 * 
+	 * if(dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
+	 * 
+	 * String addressLine1 = form.getAddressLine1(); String addressLine2 =
+	 * form.getAddressLine2(); String state = form.getState(); String city =
+	 * form.getCity(); String zip = form.getZip();
+	 * 
+	 * if(!(addressLine1 != null && addressLine1.length() > 0)) {
+	 * result.rejectValue("addressLine1",
+	 * validationConfig.getProperty("NotEmpty.dealPostForm.addressLine1")); } if
+	 * (!(addressLine2 != null && addressLine2.length() > 0)) {
+	 * result.rejectValue("addressLine2",
+	 * validationConfig.getProperty("NotEmpty.dealPostForm.addressLine2")); } if
+	 * (!(state != null && state.length() > 0)) { result.rejectValue("state",
+	 * validationConfig.getProperty("NotEmpty.dealPostForm.state")); } if
+	 * (!(city != null && city.length() > 0)) { result.rejectValue("city",
+	 * validationConfig.getProperty("NotEmpty.dealPostForm.city")); } if (!(zip
+	 * != null && zip.length() > 0)) { result.rejectValue("zip",
+	 * validationConfig.getProperty("NotEmpty.dealPostForm.zip")); }
+	 * 
+	 * } else if(dealType.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {
+	 * String url = form.getUrl(); if (!(url != null && url.length() > 0)) {
+	 * result.rejectValue("url",
+	 * validationConfig.getProperty("NotEmpty.dealPostForm.url")); } } }
+	 * 
+	 * if (result.hasErrors()) { return DropUtil.getErrorString(result); } else
+	 * {
+	 * 
+	 * form.setIpAddress(DropUtil.getIPAddress(request)); HttpSession session =
+	 * request.getSession(false); User user =
+	 * (User)session.getAttribute("user"); form.setUserId(user.getUserId());
+	 * dealPostService.saveDealPost(form); }
+	 * 
+	 * } catch (Exception e) {
+	 * logger.fatal(DropUtil.getExceptionDescriptionString(e));
+	 * e.printStackTrace(); return "ERROR"; } return "SUCCESS"; }
+	 */
+
 	@RequestMapping(value = "/showMyDropPost", method = RequestMethod.GET)
 	public ModelAndView showMyDropWanted(ModelMap map, HttpSession session) {
 
@@ -226,8 +215,11 @@ public class PostDropController {
 
 		try {
 			User user = WebUtil.getSessionUser(session);
-			List<DealPost> dealPostList = dealPostService.getAllActiveDealPostForUser(user.getUserId());
+			List<DealPost> dealPostList = dealPostService
+					.getAllActiveDealPostForUser(user.getUserId());
 			modelAndView.addObject("dealPostList", dealPostList);
+			SearchDealForm dealForm = new SearchDealForm();
+			map.addAttribute("searchDealForm", dealForm);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -236,11 +228,11 @@ public class PostDropController {
 		}
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/showDeleteDropPost", method = RequestMethod.GET)
 	public ModelAndView showDialog(@RequestParam Long dealId, ModelMap map,
 			HttpSession session) {
-		
+
 		if (!WebUtil.userAuthorization(session)) {
 			return new ModelAndView("redirect:/home.htm");
 		}
@@ -279,7 +271,8 @@ public class PostDropController {
 			User user = WebUtil.getSessionUser(session);
 			DealPost userDealPost = null;
 
-			List<DealPost> dealPostList = dealPostService.getAllActiveDealPostForUser(user.getUserId());
+			List<DealPost> dealPostList = dealPostService
+					.getAllActiveDealPostForUser(user.getUserId());
 			for (DealPost dealPost : dealPostList) {
 				if (dealPost.getId() == form.getDealId()) {
 					userDealPost = dealPost;
@@ -298,7 +291,7 @@ public class PostDropController {
 		}
 		return "SUCCESS";
 	}
-	
+
 	@RequestMapping(value = "/showEditDropPost", method = RequestMethod.GET)
 	public ModelAndView showEditDropWantedForm(
 			@RequestParam("dropPostId") Long dropPostId, ModelMap map,
@@ -314,7 +307,8 @@ public class PostDropController {
 			User user = WebUtil.getSessionUser(session);
 			DealPost userDealPost = null;
 
-			List<DealPost> dealPostList = dealPostService.getAllActiveDealPostForUser(user.getUserId());
+			List<DealPost> dealPostList = dealPostService
+					.getAllActiveDealPostForUser(user.getUserId());
 			for (DealPost dealPost : dealPostList) {
 				if (dealPost.getId() == dropPostId) {
 					userDealPost = dealPost;
@@ -331,30 +325,39 @@ public class PostDropController {
 				form.setSalePrice(userDealPost.getSalePrice());
 				form.setRetailPrice(userDealPost.getRetailPrice());
 				form.setDiscountPercent(userDealPost.getDiscountPercent());
-				form.setExpires(DropUtil.convertDateToString(userDealPost.getExpires(), msgConfig.getProperty("calendar.date.format")));
-				form.setStarts(DropUtil.convertDateToString(userDealPost.getStarts(), msgConfig.getProperty("calendar.date.format")));
-				form.setSpecialInstructions(userDealPost.getSpecialInstructions());
+				form.setExpires(DropUtil.convertDateToString(
+						userDealPost.getExpires(),
+						msgConfig.getProperty("calendar.date.format")));
+				form.setStarts(DropUtil.convertDateToString(
+						userDealPost.getStarts(),
+						msgConfig.getProperty("calendar.date.format")));
+				form.setSpecialInstructions(userDealPost
+						.getSpecialInstructions());
 				form.setCouponsRequired(userDealPost.getCouponsRequired());
 				form.setMembershipRequired(userDealPost.getMembershipRequired());
 				form.setIpAddress(userDealPost.getIpAddress());
 				form.setUserId(userDealPost.getUser().getUserId());
 				form.setDealCategories(categoryService.getAllDealCategories());
 				form.setDealPostId(userDealPost.getId());
-				
-				MailingAddress address = userDealPost.getLocation().getMailingAddress();
-				if(address != null) {
-					form.setAddressLine1(address.getAddressLine1());
-					form.setAddressLine2(address.getAddressLine2());
-					form.setState(address.getState());
-					form.setCity(address.getCity());
-					form.setZip(address.getZip());
-					form.setDealType("localDeal");
-				} else {
-					form.setUrl(userDealPost.getLocation().getUrl());
-					form.setDealType("onlineDeal");
+				if (null != userDealPost.getLocation()) {
+					MailingAddress address = userDealPost.getLocation()
+							.getMailingAddress();
+					if (address != null) {
+						form.setAddressLine1(address.getAddressLine1());
+						form.setAddressLine2(address.getAddressLine2());
+						form.setState(address.getState());
+						form.setCity(address.getCity());
+						form.setZip(address.getZip());
+						form.setDealType("localDeal");
+					} else {
+						form.setUrl(userDealPost.getLocation().getUrl());
+						form.setDealType("onlineDeal");
+					}
 				}
-										
 				modelAndView.addObject("editDealPostForm", form);
+
+				SearchDealForm dealForm = new SearchDealForm();
+				map.addAttribute("searchDealForm", dealForm);
 			}
 
 		} catch (Exception e) {
@@ -364,37 +367,42 @@ public class PostDropController {
 		}
 		return modelAndView;
 	}
-	
+
 	@RequestMapping(value = "/updatePostDrop", method = RequestMethod.POST)
-	public String updateDropPost(@Valid @ModelAttribute("editDealPostForm") DealPostForm form, BindingResult result,
-			ModelMap map, HttpServletRequest request, HttpSession session) {
+	public String updateDropPost(
+			@Valid @ModelAttribute("editDealPostForm") DealPostForm form,
+			BindingResult result, ModelMap map, HttpServletRequest request,
+			HttpSession session) {
 
 		if (!WebUtil.userAuthorization(session)) {
 			return "redirect:/home.htm";
 		}
 
 		try {
-			
+
 			String dealType = form.getDealType();
-			
-			if(dealType != null) {
-				
-				if(dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
-					
+
+			if (dealType != null) {
+
+				if (dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
+
 					String addressLine1 = form.getAddressLine1();
 					String addressLine2 = form.getAddressLine2();
 					String state = form.getState();
 					String city = form.getCity();
 					String zip = form.getZip();
-					
-					if(!(addressLine1 != null && addressLine1.length() > 0)) {
-						result.rejectValue("addressLine1", "NotEmpty.dealPostForm.addressLine1");
-					} 
+
+					if (!(addressLine1 != null && addressLine1.length() > 0)) {
+						result.rejectValue("addressLine1",
+								"NotEmpty.dealPostForm.addressLine1");
+					}
 					if (!(addressLine2 != null && addressLine2.length() > 0)) {
-						result.rejectValue("addressLine2", "NotEmpty.dealPostForm.addressLine2");
+						result.rejectValue("addressLine2",
+								"NotEmpty.dealPostForm.addressLine2");
 					}
 					if (!(state != null && state.length() > 0)) {
-						result.rejectValue("state", "NotEmpty.dealPostForm.state");
+						result.rejectValue("state",
+								"NotEmpty.dealPostForm.state");
 					}
 					if (!(city != null && city.length() > 0)) {
 						result.rejectValue("city", "NotEmpty.dealPostForm.city");
@@ -402,8 +410,9 @@ public class PostDropController {
 					if (!(zip != null && zip.length() > 0)) {
 						result.rejectValue("zip", "NotEmpty.dealPostForm.zip");
 					}
-					
-				} else if(dealType.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {
+
+				} else if (dealType.equals(POST_DEAL_TYPE.ONLINE_DEAL
+						.getDealType())) {
 					String url = form.getUrl();
 					if (!(url != null && url.length() > 0)) {
 						result.rejectValue("url", "NotEmpty.dealPostForm.url");

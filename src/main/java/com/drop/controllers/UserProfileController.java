@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drop.controller.form.AccountSettingsForm;
 import com.drop.controller.form.AddressBookForm;
+import com.drop.controller.form.SearchDealForm;
 import com.drop.dao.domain.MailingAddress;
 import com.drop.dao.domain.User;
 import com.drop.exception.DropException;
@@ -72,6 +73,10 @@ public class UserProfileController {
 			form.setSkypeName(user.getSkypeName());
 			
 			modelAndView.addObject("accountSettingsForm", form);
+			
+			SearchDealForm dealForm = new SearchDealForm();		
+			map.addAttribute("searchDealForm", dealForm);
+
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -122,6 +127,10 @@ public class UserProfileController {
 			form.setAddressList(user.getAddresses());
 			
 			modelAndView.addObject("addressForm", form);
+			
+			SearchDealForm dealForm = new SearchDealForm();		
+			map.addAttribute("searchDealForm", dealForm);
+
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -301,6 +310,9 @@ public class UserProfileController {
 		if(!WebUtil.userAuthorization(session)) {
 			return "redirect:/home.htm";
 		}
+		SearchDealForm dealForm = new SearchDealForm();		
+		map.addAttribute("searchDealForm", dealForm);
+
 	
 		return "myStatistics";
 	}

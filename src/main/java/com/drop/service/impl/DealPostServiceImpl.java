@@ -138,6 +138,7 @@ public class DealPostServiceImpl implements IDealPostService {
 			savedDealPost.setReasonForDeleting(form.getReason());
 
 			dealPostDao.saveOrUpdate(savedDealPost);
+			solrSearchService.delete(savedDealPost.getId(), true);
 		}
 	}
 
@@ -226,13 +227,13 @@ public class DealPostServiceImpl implements IDealPostService {
 			dealPostDao.saveOrUpdate(savedDealPost);
 		}
 	}
-	
+
 	@Override
 	@Transactional
 	public DealPost getDealPostWithUser(Long dealPostId) {
 		return dealPostDao.getDealPostWithUser(dealPostId);
 	}
-	
+
 	@Override
 	@Transactional
 	public List<DealPost> getAllDealPost() {

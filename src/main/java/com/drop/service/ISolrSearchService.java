@@ -22,4 +22,5 @@ public interface ISolrSearchService {
 	public List<DealPostDTO> searchDrops(String dealPostString, int pageNumber,
 			SORT_TYPE sortType, String categoryName);
 
+	public void delete(long id, boolean isDrop);
 }
