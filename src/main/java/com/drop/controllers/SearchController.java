@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.SortType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -79,6 +78,7 @@ public class SearchController {
 		return modelAndView;
 	}
 	
+	
 	@RequestMapping(value = "/searchByCategory", method = RequestMethod.GET)
 	public ModelAndView searchByCategory(@RequestParam("categoryName") String categoryName,
 			ModelMap map) {
@@ -97,11 +97,13 @@ public class SearchController {
 			SORT_TYPE sortType =  sessionDealForm.getSortType();
 			int currentPageNo = sessionDealForm.getCurrentPage();
 			
+			sessionDealForm.setSelectedCategory(categoryName);
+			
 			if(searchType.equals("Drops")) {
-				dealPostListForSearch = solrSearchService.searchDrops(searchStr, 0, sortType, categoryName);
+				dealPostListForSearch = solrSearchService.searchDrops(searchStr, currentPageNo, sortType, categoryName);
 				map.addAttribute("dealPostListForSearch",dealPostListForSearch);
 			} else {
-				dealWantedListForSearch = solrSearchService.searchWanted(searchStr, 0, sortType, categoryName);
+				dealWantedListForSearch = solrSearchService.searchWanted(searchStr, currentPageNo, sortType, categoryName);
 				map.addAttribute("dealWantedListForSearch",dealWantedListForSearch);
 			}		
 			
@@ -109,9 +111,59 @@ public class SearchController {
 					.getAllDealCategories();
 			map.addAttribute("dealCategories", categories);			
 			map.addAttribute("searchDealForm", sessionDealForm);
-			
-			session.setAttribute("selectedCategory", categoryName);	
+						
 
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			throw new DropException();
+		}
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value = "/sortSearch", method = RequestMethod.GET)
+	public ModelAndView sortSearch(@RequestParam("sortBy") String sortBy, ModelMap map) {
+
+		ModelAndView modelAndView = new ModelAndView("searchResults");
+
+		try {
+			
+			SearchDealForm sessionDealForm = (SearchDealForm)session.getAttribute("sessionSearchDealForm");
+			
+			List<DealPostDTO> dealPostListForSearch = null;
+			List<DealWantedDTO> dealWantedListForSearch = null;
+			
+			String searchType = sessionDealForm.getSearchType();
+			String searchStr = sessionDealForm.getSearchString();
+			String categoryName = sessionDealForm.getSelectedCategory();
+			int currentPageNo = sessionDealForm.getCurrentPage();
+			
+			SORT_TYPE sortType = null;
+			
+			if(sortBy.equals(SORT_TYPE.PRICE.getSortType())) {
+				sortType = SORT_TYPE.PRICE;
+			} else if(sortBy.equals(SORT_TYPE.TITLE.getSortType())) {
+				sortType = SORT_TYPE.TITLE;
+			} else {
+				sortType = SORT_TYPE.DATE;
+			}
+					
+			sessionDealForm.setSortType(sortType);
+			
+			if(searchType.equals("Drops")) {
+				dealPostListForSearch = solrSearchService.searchDrops(searchStr, currentPageNo, sortType, categoryName);
+				map.addAttribute("dealPostListForSearch",dealPostListForSearch);
+			} else {
+				dealWantedListForSearch = solrSearchService.searchWanted(searchStr, currentPageNo, sortType, categoryName);
+				map.addAttribute("dealWantedListForSearch",dealWantedListForSearch);
+			}		
+			
+			List<DealCategory> categories = categoryService
+					.getAllDealCategories();
+			map.addAttribute("dealCategories", categories);			
+			map.addAttribute("searchDealForm", sessionDealForm);
+						
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			e.printStackTrace();

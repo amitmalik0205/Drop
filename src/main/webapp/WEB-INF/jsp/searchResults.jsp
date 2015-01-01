@@ -54,17 +54,17 @@
                 <div class="col-md-3">
                     <aside class="sidebar-left">                    	 
                         <ul class="nav nav-tabs nav-stacked nav-coupon-category">
-                        	<c:if test="${sessionScope.selectedCategory eq 'All'}">
+                        	<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory eq 'All'}">
                         		<li class="active"><a href="searchByCategory.htm?categoryName=All"><i class="fa fa-ticket"></i>All</a></li>
                         	</c:if> 
-                        	<c:if test="${sessionScope.selectedCategory ne 'All'}">
+                        	<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory ne 'All'}">
                         		<li><a href="searchByCategory.htm?categoryName=All"><i class="fa fa-ticket"></i>All</a></li>
                         	</c:if>                       	
                         	<c:forEach var="category" items="${requestScope.dealCategories}" varStatus="counter">
-                        		<c:if test="${sessionScope.selectedCategory eq category.name}">
+                        		<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory eq category.name}">
                         			<li class="active" id="${category.id}"><a href="searchByCategory.htm?categoryName=${category.name}"><i class="fa fa-ticket"></i>${category.name}</a></li>
                         		</c:if>  
-                        		<c:if test="${sessionScope.selectedCategory ne category.name}">
+                        		<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory ne category.name}">
                         			<li id="${category.id}"><a href="searchByCategory.htm?categoryName=${category.name}"><i class="fa fa-ticket"></i>${category.name}</a></li>
                         		</c:if>                  	 		
                     	 	</c:forEach>                                                       
@@ -79,14 +79,38 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="product-sort">
-                                <span class="product-sort-selected">sort by <b>Price</b></span>
-                                <a href="#" class="product-sort-order fa fa-angle-down"></a>
-                                <ul>
-                                    <li><a href="#">sort by Title</a>
-                                    </li>
-                                    <li><a href="#">sort by Date</a>
-                                    </li>
-                                </ul>
+                            	<c:choose>
+                            		<c:when test="${sessionScope.sessionSearchDealForm.sortType == 'PRICE'}">
+                            			<span class="product-sort-selected">sort by <b>Price</b></span>
+                                		<a href="sortSearch.htm?sortBy=PRICE" class="product-sort-order fa fa-angle-down"></a>
+                                		<ul>
+		                                    <li><a href="sortSearch.htm?sortBy=TITLE">sort by Title</a>
+		                                    </li>
+		                                    <li><a href="sortSearch.htm?sortBy=DATE">sort by Date</a>
+		                                    </li>
+		                                </ul>
+                            		</c:when>
+                            		<c:when test="${sessionScope.sessionSearchDealForm.sortType == 'TITLE'}">
+                            			<span class="product-sort-selected">sort by <b>Title</b></span>
+                                		<a href="sortSearch.htm?sortBy=TITLE" class="product-sort-order fa fa-angle-down"></a>
+                                		<ul>
+		                                    <li><a href="sortSearch.htm?sortBy=PRICE">sort by Price</a>
+		                                    </li>
+		                                    <li><a href="sortSearch.htm?sortBy=DATE">sort by Date</a>
+		                                    </li>
+		                                </ul>
+                            		</c:when> 
+                            		<c:when test="${sessionScope.sessionSearchDealForm.sortType == 'DATE'}">
+                            			<span class="product-sort-selected">sort by <b>Date</b></span>
+                                		<a href="sortSearch.htm?sortBy=DATE" class="product-sort-order fa fa-angle-down"></a>
+                                		<ul>
+		                                    <li><a href="sortSearch.htm?sortBy=PRICE">sort by Price</a>
+		                                    </li>
+		                                    <li><a href="sortSearch.htm?sortBy=TITLE">sort by Title</a>
+		                                    </li>
+		                                </ul>
+                            		</c:when>                            
+                            	</c:choose>                                                       
                             </div>
                         </div>
                         <!-- <div class="col-md-2 col-md-offset-7">
