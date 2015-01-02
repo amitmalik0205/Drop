@@ -18,7 +18,9 @@ public class SearchDealForm implements Serializable {
 	
 	private int currentPage;
 	
-	private int maxItemsOnpage;
+	private int itemsOnpage;
+	
+	private int maxResultOnPage;
 
 	public String getSearchString() {
 		return searchString;
@@ -60,11 +62,20 @@ public class SearchDealForm implements Serializable {
 		this.currentPage = currentPage;
 	}
 
-	public int getMaxItemsOnpage() {
-		return maxItemsOnpage;
+	public int getItemsOnpage() {
+		return itemsOnpage;
 	}
 
-	public void setMaxItemsOnpage(int maxItemsOnpage) {
-		this.maxItemsOnpage = maxItemsOnpage;
+	public void setItemsOnpage(int itemsOnpage) {
+		this.itemsOnpage = itemsOnpage;
 	}
+
+	public int getMaxResultOnPage() {
+		return maxResultOnPage;
+	}
+
+	public void setMaxResultOnPage(int maxResultOnPage) {
+		this.maxResultOnPage = maxResultOnPage;
+	}	
+	
 }

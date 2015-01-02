@@ -62,17 +62,17 @@
                         	</c:if>                       	
                         	<c:forEach var="category" items="${requestScope.dealCategories}" varStatus="counter">
                         		<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory eq category.name}">
-                        			<li class="active" id="${category.id}"><a href="searchByCategory.htm?categoryName=${category.name}"><i class="fa fa-ticket"></i>${category.name}</a></li>
+                        			<li class="active" id="${category.id}"><a href="searchByCategory.htm?categoryName=${fn:escapeXml(category.name)}"><i class="fa fa-ticket"></i>${category.name}</a></li>
                         		</c:if>  
                         		<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory ne category.name}">
-                        			<li id="${category.id}"><a href="searchByCategory.htm?categoryName=${category.name}"><i class="fa fa-ticket"></i>${category.name}</a></li>
+                        			<li id="${category.id}"><a href="searchByCategory.htm?categoryName=${fn:escapeXml(category.name)}"><i class="fa fa-ticket"></i>${category.name}</a></li>
                         		</c:if>                  	 		
                     	 	</c:forEach>                                                       
                         </ul>
-                        <div class="sidebar-box">
+                        <!-- <div class="sidebar-box">
                             <h5>Filter By Price</h5>
                             <input type="text" id="price-slider">
-                        </div>
+                        </div> -->
                     </aside>
                 </div>
                 <div class="col-md-9">
@@ -196,27 +196,50 @@
 		                            </div>
 		                        </div>                    			
                     		</c:forEach>
-	                    </c:if>                       
-                        
+	                    </c:if>                                               
                     </div>
+                    
                     <ul class="pagination">
-                        <li class="prev disabled">
-                            <a href="#"></a>
-                        </li>
-                        <li class="active"><a href="#">1</a>
-                        </li>
-                        <li><a href="#">2</a>
-                        </li>
-                        <li><a href="#">3</a>
-                        </li>
-                        <li><a href="#">4</a>
-                        </li>
-                        <li><a href="#">5</a>
-                        </li>
-                        <li class="next">
-                            <a href="#"></a>
-                        </li>
+                    
+                    	<c:if test="${sessionScope.sessionSearchDealForm.currentPage eq 0}">
+                    		<li class="prev disabled">
+                            	<a href="#"></a>
+                        	</li>
+                        	
+                        	<c:choose>
+                        		<c:when test="${sessionScope.sessionSearchDealForm.itemsOnpage lt sessionScope.sessionSearchDealForm.maxResultOnPage}">
+                        			<li class="next disabled">
+                            			<a href="#"></a>
+                        			</li>
+                        		</c:when>
+                        		<c:otherwise>
+                        			<li class="next">
+                            			<a href="searchByPage.htm?pageNo=${sessionScope.sessionSearchDealForm.currentPage + 1}"></a>
+                        			</li>
+                        		</c:otherwise>
+                        	</c:choose>                        	                        
+                    	</c:if>
+                    	
+                    	<c:if test="${sessionScope.sessionSearchDealForm.currentPage gt 0}">
+                    		<li class="prev">
+                            	<a href="searchByPage.htm?pageNo=${sessionScope.sessionSearchDealForm.currentPage - 1}"></a>
+                        	</li>
+                        	
+                        	<c:choose>
+                        		<c:when test="${sessionScope.sessionSearchDealForm.itemsOnpage lt sessionScope.sessionSearchDealForm.maxResultOnPage}">
+                        			<li class="next disabled">
+                            			<a href="#"></a>
+                        			</li>
+                        		</c:when>
+                        		<c:otherwise>
+                        			<li class="next">
+                            			<a href="searchByPage.htm?pageNo=${sessionScope.sessionSearchDealForm.currentPage + 1}"></a>
+                        			</li>
+                        		</c:otherwise>
+                        	</c:choose>                        	                        
+                    	</c:if>                    	                   
                     </ul>
+                    
                     <div class="gap"></div>
                 </div>
             </div>
