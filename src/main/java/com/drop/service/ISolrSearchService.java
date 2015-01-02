@@ -23,4 +23,9 @@ public interface ISolrSearchService {
 			SORT_TYPE sortType, String categoryName);
 
 	public void delete(long id, boolean isDrop);
+
+	public void edit(DealPost dealPost);
+
+	public void edit(DealWanted dealWanted);
+
 }

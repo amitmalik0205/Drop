@@ -225,6 +225,7 @@ public class DealPostServiceImpl implements IDealPostService {
 			savedDealPost.setLocation(location);
 
 			dealPostDao.saveOrUpdate(savedDealPost);
+			solrSearchService.edit(savedDealPost);
 		}
 	}
 
