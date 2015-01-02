@@ -52,6 +52,12 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 	@Qualifier("applicationConfig")
 	private Properties applicationConfig;
 
+	
+
+	@Autowired
+	@Qualifier("msgConfig")
+	private Properties msgConfig;
+	
 	public void add(DealPost dealPost) {
 		if (new Boolean(applicationConfig.getProperty("skipSolr"))) {
 			return;
@@ -208,8 +214,11 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		}
 
 		SolrQuery parameters = new SolrQuery(query.toString());
-		parameters.setStart(pageNumber * 18);
-		parameters.setRows(18);
+		parameters.setStart(pageNumber
+				* new Integer(msgConfig
+						.getProperty("search.results.per.page")));
+		parameters.setRows(new Integer(msgConfig
+				.getProperty("search.results.per.page")));
 		switch (sortType) {
 
 		case PRICE:
@@ -276,7 +285,9 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 			query.append(" AND dealCategory:" + categoryName);
 		}
 		SolrQuery parameters = new SolrQuery(query.toString());
-		parameters.setStart(pageNumber * 18);
+		parameters.setStart(pageNumber
+				* new Integer(msgConfig
+						.getProperty("search.results.per.page")));
 		switch (sortType) {
 
 		case PRICE:
@@ -295,7 +306,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 			break;
 
 		}
-		parameters.setRows(18);
+		parameters.setRows(new Integer(msgConfig
+				.getProperty("search.results.per.page")));
 
 		try {
 

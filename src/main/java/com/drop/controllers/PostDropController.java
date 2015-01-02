@@ -138,6 +138,8 @@ public class PostDropController {
 
 			if (result.hasErrors()) {
 				form.setDealCategories(categoryService.getAllDealCategories());
+				SearchDealForm dealForm = new SearchDealForm();
+				map.addAttribute("searchDealForm", dealForm);
 				return "dealPostPage";
 			} else {
 
@@ -421,6 +423,8 @@ public class PostDropController {
 			}
 
 			if (result.hasErrors()) {
+				SearchDealForm dealForm = new SearchDealForm();
+				map.addAttribute("searchDealForm", dealForm);
 				form.setDealCategories(categoryService.getAllDealCategories());
 				return "editDealPostPage";
 			}

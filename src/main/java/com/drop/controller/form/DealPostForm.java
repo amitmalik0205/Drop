@@ -7,6 +7,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.drop.dao.domain.DealCategory;
@@ -14,9 +15,11 @@ import com.drop.dao.domain.DealCategory;
 public class DealPostForm {
 	
 	@NotEmpty(message = "Deal title is required")
+	@Length(max=150)
 	private String title;
 
 	@NotEmpty(message = "Deal description is required")
+	@Length(max=150)
 	private String description;
 	
 	@NotNull(message = "Please select a category")
@@ -41,6 +44,7 @@ public class DealPostForm {
 	
 	private String starts;
 	
+	@Length(max=150)
 	private String specialInstructions;
 	
 	@NotNull(message = "Please select deal type")
