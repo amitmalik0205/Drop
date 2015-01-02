@@ -60,13 +60,14 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		SolrInputDocument document = new SolrInputDocument();
 		document.addField("id", dealPost.getId());
 		document.addField("title", dealPost.getTitle());
-		document.addField("retailPrice", dealPost.getRetailPrice());
+		document.addField("retailPrice", dealPost.getRetailPrice().longValue());
 		document.addField("onlineDeal", dealPost.getOnlineDeal());
 		document.addField("dealCategory", dealPost.getDealCategory().getName());
-		document.addField("salePrice", dealPost.getSalePrice());
+		document.addField("salePrice", dealPost.getSalePrice().longValue());
 		document.addField("localDeal", dealPost.getLocalDeal());
 		document.addField("dealExpiry", dealPost.getExpires());
 		document.addField("created", dealPost.getCreatedOn());
+		document.addField("dealStart", dealPost.getStarts());
 		document.addField("description", dealPost.getDescription());
 		document.addField("isDrop", true);
 
@@ -81,6 +82,16 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 
 	}
 
+	public void edit(DealPost dealPost) {
+		delete(dealPost.getId(), true);
+		add(dealPost);
+	}
+
+	public void edit(DealWanted dealWanted) {
+		delete(dealWanted.getId(), false);
+		add(dealWanted);
+	}
+
 	public void add(DealWanted dealWanted) {
 		if (new Boolean(applicationConfig.getProperty("skipSolr"))) {
 			return;
@@ -89,7 +100,7 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		SolrInputDocument document = new SolrInputDocument();
 		document.addField("id", dealWanted.getId());
 		document.addField("title", dealWanted.getTitle());
-		document.addField("retailPrice", dealWanted.getMaxPrice());
+		document.addField("retailPrice", dealWanted.getMaxPrice().longValue());
 		document.addField("onlineDeal", dealWanted.getWouldBuyOnline());
 		document.addField("dealCategory", dealWanted.getDealCategory()
 				.getName());
@@ -121,8 +132,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		long price = dealWanted.getMaxPrice().longValue();
 
 		StringBuilder query = new StringBuilder();
-		query.append("salePrice:[ * TO " + price + " ] AND title: * "
-				+ dealWanted.getTitle() + " *");
+		query.append("salePrice:[ * TO " + price + " ] AND title:*"
+				+ dealWanted.getTitle() + "*");
 		if (dealWanted.getWouldBuyOnline() && dealWanted.getWouldBuyLocally()) {
 			query.append(" AND (onlineDeal:" + dealWanted.getWouldBuyOnline()
 					+ " OR localDeal:" + dealWanted.getWouldBuyLocally() + ")");
@@ -135,6 +146,7 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		query.append(" AND dealCategory:"
 				+ dealWanted.getDealCategory().getName());
 
+		query.append(" AND dealStart: [* TO NOW]");
 		query.append(" AND dealExpiry: [NOW TO *]");
 		query.append(" AND isDrop:true");
 
@@ -188,10 +200,10 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		if (null != dealWantedString && !dealWantedString.equalsIgnoreCase("")) {
 			query.append("title:*" + dealWantedString + "*");
 		} else {
-			query.append("title:* ");
+			query.append("title:*");
 		}
-		query.append(" AND isDrop:"+false);
-		if (null != categoryName) {
+		query.append(" AND isDrop:" + false);
+		if (null != categoryName && !"All".equals(categoryName)) {
 			query.append(" AND dealCategory:" + categoryName);
 		}
 
@@ -259,8 +271,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		} else {
 			query.append("title:*");
 		}
-		query.append(" AND isDrop:"+true);
-		if (null != categoryName) {
+		query.append(" AND isDrop:" + true);
+		if (null != categoryName && !"All".equals(categoryName)) {
 			query.append(" AND dealCategory:" + categoryName);
 		}
 		SolrQuery parameters = new SolrQuery(query.toString());
@@ -306,7 +318,12 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 						.getFieldValue("salePrice")));
 				dealPostDTO.setTitle((String) solrDocument
 						.getFieldValue("title"));
+				dealPostDTO.setStarts((Date) solrDocument
+						.getFieldValue("dealStart"));
+				dealPostDTO.setExpires((Date) solrDocument
+						.getFieldValue("dealExpiry"));
 				dealPostList.add(dealPostDTO);
+
 			}
 
 			System.out.println("SolrDocument" + solrDocumentList.size());

@@ -91,6 +91,7 @@ public class DealWantedServiceImpl implements IDealWantedService {
 			savedDealWanted.setUpdatedOn(new Date(System.currentTimeMillis()));
 
 			dealWantedDao.saveOrUpdate(savedDealWanted);
+			solrSearchService.edit(savedDealWanted);
 		}
 	}
 
