@@ -32,6 +32,7 @@ import com.drop.service.IDealMatchService;
 import com.drop.service.IDealPostService;
 import com.drop.service.ISolrSearchService;
 import com.drop.util.DropConstants;
+import com.drop.util.DropUtil;
 
 @Service
 public class SolrSearchServiceImpl implements ISolrSearchService {
@@ -52,12 +53,10 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 	@Qualifier("applicationConfig")
 	private Properties applicationConfig;
 
-	
-
 	@Autowired
 	@Qualifier("msgConfig")
 	private Properties msgConfig;
-	
+
 	public void add(DealPost dealPost) {
 		if (new Boolean(applicationConfig.getProperty("skipSolr"))) {
 			return;
@@ -115,6 +114,7 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		document.addField("localDeal", dealWanted.getWouldBuyLocally());
 		document.addField("created", dealWanted.getCreatedOn());
 		document.addField("description", dealWanted.getDescription());
+		document.addField("tipAmount", dealWanted.getTipAmount());
 
 		try {
 			UpdateResponse response = solrServer.add(document);
@@ -214,9 +214,10 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		}
 
 		SolrQuery parameters = new SolrQuery(query.toString());
-		parameters.setStart(pageNumber
-				* new Integer(msgConfig
-						.getProperty("search.results.per.page")));
+		parameters
+				.setStart(pageNumber
+						* new Integer(msgConfig
+								.getProperty("search.results.per.page")));
 		parameters.setRows(new Integer(msgConfig
 				.getProperty("search.results.per.page")));
 		switch (sortType) {
@@ -249,14 +250,28 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 						.getFieldValue("created"));
 				dealWantedDTO.setDealCategory((String) solrDocument
 						.getFieldValue("dealCategory"));
-				dealWantedDTO.setDescription((String) solrDocument
-						.getFieldValue("description"));
+				String description = (String) solrDocument
+						.getFieldValue("description");
+				if (description.length() > 25) {
+					dealWantedDTO.setDescription(description.substring(0, 24)
+							+ "...");
+
+				} else {
+					dealWantedDTO.setDescription(description);
+
+				}
 				dealWantedDTO.setId(new Long((String) solrDocument
 						.getFieldValue("id")));
 				dealWantedDTO.setMaxPrice(new BigDecimal((Integer) solrDocument
 						.getFieldValue("retailPrice")));
-				dealWantedDTO.setTitle((String) solrDocument
-						.getFieldValue("title"));
+				String title = (String) solrDocument.getFieldValue("title");
+				if (title.length() > 25) {
+					dealWantedDTO.setTitle(title.substring(0, 24) + "...");
+
+				} else {
+					dealWantedDTO.setTitle(title);
+
+				}
 				dealWantedList.add(dealWantedDTO);
 			}
 
@@ -285,9 +300,10 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 			query.append(" AND dealCategory:" + categoryName);
 		}
 		SolrQuery parameters = new SolrQuery(query.toString());
-		parameters.setStart(pageNumber
-				* new Integer(msgConfig
-						.getProperty("search.results.per.page")));
+		parameters
+				.setStart(pageNumber
+						* new Integer(msgConfig
+								.getProperty("search.results.per.page")));
 		switch (sortType) {
 
 		case PRICE:
@@ -320,20 +336,37 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 						.getFieldValue("created"));
 				dealPostDTO.setDealCategory((String) solrDocument
 						.getFieldValue("dealCategory"));
-				dealPostDTO.setDescription((String) solrDocument
-						.getFieldValue("description"));
+				String description = (String) solrDocument
+						.getFieldValue("description");
+				if (description.length() > 25) {
+					dealPostDTO.setDescription(description.substring(0, 24)
+							+ "...");
+
+				} else {
+					dealPostDTO.setDescription(description);
+
+				}
 				dealPostDTO.setId(new Long((String) solrDocument
 						.getFieldValue("id")));
 				dealPostDTO.setRetailPrice(new BigDecimal(
 						(Integer) solrDocument.getFieldValue("retailPrice")));
 				dealPostDTO.setSalePrice(new BigDecimal((Integer) solrDocument
 						.getFieldValue("salePrice")));
-				dealPostDTO.setTitle((String) solrDocument
-						.getFieldValue("title"));
+				String title = (String) solrDocument.getFieldValue("title");
+				if (title.length() > 25) {
+					dealPostDTO.setTitle(title.substring(0, 24) + "...");
+
+				} else {
+					dealPostDTO.setTitle(title);
+
+				}
 				dealPostDTO.setStarts((Date) solrDocument
 						.getFieldValue("dealStart"));
 				dealPostDTO.setExpires((Date) solrDocument
 						.getFieldValue("dealExpiry"));
+				dealPostDTO.setDiscountPercent(DropUtil.calculateDiscount(
+						dealPostDTO.getSalePrice(),
+						dealPostDTO.getRetailPrice()));
 				dealPostList.add(dealPostDTO);
 
 			}
@@ -364,6 +397,137 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+	}
+
+	public List<DealPostDTO> getDropsForHomePage() {
+
+		List<DealPostDTO> dealPostList = new ArrayList<>();
+
+		StringBuilder query = new StringBuilder();
+
+		query.append("isDrop:" + true);
+
+		SolrQuery parameters = new SolrQuery(query.toString());
+
+		parameters.setRows(50);
+
+		try {
+
+			QueryResponse response = solrServer.query(parameters);
+			SolrDocumentList solrDocumentList = response.getResults();
+
+			for (SolrDocument solrDocument : solrDocumentList) {
+				DealPostDTO dealPostDTO = new DealPostDTO();
+				dealPostDTO.setCreatedOn((Date) solrDocument
+						.getFieldValue("created"));
+				dealPostDTO.setDealCategory((String) solrDocument
+						.getFieldValue("dealCategory"));
+				String description = (String) solrDocument
+						.getFieldValue("description");
+				if (description.length() > 25) {
+					dealPostDTO.setDescription(description.substring(0, 24)
+							+ "...");
+
+				} else {
+					dealPostDTO.setDescription(description);
+
+				}
+				dealPostDTO.setId(new Long((String) solrDocument
+						.getFieldValue("id")));
+				dealPostDTO.setRetailPrice(new BigDecimal(
+						(Integer) solrDocument.getFieldValue("retailPrice")));
+				dealPostDTO.setSalePrice(new BigDecimal((Integer) solrDocument
+						.getFieldValue("salePrice")));
+				String title = (String) solrDocument.getFieldValue("title");
+				if (title.length() > 25) {
+					dealPostDTO.setTitle(title.substring(0, 24) + "...");
+
+				} else {
+					dealPostDTO.setTitle(title);
+
+				}
+				dealPostDTO.setStarts((Date) solrDocument
+						.getFieldValue("dealStart"));
+				dealPostDTO.setExpires((Date) solrDocument
+						.getFieldValue("dealExpiry"));
+				dealPostDTO.setDiscountPercent(DropUtil.calculateDiscount(
+						dealPostDTO.getSalePrice(),
+						dealPostDTO.getRetailPrice()));
+				dealPostList.add(dealPostDTO);
+
+			}
+
+			System.out.println("SolrDocument" + solrDocumentList.size());
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dealPostList;
+
+	}
+
+	public List<DealWantedDTO> getDropsWantedForHome() {
+
+		List<DealWantedDTO> dealWantedList = new ArrayList<>();
+
+		StringBuilder query = new StringBuilder();
+
+		query.append("isDrop:" + false);
+
+		SolrQuery parameters = new SolrQuery(query.toString());
+
+		parameters.setRows(50);
+
+		parameters.setSort("tipAmount", ORDER.desc);
+
+		try {
+
+			QueryResponse response = solrServer.query(parameters);
+			SolrDocumentList solrDocumentList = response.getResults();
+
+			for (SolrDocument solrDocument : solrDocumentList) {
+				DealWantedDTO dealWantedDTO = new DealWantedDTO();
+				dealWantedDTO.setCreatedOn((Date) solrDocument
+						.getFieldValue("created"));
+				dealWantedDTO.setDealCategory((String) solrDocument
+						.getFieldValue("dealCategory"));
+				String description = (String) solrDocument
+						.getFieldValue("description");
+				if (description.length() > 25) {
+					dealWantedDTO.setDescription(description.substring(0, 24)
+							+ "...");
+
+				} else {
+					dealWantedDTO.setDescription(description);
+
+				}
+				dealWantedDTO.setId(new Long((String) solrDocument
+						.getFieldValue("id")));
+				dealWantedDTO.setMaxPrice(new BigDecimal((Integer) solrDocument
+						.getFieldValue("retailPrice")));
+				String title = (String) solrDocument.getFieldValue("title");
+				if (title.length() > 25) {
+					dealWantedDTO.setTitle(title.substring(0, 24) + "...");
+
+				} else {
+					dealWantedDTO.setTitle(title);
+
+				}
+				if (null != solrDocument.getFieldValue("tipAmount")) {
+					dealWantedDTO.setTipAmount(new BigDecimal(
+							(Integer) solrDocument.getFieldValue("tipAmount")));
+				}
+				dealWantedList.add(dealWantedDTO);
+
+			}
+
+			System.out.println("SolrDocument" + solrDocumentList.size());
+		} catch (SolrServerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return dealWantedList;
 
 	}
 

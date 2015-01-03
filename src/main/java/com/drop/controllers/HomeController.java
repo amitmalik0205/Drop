@@ -15,9 +15,12 @@ import com.drop.controller.form.RegistrationForm;
 import com.drop.controller.form.SearchDealForm;
 import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;
+import com.drop.dto.DealPostDTO;
+import com.drop.dto.DealWantedDTO;
 import com.drop.service.IDealCategoryService;
 import com.drop.service.IDealPostService;
 import com.drop.service.IDealWantedService;
+import com.drop.service.ISolrSearchService;
 import com.drop.util.DropUtil;
 
 @Controller
@@ -33,17 +36,20 @@ public class HomeController {
 	
 	@Autowired
 	private IDealPostService dealPostService;
-
+	
+	@Autowired
+	private ISolrSearchService solrSearchService;
+	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String getHomePage(ModelMap map) {
 		try {
 			
 			prepareModelForHomePage(map);
 			
-			List<DealWanted> featuredDealWantedList = dealWantedService.getAllDealWanted();
+			List<DealWantedDTO> featuredDealWantedList = solrSearchService.getDropsWantedForHome();
 			map.addAttribute("featuredDealWantedList", featuredDealWantedList);
 			
-			List<DealPost> featuredDealPostList = dealPostService.getAllDealPost();
+			List<DealPostDTO> featuredDealPostList = solrSearchService.getDropsForHomePage();
 			map.addAttribute("featuredDealPostList", featuredDealPostList);
 			
 		} catch (Exception e) {

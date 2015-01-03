@@ -134,7 +134,10 @@
 													<span class="input-group-addon"> <span
 														class="glyphicon glyphicon-calendar"></span>
 													</span>
+													
 												</div>
+												<form:errors path="starts" cssClass="error"></form:errors>
+												
 											</div>
 										</div>
 									</div>
@@ -149,6 +152,8 @@
 														class="glyphicon glyphicon-calendar"></span>
 													</span>
 												</div>
+												<form:errors path="expires" cssClass="error"></form:errors>
+												
 											</div>
 										</div>
 									</div>

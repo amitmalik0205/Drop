@@ -27,5 +27,9 @@ public interface ISolrSearchService {
 	public void edit(DealPost dealPost);
 
 	public void edit(DealWanted dealWanted);
+	
+	public List<DealWantedDTO> getDropsWantedForHome();
+	
+	public List<DealPostDTO> getDropsForHomePage();
 
 }

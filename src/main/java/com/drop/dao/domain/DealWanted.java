@@ -20,8 +20,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.hibernate.validator.constraints.Length;
-
 import com.drop.util.DropUtil;
 
 
@@ -53,7 +51,6 @@ public class DealWanted implements Serializable {
 	private String title;
 	
 	@Column(name = "title")
-	@Length(max=150)
 	public String getTitle() {
 		return title;
 	}
@@ -65,7 +62,6 @@ public class DealWanted implements Serializable {
 	private String description;
 	
 	@Column(name = "description")
-	@Length(max=150)
 	public String getDescription() {
 		return description;
 	}

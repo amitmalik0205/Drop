@@ -14,12 +14,12 @@ import com.drop.dao.domain.DealCategory;
 
 public class DealPostForm {
 	
-	@NotEmpty(message = "Deal title is required")
-	@Length(max=150)
+	@NotEmpty(message = "Drop title is required")
+	@Length(min=10,max=50)
 	private String title;
 
-	@NotEmpty(message = "Deal description is required")
-	@Length(max=150)
+	@NotEmpty(message = "Drop description is required")
+	@Length(min=10,max=250)
 	private String description;
 	
 	@NotNull(message = "Please select a category")
@@ -29,25 +29,27 @@ public class DealPostForm {
 	private List<DealCategory> dealCategories;	
 
 	@NotNull(message = "Sale Price is required")
-	@Min(value = 1, message = "Sale Price must be greater then 1")
+	@Min(value = 1, message = "Sale Price must be greater than 1")
 	@Max(value = Long.MAX_VALUE, message = "Sale Price is out of range")
 	private BigDecimal salePrice;
 	
 	@NotNull(message = "Retail Price is required")
-	@Min(value = 1, message = "Retail Price must be greater then 1")
+	@Min(value = 1, message = "Retail Price must be greater than 1")
 	@Max(value = Long.MAX_VALUE, message = "Retail Price is out of range")
 	private BigDecimal retailPrice;
 	
 	private Double discountPercent;
 	
+	@NotEmpty(message = "Please provide drop expiry date")
 	private String expires;
 	
+	@NotEmpty(message = "Please provide drop start date")
 	private String starts;
 	
-	@Length(max=150)
+	@Length(max=250)
 	private String specialInstructions;
 	
-	@NotNull(message = "Please select deal type")
+	@NotNull(message = "Please select drop type")
 	private String dealType;
 
 	private Boolean couponsRequired;

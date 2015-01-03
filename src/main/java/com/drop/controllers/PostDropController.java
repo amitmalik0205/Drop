@@ -1,5 +1,6 @@
 package com.drop.controllers;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -96,6 +97,8 @@ public class PostDropController {
 		}
 
 		try {
+
+			
 			String dealType = form.getDealType();
 
 			if (dealType != null) {
@@ -135,14 +138,35 @@ public class PostDropController {
 					}
 				}
 			}
+			if (result.hasErrors()) {
+				form.setDealCategories(categoryService.getAllDealCategories());
+				SearchDealForm dealForm = new SearchDealForm();
+				map.addAttribute("searchDealForm", dealForm);
+				return "dealPostPage";
+			} 
 
+			String dateFormat = msgConfig.getProperty("date.format");
+			
+			Date starts = DropUtil.convertStringToDate(form.getStarts(),
+					dateFormat);
+			Date expires = DropUtil.convertStringToDate(form.getExpires(),
+					dateFormat);
+
+			if (starts.after(expires)) {
+				result.rejectValue("starts", "dropstart.after.dropexpiry");
+			}
+
+			if (form.getSalePrice().compareTo(form.getRetailPrice()) == 1) {
+				result.rejectValue("salePrice", "salePrice.more.retailprice");
+			}
+			
 			if (result.hasErrors()) {
 				form.setDealCategories(categoryService.getAllDealCategories());
 				SearchDealForm dealForm = new SearchDealForm();
 				map.addAttribute("searchDealForm", dealForm);
 				return "dealPostPage";
 			} else {
-
+				
 				form.setIpAddress(DropUtil.getIPAddress(request));
 				HttpSession session = request.getSession(false);
 				User user = (User) session.getAttribute("user");
@@ -160,6 +184,7 @@ public class PostDropController {
 
 	/*
 	 * @RequestMapping(value = "/postdrop", method = RequestMethod.POST) public
+	 * 
 	 * @ResponseBody String postDrop(@Valid DealPostForm form, BindingResult
 	 * result, ModelMap map, HttpServletRequest request) {
 	 * 
@@ -423,6 +448,28 @@ public class PostDropController {
 			}
 
 			if (result.hasErrors()) {
+				form.setDealCategories(categoryService.getAllDealCategories());
+				SearchDealForm dealForm = new SearchDealForm();
+				map.addAttribute("searchDealForm", dealForm);
+				return "dealPostPage";
+			} 
+
+			String dateFormat = msgConfig.getProperty("date.format");
+			
+			Date starts = DropUtil.convertStringToDate(form.getStarts(),
+					dateFormat);
+			Date expires = DropUtil.convertStringToDate(form.getExpires(),
+					dateFormat);
+
+			if (starts.after(expires)) {
+				result.rejectValue("starts", "dropstart.after.dropexpiry");
+			}
+
+			if (form.getSalePrice().compareTo(form.getRetailPrice()) == 1) {
+				result.rejectValue("salePrice", "salePrice.more.retailprice");
+			}
+			
+			if (result.hasErrors()) {
 				SearchDealForm dealForm = new SearchDealForm();
 				map.addAttribute("searchDealForm", dealForm);
 				form.setDealCategories(categoryService.getAllDealCategories());
@@ -431,6 +478,7 @@ public class PostDropController {
 
 			form.setIpAddress(DropUtil.getIPAddress(request));
 			User user = WebUtil.getSessionUser(session);
+
 			form.setUserId(user.getUserId());
 			dealPostService.saveOrUpdate(form);
 
