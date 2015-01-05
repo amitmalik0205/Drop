@@ -13,8 +13,6 @@ import com.drop.controller.form.ForgotPasswordForm;
 import com.drop.controller.form.LoginForm;
 import com.drop.controller.form.RegistrationForm;
 import com.drop.controller.form.SearchDealForm;
-import com.drop.dao.domain.DealPost;
-import com.drop.dao.domain.DealWanted;
 import com.drop.dto.DealPostDTO;
 import com.drop.dto.DealWantedDTO;
 import com.drop.service.IDealCategoryService;

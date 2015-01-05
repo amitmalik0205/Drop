@@ -3,8 +3,6 @@ package com.drop.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.drop.util.DropUtil;
-
 public class DealWantedDTO {
 
 	private Long id;

@@ -64,4 +64,16 @@ public class DealMatchServiceImpl implements IDealMatchService {
 	public void saveOrUpdate(DealMatch dealMatch) {
 		dealMatchDao.saveOrUpdate(dealMatch);
 	}
+	
+	@Override
+	@Transactional
+	public DealMatch getDealMatchWithDealWanted(long dealMatchId) {
+		return dealMatchDao.getDealMatchWithDealWanted(dealMatchId);
+	}
+	
+	@Override
+	@Transactional
+	public DealMatch getDealMatchWithDealPost(long dealMatchId) {
+		return dealMatchDao.getDealMatchWithDealPost(dealMatchId);
+	}
 }

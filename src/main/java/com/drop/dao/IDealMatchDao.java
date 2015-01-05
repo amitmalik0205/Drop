@@ -9,4 +9,8 @@ public interface IDealMatchDao extends IGenericDao<DealMatch> {
 	
 	public DealMatch getDealMatchByDealWantedAndDealPost(long dealWantedId,
 			long dealPostId);
+	
+	public DealMatch getDealMatchWithDealWanted(long dealMatchId);
+	
+	public DealMatch getDealMatchWithDealPost(long dealMatchId);
 }

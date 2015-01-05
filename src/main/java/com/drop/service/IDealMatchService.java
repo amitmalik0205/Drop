@@ -21,5 +21,8 @@ public interface IDealMatchService {
 			long dealPostId);
 	
 	public void saveOrUpdate(DealMatch dealMatch);
+	
+	public DealMatch getDealMatchWithDealWanted(long dealMatchId);
 
+	public DealMatch getDealMatchWithDealPost(long dealMatchId);
 }

@@ -110,11 +110,11 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		document.addField("dealCategory", dealWanted.getDealCategory()
 				.getName());
 		document.addField("isDrop", false);
-		document.addField("salePrice", dealWanted.getMaxPrice());
+		document.addField("salePrice", dealWanted.getMaxPrice().longValue());
 		document.addField("localDeal", dealWanted.getWouldBuyLocally());
 		document.addField("created", dealWanted.getCreatedOn());
 		document.addField("description", dealWanted.getDescription());
-		document.addField("tipAmount", dealWanted.getTipAmount());
+		document.addField("tipAmount", dealWanted.getTipAmount().longValue());
 
 		try {
 			UpdateResponse response = solrServer.add(document);

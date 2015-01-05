@@ -1,7 +1,9 @@
 package com.drop.dao.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,8 +18,10 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "user_rating")
-public class UserRating {
+public class UserRating implements Serializable {
 	
+	private static final long serialVersionUID = -5965639004241643763L;
+
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
@@ -45,7 +49,7 @@ public class UserRating {
 	private Date date;
 	
 	// the match the user was rated on
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "deal_match_id")
 	private DealMatch dealMatch;
 

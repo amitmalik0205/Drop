@@ -27,7 +27,7 @@ import com.drop.service.ISolrSearchService;
 import com.drop.util.DropUtil;
 
 @Controller
-public class SearchController {
+public class SearchController extends BaseController {
 	
 	private static final Logger logger = Logger.getLogger(SearchController.class);
 	
@@ -76,7 +76,9 @@ public class SearchController {
 			searchDealForm.setMaxResultOnPage(new Integer(msgConfig.getProperty("search.results.per.page")));
 			searchDealForm.setSortType(SORT_TYPE.PRICE);
 			searchDealForm.setSelectedCategory("All");
-			session.setAttribute("sessionSearchDealForm", searchDealForm);			
+			session.setAttribute("sessionSearchDealForm", searchDealForm);
+			
+			prepareModelForHomePage(map);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -121,8 +123,9 @@ public class SearchController {
 					.getAllDealCategories();
 			map.addAttribute("dealCategories", categories);			
 			map.addAttribute("searchDealForm", sessionDealForm);
-						
-
+			
+			prepareModelForHomePage(map);
+			
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			e.printStackTrace();
@@ -175,6 +178,8 @@ public class SearchController {
 					.getAllDealCategories();
 			map.addAttribute("dealCategories", categories);			
 			map.addAttribute("searchDealForm", sessionDealForm);
+			
+			prepareModelForHomePage(map);
 						
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -219,7 +224,8 @@ public class SearchController {
 			map.addAttribute("dealCategories", categories);			
 			map.addAttribute("searchDealForm", sessionDealForm);
 						
-
+			prepareModelForHomePage(map);
+			
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			e.printStackTrace();

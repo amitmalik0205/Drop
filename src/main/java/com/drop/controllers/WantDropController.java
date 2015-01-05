@@ -104,6 +104,8 @@ public class WantDropController {
 		}
 
 		if (result.hasErrors()) {			
+			SearchDealForm dealForm = new SearchDealForm();		
+			map.addAttribute("searchDealForm", dealForm);
 			form.setDealCategories(categoryService.getAllDealCategories());
 			return "dealWantedPage";
 		} else {

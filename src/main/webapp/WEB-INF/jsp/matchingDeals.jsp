@@ -134,7 +134,7 @@
 	                                			<a href="viewDealDetails.htm?dealPostId=${dealPost.id}&dealWantedId=${requestScope.dealWantedToMatch.id}"  id="btnViewDealDetails${dealPost.id}" class="btn btn-primary">View Details</a>
 	                                		</li>
 	                                		<li>
-	                                			<a href="#"  id="btnGotIt${dealPost.id}" class="btn btn-primary">Got It</a>
+	                                			<a id="btnGotIt${dealPost.dealMatch.id}" onclick="gotDeal(${dealPost.dealMatch.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Got It</a>
 	                                		</li>	                                	                           	 
                     						<li>
                     							<a onclick="rejectMatchingDeal(${dealPost.id})" id="btnRejectDeal${dealPost.id}" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Reject</a>
@@ -156,7 +156,7 @@
 		                                		<a href="viewDealDetails.htm?dealPostId=${dealPost.id}&dealWantedId=${requestScope.dealWantedToMatch.id}" id="btnViewDealDetails${dealPost.id}" class="btn btn-primary" style="display: none">View Details</a>
 		                                	</li>
 		                                	<li>
-		                                		<a href="#"  id="btnGotIt${dealPost.id}" class="btn btn-primary" style="display: none">Got It</a>
+		                                		<a id="btnGotIt${dealPost.dealMatch.id}" onclick="gotDeal(${dealPost.dealMatch.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Got It</a>		                                	
 		                                	</li>	                                	                           	 
 	                    					<li>
 	                    						<a onclick="rejectMatchingDeal(${dealPost.id})" style="display: none" id="btnRejectDeal${dealPost.id}" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Reject</a>
@@ -271,6 +271,40 @@
         			
         			items: {
             		      src: 'showReasonToRejectDialog.htm?dealPostId='+$dealPostId+"&dealWantedId="+$("#txtDealWantedToMatchHidden").val(),
+            		      type: 'ajax'
+            		  },
+        			
+            		  ajax: {
+              			  
+             			   // Ajax settings object that will extend default one - http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings
+             			  // For example-- settings: {cache:false, async:false}
+             			  settings: null, 
+             			            			 
+             			   // CSS class that will be added to body during the loading (adds "progress" cursor)
+             			  cursor: 'mfp-ajax-cur',
+             			  
+             			  //  Error message, can contain %curr% and %total% tags if gallery is enabled
+             			  tError: '<a href="%url%">The content</a> could not be loaded.....' 
+             			},
+             		  	
+           			callbacks: {
+           				beforeOpen: function () { }
+             		},
+           
+           			closeBtnInside: true,
+           			
+           			closeOnContentClick : false
+        			
+        		});
+        	} 
+        	
+        	
+        	function gotDeal($dealMatchId) {        		
+        		
+        		$.magnificPopup.open({
+        			
+        			items: {
+            		      src: 'showUserRatingDialog.htm?dealMatchId='+$dealMatchId,
             		      type: 'ajax'
             		  },
         			

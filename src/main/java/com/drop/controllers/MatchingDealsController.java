@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drop.controller.form.DealMatchForm;
 import com.drop.controller.form.SearchDealForm;
+import com.drop.controller.form.UserRatingForm;
 import com.drop.dao.domain.DealMatch;
 import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;
@@ -28,6 +29,7 @@ import com.drop.service.IDealMatchService;
 import com.drop.service.IDealPostService;
 import com.drop.service.IDealWantedService;
 import com.drop.service.ISolrSearchService;
+import com.drop.service.IUserRatingService;
 import com.drop.util.DropUtil;
 import com.drop.util.WebUtil;
 
@@ -53,6 +55,9 @@ public class MatchingDealsController {
 	
 	@Autowired
 	private IDealMatchService dealMatchService;
+	
+	@Autowired
+	private IUserRatingService userRatingService;
 	
 /*	private void initializeFormModels(ModelMap map) {
 
@@ -202,5 +207,63 @@ public class MatchingDealsController {
 			throw new DropException();
 		}		
 		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value = "/showUserRatingDialog", method = RequestMethod.GET)
+	public ModelAndView showUserRatingDialog(@RequestParam Long dealMatchId,
+			ModelMap map, HttpSession session) {
+
+		if (!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
+
+		ModelAndView modelAndView = new ModelAndView("userReviewDialog");
+
+		try {
+			UserRatingForm form = new UserRatingForm();
+			form.setDealMatchId(dealMatchId);
+			modelAndView.addObject("userRatingForm", form);
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			throw new DropException();
+		}
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value = "/saveUserRating", method = RequestMethod.POST)
+	public String saveUserRating(@ModelAttribute UserRatingForm userRatingForm, ModelMap map) {
+
+		long dealWantedId = 0;
+		
+		if (!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+
+		try {
+			User sessionUser = WebUtil.getSessionUser(session);
+			
+			//If deal match belong to user then allow the review
+			DealMatch savedDealMatch = dealMatchService.getDealMatchWithDealWanted(userRatingForm.getDealMatchId());
+			
+			if(savedDealMatch != null) {
+				dealWantedId = 	savedDealMatch.getDealWanted().getId();			
+				User savedUserForDealMatch = savedDealMatch.getDealWanted().getUser();
+				
+				if(sessionUser.getUserId() == savedUserForDealMatch.getUserId()) {
+					savedDealMatch.setStatus(DEAL_MATCH_STATUS.GOTIT);					
+					userRatingService.saveUserRating(userRatingForm, savedDealMatch);
+				}
+			}					
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			return "error";
+		}
+		return "redirect:/getMatchingDeals.htm?dropWantedId="+dealWantedId;
 	}
 }

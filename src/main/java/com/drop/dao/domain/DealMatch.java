@@ -31,13 +31,18 @@ import com.drop.enums.DEAL_MATCH_STATUS;
 
 @Entity
 @Table(name = "deal_match")
-
 @NamedQueries({
     @NamedQuery(name = "DealMatch.getDealMatchByDealWantedAndDealPost", 
     		query = "FROM DealMatch dm WHERE dm.dealWanted.id=:dealWantedId AND dm.dealPost.id=:dealPostId"),
     		
     @NamedQuery(name = "DealMatch.getDealMatchWithUserByDealWanted", 
-    		query = "FROM DealMatch dm JOIN FETCH dm.dealWanted dw JOIN FETCH dw.user u WHERE dw.id=:dealWantedId AND dm.dealPost.id=:dealPostId")
+    		query = "FROM DealMatch dm JOIN FETCH dm.dealWanted dw JOIN FETCH dw.user u WHERE dw.id=:dealWantedId AND dm.dealPost.id=:dealPostId"),
+    		
+    @NamedQuery(name = "DealMatch.getDealMatchWithDealWanted",
+    		query = "FROM DealMatch dm JOIN FETCH dm.dealWanted dw JOIN FETCH dw.user u WHERE dm.id= :dealMatchId"),
+    
+    @NamedQuery(name = "DealMatch.getDealMatchWithDealPost",
+		query = "FROM DealMatch dm JOIN FETCH dm.dealPost dw JOIN FETCH dw.user u WHERE dm.id= :dealMatchId")
 })
 
 public class DealMatch implements Serializable {

@@ -28,6 +28,7 @@ public class DealMatchDaoImpl extends GenericDaoImpl<DealMatch> implements
 		return dealMatch;
 	}
 	
+	@Override
 	public DealMatch getDealMatchByDealWantedAndDealPost(long dealWantedId,
 			long dealPostId) {		
 		DealMatch dealMatch = null;
@@ -35,6 +36,26 @@ public class DealMatchDaoImpl extends GenericDaoImpl<DealMatch> implements
 		Query query = session.getNamedQuery("DealMatch.getDealMatchByDealWantedAndDealPost");
 		query.setParameter("dealWantedId", dealWantedId);
 		query.setParameter("dealPostId", dealPostId);
+		dealMatch = (DealMatch)query.uniqueResult();
+		return dealMatch;
+	}
+	
+	@Override
+	public DealMatch getDealMatchWithDealWanted(long dealMatchId) {
+		DealMatch dealMatch = null;
+		Session session = getCurrentSession();
+		Query query = session.getNamedQuery("DealMatch.getDealMatchWithDealWanted");
+		query.setParameter("dealMatchId", dealMatchId);		
+		dealMatch = (DealMatch)query.uniqueResult();
+		return dealMatch;
+	}
+	
+	@Override
+	public DealMatch getDealMatchWithDealPost(long dealMatchId) {
+		DealMatch dealMatch = null;
+		Session session = getCurrentSession();
+		Query query = session.getNamedQuery("DealMatch.getDealMatchWithDealPost");
+		query.setParameter("dealMatchId", dealMatchId);		
 		dealMatch = (DealMatch)query.uniqueResult();
 		return dealMatch;
 	}
