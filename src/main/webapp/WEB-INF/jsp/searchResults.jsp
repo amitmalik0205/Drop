@@ -204,7 +204,7 @@
 			                     <div class="col-md-4">
 		                            <div class="product-thumb">
 		                                <header class="product-header">
-		                                    <img src="img/800x600.png" alt="Image Alternative text" title="Hot mixer" />
+		                                    <img src="img/categories/${dealWantedSearch.imageName}" alt="Image Alternative text" title="Hot mixer" />
 		                                </header>
 		                                <div class="product-inner">
 		                                    <ul class="icon-group icon-list-rating" title="4/5 rating">
@@ -238,7 +238,7 @@
 					             <div class="col-md-4">
 		                            <div class="product-thumb">
 		                                <header class="product-header">
-		                                    <img src="img/800x600.png" alt="Image Alternative text" title="the best mode of transport here in maldives" />
+		                                    <img src="img/categories/${dealPostSearch.imageName}" alt="Image Alternative text" title="the best mode of transport here in maldives" />
 		                                </header>
 		                                <div class="product-inner">
 		                                    <ul class="icon-group icon-list-rating" title="3.1/5 rating">

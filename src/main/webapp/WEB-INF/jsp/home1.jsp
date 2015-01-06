@@ -190,9 +190,9 @@
                     	<c:forEach items="${requestScope.featuredDealWantedList}" var="featuredDealWanted">
 	                        <a class="col-md-3" href="#">
 	                            <div class="product-thumb">
-	                                <!-- <header class="product-header">
-	                                    <img src="img/800x600.png" alt="Image Alternative text" title="Ana 29" />
-	                                </header> -->
+	                                 <header class="product-header">
+	                                    <img src="img/categories/${featuredDealWanted.imageName}" alt="Image Alternative text" title="Ana 29" />
+	                                </header>
 	                                <div class="product-inner">
 	                                    <h5 class="product-title">${featuredDealWanted.title}</h5>
 	                                    <p class="product-desciption">${featuredDealWanted.description}</p>
@@ -211,7 +211,7 @@
 	                            </div>
 	                        </a>                    	
                     	</c:forEach>
-                    </div>	<a href="#" class="btn btn-white btn-lg btn-ghost">Find More</a>
+                    </div>	<a href="searchMore.htm?searchType=Drop Wanted" class="btn btn-white btn-lg btn-ghost">Find More</a>
                 </div>
             </div>
         </div>
@@ -224,7 +224,7 @@
 		                    <a class="col-md-2 col-masonry" href="#">
 		                        <div class="product-thumb">
 		                            <header class="product-header">
-		                                <img src="img/800x600.png" alt="Image Alternative text" title="cascada" />
+		                                <img src="img/categories/${featuredDealPost.imageName}" alt="Image Alternative text" title="cascada" />
 		                            </header>
 		                            <div class="product-inner">
 		                                <h5 class="product-title">${featuredDealPost.title}</h5>
@@ -242,7 +242,7 @@
 		                    </a>
 	                   </c:forEach> 
                 </div>	
-                <a href="#" class="btn btn-primary btn-ghost">Explore All New Deals</a>
+                <a href="searchMore.htm?searchType=Drops" class="btn btn-primary btn-ghost">Explore All New Deals</a>
             </div>
             <div class="gap"></div>
         </div>

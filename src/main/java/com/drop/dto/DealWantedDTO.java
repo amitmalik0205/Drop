@@ -6,6 +6,17 @@ import java.util.Date;
 public class DealWantedDTO {
 
 	private Long id;
+	
+	private String imageName;
+	
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
 
 	public Long getId() {
 		return id;

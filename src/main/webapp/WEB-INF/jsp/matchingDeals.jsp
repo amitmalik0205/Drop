@@ -51,14 +51,14 @@
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                     <div class="row">
-                        <!-- <div class="col-md-7">
+                       <%--  <div class="col-md-7">
                             <div class="fotorama" data-nav="thumbs" data-allowfullscreen="1" data-thumbheight="150" data-thumbwidth="150">
-                                <img src="img/800x600.png" alt="Image Alternative text" title="Gamer Chick" />
-                                <img src="img/800x600.png" alt="Image Alternative text" title="AMaze" />
+                                <img src="img/categories/${requestScope.dealWantedToMatch.dealCategory.picturePath}" alt="Image Alternative text" title="Gamer Chick" />
+                               <!--  <img src="img/800x600.png" alt="Image Alternative text" title="AMaze" />
                                 <img src="img/800x600.png" alt="Image Alternative text" title="Urbex Esch/Lux with Laney and Laaaaag" />
-                                <img src="img/800x600.png" alt="Image Alternative text" title="Food is Pride" />
+                                <img src="img/800x600.png" alt="Image Alternative text" title="Food is Pride" /> -->
                             </div>
-                        </div> -->
+                        </div> --%>
                         <div class="col-md-12">
                             <div class="product-info box">
                                 <h3>${requestScope.dealWantedToMatch.title}</h3>
@@ -111,7 +111,7 @@
                     <c:forEach var="dealPost" items="${requestScope.matchingDealPostList}" varStatus="counter">
                     	<div class="product-thumb product-thumb-horizontal">
 	                        <header class="product-header">
-	                            <img src="img/800x600.png" alt="Image Alternative text" title="The Violin" />
+	                            <img src="img/categories/${dealPost.dealCategory.picturePath}" alt="Image Alternative text" title="The Violin" />
 	                        </header>
 	                        <div class="product-inner">
 	                            <h5 class="product-title">${dealPost.title}</h5>

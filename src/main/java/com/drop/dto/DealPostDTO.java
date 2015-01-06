@@ -3,14 +3,23 @@ package com.drop.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Transient;
-
 import com.drop.dao.domain.User;
 import com.drop.util.DropUtil;
 
 public class DealPostDTO {
 
 	private Long id;
+	
+	private String imageName;
+	
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
 
 	public Long getId() {
 		return id;

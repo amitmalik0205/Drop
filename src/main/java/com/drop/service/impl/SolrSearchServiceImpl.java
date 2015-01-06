@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.drop.dao.IDealCategoryDao;
 import com.drop.dao.domain.DealMatch;
 import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;
@@ -28,6 +29,7 @@ import com.drop.dto.DealPostDTO;
 import com.drop.dto.DealWantedDTO;
 import com.drop.enums.DEAL_MATCH_STATUS;
 import com.drop.enums.SORT_TYPE;
+import com.drop.service.IDealCategoryService;
 import com.drop.service.IDealMatchService;
 import com.drop.service.IDealPostService;
 import com.drop.service.ISolrSearchService;
@@ -44,6 +46,9 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 
 	@Autowired
 	private IDealMatchService dealMatchService;
+	
+	@Autowired
+	private IDealCategoryService dealCategoryService;
 
 	public SolrSearchServiceImpl() {
 		solrServer = new HttpSolrServer(DropConstants.SOLR_SEARCH_URL);
@@ -114,8 +119,11 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		document.addField("localDeal", dealWanted.getWouldBuyLocally());
 		document.addField("created", dealWanted.getCreatedOn());
 		document.addField("description", dealWanted.getDescription());
+		if(null != dealWanted.getTipAmount()) {
 		document.addField("tipAmount", dealWanted.getTipAmount().longValue());
-
+		} else {
+			document.addField("tipAmount", 0);			
+		}
 		try {
 			UpdateResponse response = solrServer.add(document);
 			solrServer.commit();
@@ -250,6 +258,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 						.getFieldValue("created"));
 				dealWantedDTO.setDealCategory((String) solrDocument
 						.getFieldValue("dealCategory"));
+				dealWantedDTO.setImageName(dealCategoryService
+						.getCategoryImageName(dealWantedDTO.getDealCategory()));
 				String description = (String) solrDocument
 						.getFieldValue("description");
 				if (description.length() > 25) {
@@ -336,6 +346,9 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 						.getFieldValue("created"));
 				dealPostDTO.setDealCategory((String) solrDocument
 						.getFieldValue("dealCategory"));
+				dealPostDTO.setImageName(dealCategoryService
+						.getCategoryImageName(dealPostDTO.getDealCategory()));
+
 				String description = (String) solrDocument
 						.getFieldValue("description");
 				if (description.length() > 25) {
@@ -423,6 +436,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 						.getFieldValue("created"));
 				dealPostDTO.setDealCategory((String) solrDocument
 						.getFieldValue("dealCategory"));
+				dealPostDTO.setImageName(dealCategoryService
+						.getCategoryImageName(dealPostDTO.getDealCategory()));
 				String description = (String) solrDocument
 						.getFieldValue("description");
 				if (description.length() > 25) {
@@ -492,6 +507,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 						.getFieldValue("created"));
 				dealWantedDTO.setDealCategory((String) solrDocument
 						.getFieldValue("dealCategory"));
+				dealWantedDTO.setImageName(dealCategoryService
+						.getCategoryImageName(dealWantedDTO.getDealCategory()));
 				String description = (String) solrDocument
 						.getFieldValue("description");
 				if (description.length() > 25) {
