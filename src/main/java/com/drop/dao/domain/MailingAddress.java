@@ -82,4 +82,10 @@ public class MailingAddress implements Serializable {
 		this.zip = zip;
 	}
 
+	
+	@Override
+	public String toString() {
+		return this.addressLine1 + ", " + this.addressLine2 + ", " + this.city
+				+ ", " + this.state + ", " + this.zip;
+	}
 }

@@ -221,7 +221,7 @@
                 <h2 class="mb30">Most Recent Found Drops</h2>
                 <div class="row row-wrap" id="masonry">
 	                <c:forEach items="${requestScope.featuredDealPostList}" var="featuredDealPost">
-		                    <a class="col-md-2 col-masonry" href="#">
+		                    <a class="col-md-2 col-masonry" href="viewDropDetails.htm?dealPostId=${featuredDealPost.id}">
 		                        <div class="product-thumb">
 		                            <header class="product-header">
 		                                <img src="img/categories/${featuredDealPost.imageName}" alt="Image Alternative text" title="cascada" />

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.drop.controller.form.DealMatchForm;
+import com.drop.controller.form.DropRatingForm;
 import com.drop.controller.form.SearchDealForm;
 import com.drop.controller.form.UserRatingForm;
 import com.drop.dao.domain.DealMatch;
@@ -28,6 +29,7 @@ import com.drop.service.IDealCategoryService;
 import com.drop.service.IDealMatchService;
 import com.drop.service.IDealPostService;
 import com.drop.service.IDealWantedService;
+import com.drop.service.IDropRatingService;
 import com.drop.service.ISolrSearchService;
 import com.drop.service.IUserRatingService;
 import com.drop.util.DropUtil;
@@ -58,6 +60,9 @@ public class MatchingDealsController {
 	
 	@Autowired
 	private IUserRatingService userRatingService;
+	
+	@Autowired
+	private IDropRatingService dropRatingService;
 	
 /*	private void initializeFormModels(ModelMap map) {
 
@@ -193,7 +198,7 @@ public class MatchingDealsController {
 							.getUserId()
 					&& savedDealMatch.getStatus() == DEAL_MATCH_STATUS.ACCEPTED) {
 				
-				DealPost dealPost = dealPostService.getDealPostWithUser(dealPostId);
+				DealPost dealPost = dealPostService.getDealPostWithUserAndRating(dealPostId);
 				map.addAttribute("dealPostDetail", dealPost);
 				map.addAttribute("dealWantedToMatch", savedDealMatch.getDealWanted());
 			} 
@@ -265,5 +270,53 @@ public class MatchingDealsController {
 			return "error";
 		}
 		return "redirect:/getMatchingDeals.htm?dropWantedId="+dealWantedId;
+	}
+	
+	
+	@RequestMapping(value = "/showDropRatingDialog", method = RequestMethod.GET)
+	public ModelAndView showDropRatingDialog(@RequestParam long dealPostId,
+			@RequestParam long dealWantedId, ModelMap map) {
+
+		if (!WebUtil.userAuthorization(session)) {
+			return new ModelAndView("redirect:/home.htm");
+		}
+
+		ModelAndView modelAndView = new ModelAndView("dropRatingDialog");
+
+		try {
+			DropRatingForm form = new DropRatingForm();
+			form.setDealPostId(dealPostId);
+			form.setDealWantedId(dealWantedId);
+			modelAndView.addObject("dropRatingForm", form);
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			throw new DropException();
+		}
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value = "/saveDropRating", method = RequestMethod.POST)
+	public String saveDropRating(@ModelAttribute DropRatingForm dropRatingForm,
+			ModelMap map) {
+
+		if (!WebUtil.userAuthorization(session)) {
+			return "redirect:/home.htm";
+		}
+
+		try {
+
+			dropRatingService.saveDropRating(dropRatingForm);
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			return "error";
+		}
+		return "redirect:/viewDealDetails.htm?dealPostId="
+				+ dropRatingForm.getDealPostId() + "&dealWantedId="
+				+ dropRatingForm.getDealWantedId();
 	}
 }

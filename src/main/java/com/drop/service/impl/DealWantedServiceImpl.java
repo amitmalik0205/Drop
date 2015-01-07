@@ -121,4 +121,10 @@ public class DealWantedServiceImpl implements IDealWantedService {
 	public List<DealWanted> getAllDealWanted() {
 		return dealWantedDao.getFirstNEntities(0, 4);
 	}
+	
+	@Override
+	@Transactional
+	public DealWanted loadDealWantedById(Long dealWantedId) {
+		return dealWantedDao.loadEntity(dealWantedId);
+	}
 }

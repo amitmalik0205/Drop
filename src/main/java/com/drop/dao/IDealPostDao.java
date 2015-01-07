@@ -9,4 +9,6 @@ public interface IDealPostDao extends IGenericDao<DealPost> {
 	public List<DealPost> getAllActiveDealPostForUser(Long userId);
 	
 	public DealPost getDealPostWithUser(Long dealPostId);
+	
+	public DealPost getDealPostWithUserAndRating(Long dealPostId);
 }

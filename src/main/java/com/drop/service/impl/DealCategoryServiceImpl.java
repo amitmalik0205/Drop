@@ -39,6 +39,7 @@ public class DealCategoryServiceImpl implements IDealCategoryService {
 						500, false, 0, null);
 
 				CacheManager.getInstance().addCache(categoryCache);
+				CacheManager.getInstance().addCache(categoryCache);
 			}
 
 			categories = categoryDao.findAll();

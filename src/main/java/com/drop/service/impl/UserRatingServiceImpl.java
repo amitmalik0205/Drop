@@ -1,5 +1,7 @@
 package com.drop.service.impl;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,7 @@ public class UserRatingServiceImpl implements IUserRatingService {
 		userRating.setDescription(userRatingForm.getDescription());
 		userRating.setDealMatch(dealMatch);
 		userRating.setRateeId(dealMatch.getDealWanted().getUser());
+		userRating.setDate(new Date());
 		
 		DealMatch savedDealMatch = dealMatchDao.getDealMatchWithDealPost(dealMatch.getId());
 		

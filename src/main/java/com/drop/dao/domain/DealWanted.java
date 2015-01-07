@@ -27,7 +27,10 @@ import com.drop.util.DropUtil;
 @Table(name = "deal_wanted")
 @NamedQueries({
     @NamedQuery(name = "DealWanted.getAllActiveDealWantedForUser", 
-    		query = "FROM DealWanted dw join fetch dw.dealCategory dc WHERE dw.user.userId = :userId and dw.active=true")
+    		query = "FROM DealWanted dw join fetch dw.dealCategory dc WHERE dw.user.userId = :userId and dw.active=true"),
+    		
+    @NamedQuery(name = "DealWanted.getDealWantedWithUser",
+     		query = "FROM DealWanted dw join fetch dw.user u WHERE dw.id = :dealWantedId")
 })
 
 public class DealWanted implements Serializable {

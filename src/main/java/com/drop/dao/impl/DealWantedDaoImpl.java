@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.drop.dao.IDealWantedDao;
+import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;
 
 @Repository
@@ -24,5 +25,15 @@ public class DealWantedDaoImpl extends GenericDaoImpl<DealWanted> implements IDe
 		query.setParameter("userId", userId);
 		list = query.list();
 		return list;
+	}
+	
+	@Override
+	public DealWanted getDealWantedWithUser(long dealWantedId) {
+		Session session = getCurrentSession();
+		DealWanted dealWanted = null;		
+		Query query = session.getNamedQuery("DealWanted.getDealWantedWithUser");
+		query.setParameter("dealWantedId", dealWantedId);
+		dealWanted = (DealWanted)query.uniqueResult();
+		return dealWanted;	
 	}
 }

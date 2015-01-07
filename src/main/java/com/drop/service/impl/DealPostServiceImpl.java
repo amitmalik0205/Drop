@@ -240,4 +240,16 @@ public class DealPostServiceImpl implements IDealPostService {
 	public List<DealPost> getAllDealPost() {
 		return dealPostDao.getFirstNEntities(0, 18);
 	}
+	
+	@Override
+	@Transactional
+	public DealPost loadDealPostbyId(long dealPostId) {
+		return dealPostDao.loadEntity(dealPostId);
+	}
+	
+	@Override
+	@Transactional
+	public DealPost getDealPostWithUserAndRating(long dealPostId) {
+		return dealPostDao.getDealPostWithUserAndRating(dealPostId);
+	}
 }

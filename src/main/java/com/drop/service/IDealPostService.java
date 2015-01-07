@@ -21,4 +21,8 @@ public interface IDealPostService {
 	public DealPost getDealPostWithUser(Long dealPostId);
 	
 	public List<DealPost> getAllDealPost();
+	
+	public DealPost loadDealPostbyId(long dealPostId);
+	
+	public DealPost getDealPostWithUserAndRating(long dealPostId);
 }

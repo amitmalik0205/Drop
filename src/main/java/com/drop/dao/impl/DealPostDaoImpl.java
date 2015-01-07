@@ -35,4 +35,14 @@ public class DealPostDaoImpl extends GenericDaoImpl<DealPost> implements IDealPo
 		dealPost = (DealPost)query.uniqueResult();
 		return dealPost;
 	}
+	
+	@Override
+	public DealPost getDealPostWithUserAndRating(Long dealPostId) {
+		Session session = getCurrentSession();
+		DealPost dealPost = null;		
+		Query query = session.getNamedQuery("DealPost.getDealPostWithUserAndRating");
+		query.setParameter("dealPostId", dealPostId);
+		dealPost = (DealPost)query.uniqueResult();
+		return dealPost;
+	}
 }

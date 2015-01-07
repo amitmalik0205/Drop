@@ -3,6 +3,7 @@ package com.drop.dao.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -16,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -31,7 +33,10 @@ import com.drop.util.DropUtil;
     		query = "FROM DealPost dp join fetch dp.dealCategory dc join fetch dp.user u WHERE u.userId = :userId and dp.active=true"),
     		
     @NamedQuery(name = "DealPost.getDealPostWithUser",
-    		query = "FROM DealPost dp JOIN FETCH dp.user u WHERE dp.id = :dealPostId")
+    		query = "FROM DealPost dp JOIN FETCH dp.user u WHERE dp.id = :dealPostId"),
+    		
+    @NamedQuery(name = "DealPost.getDealPostWithUserAndRating",
+    		query = "FROM DealPost dp JOIN FETCH dp.user u LEFT JOIN FETCH dp.dropRatings dr WHERE dp.id = :dealPostId")
 })
 
 public class DealPost implements Serializable {
@@ -331,5 +336,41 @@ public class DealPost implements Serializable {
 
 	public void setDealMatch(DealMatch dealMatch) {
 		this.dealMatch = dealMatch;
+	}
+	
+	
+	private Set<DropRating> dropRatings;
+
+	@OneToMany(fetch=FetchType.LAZY, mappedBy = "dealPost")
+	public Set<DropRating> getDropRatings() {
+		return dropRatings;
+	}
+
+	public void setDropRatings(Set<DropRating> dropRatings) {
+		this.dropRatings = dropRatings;
+	}
+	
+	
+	private int totalRatings;
+
+	@Column(name="total_ratings")
+	public int getTotalRatings() {
+		return totalRatings;
+	}
+
+	public void setTotalRatings(int totalRatings) {
+		this.totalRatings = totalRatings;
+	}
+	
+	
+	private Double averageRating;
+
+	@Column(name="average_rating")
+	public Double getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(Double averageRating) {
+		this.averageRating = averageRating;
 	}
 }

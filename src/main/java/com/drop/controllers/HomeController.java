@@ -17,20 +17,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.drop.controller.form.DropRatingForm;
 import com.drop.controller.form.ForgotPasswordForm;
 import com.drop.controller.form.LoginForm;
 import com.drop.controller.form.RegistrationForm;
 import com.drop.controller.form.SearchDealForm;
 import com.drop.dao.domain.DealCategory;
+import com.drop.dao.domain.DealMatch;
+import com.drop.dao.domain.DealPost;
+import com.drop.dao.domain.User;
 import com.drop.dto.DealPostDTO;
 import com.drop.dto.DealWantedDTO;
+import com.drop.enums.DEAL_MATCH_STATUS;
 import com.drop.enums.SORT_TYPE;
 import com.drop.exception.DropException;
 import com.drop.service.IDealCategoryService;
 import com.drop.service.IDealPostService;
 import com.drop.service.IDealWantedService;
+import com.drop.service.IDropRatingService;
 import com.drop.service.ISolrSearchService;
+import com.drop.service.IUserRatingService;
 import com.drop.util.DropUtil;
+import com.drop.util.WebUtil;
 
 @Controller
 public class HomeController {
@@ -52,6 +60,13 @@ public class HomeController {
 	@Autowired
 	@Qualifier("msgConfig")
 	private Properties msgConfig;
+		
+	@Autowired
+	private IUserRatingService userRatingService;
+	
+	@Autowired
+	private IDropRatingService dropRatingService;
+	
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String getHomePage(ModelMap map) {
@@ -146,4 +161,62 @@ public class HomeController {
 		return modelAndView;
 	}
 
+	
+	@RequestMapping(value = "/viewDropDetails", method = RequestMethod.GET)
+	public ModelAndView viewDropDetails(@RequestParam Long dealPostId, ModelMap map) {
+		
+		ModelAndView modelAndView = new ModelAndView("homePageDropDetails");
+		
+		try {			
+			
+			DealPost dealPost = dealPostService.getDealPostWithUserAndRating(dealPostId);
+			map.addAttribute("dealPostDetail", dealPost);
+						
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			throw new DropException();
+		}		
+		return modelAndView;
+	}
+	
+	
+/*	@RequestMapping(value = "/showDropRatingDialog", method = RequestMethod.GET)
+	public ModelAndView showDropRatingDialog(@RequestParam long dealPostId,
+			@RequestParam long dealWantedId, ModelMap map) {
+
+		ModelAndView modelAndView = new ModelAndView("dropRatingDialog");
+
+		try {
+			DropRatingForm form = new DropRatingForm();
+			form.setDealPostId(dealPostId);
+			form.setDealWantedId(dealWantedId);
+			modelAndView.addObject("dropRatingForm", form);
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			throw new DropException();
+		}
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value = "/saveDropRating", method = RequestMethod.POST)
+	public String saveDropRating(@ModelAttribute DropRatingForm dropRatingForm,
+			ModelMap map) {
+		
+		try {
+
+			dropRatingService.saveDropRating(dropRatingForm);
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			return "error";
+		}
+		return "redirect:/viewDealDetails.htm?dealPostId="
+				+ dropRatingForm.getDealPostId() + "&dealWantedId="
+				+ dropRatingForm.getDealWantedId();
+	}*/
 }

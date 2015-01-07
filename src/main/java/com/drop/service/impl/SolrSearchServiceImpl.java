@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.drop.dao.IDealCategoryDao;
 import com.drop.dao.domain.DealMatch;
 import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;

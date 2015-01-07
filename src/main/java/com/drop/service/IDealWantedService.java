@@ -19,4 +19,6 @@ public interface IDealWantedService {
 	public void deleteDealWanted(ReasonToDeleteForm form);
 	
 	public List<DealWanted> getAllDealWanted();
+	
+	public DealWanted loadDealWantedById(Long dealWantedId);
 }

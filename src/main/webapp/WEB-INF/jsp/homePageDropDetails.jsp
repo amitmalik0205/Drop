@@ -93,11 +93,11 @@
                                 
                                 <div class="row">
                                 	<div class="col-md-offset-9 col-md-3">
-                                		<a href="getMatchingDeals.htm?dropWantedId=${requestScope.dealWantedToMatch.id}" class="btn btn-primary" style="float: right;">Back to Matches</a> 
+                                		<a href="home.htm" class="btn btn-primary" style="float: right;">Back to Home</a> 
                                 	</div>
                             	</div>                                                             
                             </div> 
-                            	<input id="txtDealWantedToMatchHidden" type="hidden" value="${requestScope.dealWantedToMatch.id}"/>                           
+                            	       
                         </div>
                     </div>
                     
@@ -108,10 +108,8 @@
                     <div class="tabbable">
                         <ul class="nav nav-tabs" id="myTab">
                             <li class="active"><a href="#tab-1" data-toggle="tab"><i class="fa fa-pencil"></i>Desciption</a>
-                            </li>
-                            <li><a href="#tab-2" data-toggle="tab"><i class="fa fa-info"></i>Additional Information</a>
-                            </li>                      
-                            <li><a href="#tab-3" data-toggle="tab"><i class="fa fa-comments"></i>Reviews</a>
+                            </li>                                                  
+                            <li><a href="#tab-2" data-toggle="tab"><i class="fa fa-comments"></i>Reviews</a>
                             </li>
                         </ul>
                         
@@ -119,49 +117,8 @@
                             <div class="tab-pane fade in active" id="tab-1">
                             	<p>${requestScope.dealPostDetail.description}</p>
                             </div>
+
                             <div class="tab-pane fade" id="tab-2">
-                                <table class="table table-striped mb0">
-                                    <tbody>
-                                        <tr>
-                                            <td>Sale Price</td>
-                                            <td>${requestScope.dealPostDetail.salePrice}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Retail Price</td>
-                                            <td>${requestScope.dealPostDetail.retailPrice}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Discount</td>
-                                            <td>${requestScope.dealPostDetail.discountPercent}%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Time Remaining</td>
-                                            <td>${requestScope.dealPostDetail.timeToExpire}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Special Instructions</td>
-                                            <td>${requestScope.dealPostDetail.specialInstructions}</td>
-                                        </tr> 
-                                        
-                                        <c:if test="${requestScope.dealPostDetail.onlineDeal eq true}">
-                                        	<tr>
-                                            	<td>Deal URL</td>
-                                            	<td>${requestScope.dealPostDetail.location.url}</td>
-                                            </tr>	                                       
-                                        </c:if>    
-                                        
-                                        <c:if test="${requestScope.dealPostDetail.localDeal eq true}">
-                                        	<tr>
-                                            	<td>Deal Address</td>
-                                            	<td>${requestScope.dealPostDetail.location.mailingAddress}</td>
-                                            </tr>	                                       
-                                        </c:if> 
-                                                                                                                      
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <div class="tab-pane fade" id="tab-3">
                             	<c:forEach items="${requestScope.dealPostDetail.dropRatings}" var="dropRating">
 	                            	<ul class="comments-list">
 	                                    <li>
@@ -186,8 +143,11 @@
 	                                        </article>
 	                                    </li>
 	                                </ul>                             	
-                            	</c:forEach>                                                               
-                               <a onclick="rateDrop(${requestScope.dealPostDetail.id}, ${requestScope.dealWantedToMatch.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Add a review</a>
+                            	</c:forEach> 
+                            	      
+                            	<c:if test="${sessionScope.user ne null}">
+                            		<a onclick="rateDrop(${requestScope.dealPostDetail.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Add a review</a>
+                            	</c:if>                                                                                       
                             </div>
                         </div>
                     </div>										
@@ -297,7 +257,7 @@
         	}
         	
         	
-        	function rateDrop($dealPostId, $dealWantedId) {        		
+        	function rateDrop($dealPostId) {        		
         		
         		$.magnificPopup.open({
         			
