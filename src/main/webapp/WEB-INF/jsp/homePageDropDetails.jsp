@@ -42,6 +42,12 @@
 
 
  		<jsp:include page="header.jsp"/>
+ 		
+ 		<jsp:include page="loginDialog.jsp"/>
+ 		
+ 		<jsp:include page="registrationDialog.jsp"/>
+ 		
+ 		<jsp:include page="forgotPasswordDialog.jsp"/>
 
 		<jsp:include page="search.jsp"/>
 
@@ -87,15 +93,15 @@
                             		<small><a href="#tab-3" class="text-muted">based on ${requestScope.dealPostDetail.totalRatings} reviews</a></small>                  		                            		
                             	</c:if>                            	                             	
                             	 	                            		                          
-                                <h3>${requestScope.dealPostDetail.title}</h3>
+                                <h3>${requestScope.dealPostDetail.title}  ${requestScope.reviewSaved}</h3>
                                 
                                 <p class="product-info-price">$${requestScope.dealPostDetail.salePrice}</p>
                                 
-                                <div class="row">
+                                <!-- <div class="row">
                                 	<div class="col-md-offset-9 col-md-3">
                                 		<a href="home.htm" class="btn btn-primary" style="float: right;">Back to Home</a> 
                                 	</div>
-                            	</div>                                                             
+                            	</div>  -->                                                            
                             </div> 
                             	       
                         </div>
@@ -106,51 +112,111 @@
 					<!-- Details of the item in tabs -->
 					
                     <div class="tabbable">
-                        <ul class="nav nav-tabs" id="myTab">
-                            <li class="active"><a href="#tab-1" data-toggle="tab"><i class="fa fa-pencil"></i>Desciption</a>
-                            </li>                                                  
-                            <li><a href="#tab-2" data-toggle="tab"><i class="fa fa-comments"></i>Reviews</a>
-                            </li>
-                        </ul>
+                    
+                    	<c:choose>
+                    		<c:when test="${not empty param.reviewSaved}">
+                    			<ul class="nav nav-tabs" id="myTab">
+                            		<li id="tab-1-acnhor">
+                            			<a href="#tab-1" data-toggle="tab"><i class="fa fa-pencil"></i>Desciption</a>
+                            		</li>                                                  
+                            		<li class="active" id="tab-2-acnhor">
+                            			<a href="#tab-2" data-toggle="tab"><i class="fa fa-comments"></i>Reviews</a>
+                            		</li>
+                       			 </ul>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<ul class="nav nav-tabs" id="myTab">
+                            		<li class="active" id="tab-1-acnhor">
+                            			<a href="#tab-1" data-toggle="tab"><i class="fa fa-pencil"></i>Desciption</a>
+                            		</li>                                                  
+                            		<li id="tab-2-acnhor">
+                            			<a href="#tab-2" data-toggle="tab"><i class="fa fa-comments"></i>Reviews</a>
+                            		</li>
+                       			 </ul>
+                    		</c:otherwise>
+                    	</c:choose>
                         
-                        <div class="tab-content">
-                            <div class="tab-pane fade in active" id="tab-1">
-                            	<p>${requestScope.dealPostDetail.description}</p>
-                            </div>
-
-                            <div class="tab-pane fade" id="tab-2">
-                            	<c:forEach items="${requestScope.dealPostDetail.dropRatings}" var="dropRating">
-	                            	<ul class="comments-list">
-	                                    <li>
-	                                        <!-- REVIEW -->
-	                                        <article class="comment">
-	                                            <div class="comment-author">
-	                                                <img src="img/50x50.png" alt="Image Alternative text" title="Gamer Chick" />
-	                                            </div>
-	                                            <div class="comment-inner">
-	                                            	<c:if test="${dropRating.rating gt 0}">
-	                                            		<ul class="icon-group icon-list-rating comment-review-rate" title="5/5 rating">
-		                                            		<c:forEach var="i" begin="1" end="${dropRating.rating}">
-	   															<li>
-	   																<i class="fa fa-star"></i>
-	                                                    		</li>
-															</c:forEach>
-														</ul>	
-	                                            	</c:if>	                                            	
-	                                                <span class="comment-author-name">${dropRating.rater.firstName} ${dropRating.rater.lastName}</span>
-	                                                <p class="comment-content">${dropRating.description}</p>
-	                                            </div>
-	                                        </article>
-	                                    </li>
-	                                </ul>                             	
-                            	</c:forEach> 
-                            	      
-                            	<c:if test="${sessionScope.user ne null}">
-                            		<a onclick="rateDrop(${requestScope.dealPostDetail.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Add a review</a>
-                            	</c:if>                                                                                       
-                            </div>
+                        <div class="tab-content">	
+                        	<c:choose>
+	                        	<c:when test="${not empty param.reviewSaved}">
+									<div class="tab-pane fade" id="tab-1">
+										<p>${requestScope.dealPostDetail.description}</p>
+									</div>
+	
+									<div class="tab-pane fade in active" id="tab-2">
+		                            	<c:forEach items="${requestScope.dealPostDetail.dropRatings}" var="dropRating">
+			                            	<ul class="comments-list">
+			                                    <li>
+			                                        <!-- REVIEW -->
+			                                        <article class="comment">
+			                                            <div class="comment-author">
+			                                                <img src="img/50x50.png" alt="Image Alternative text" title="Gamer Chick" />
+			                                            </div>
+			                                            <div class="comment-inner">
+			                                            	<c:if test="${dropRating.rating gt 0}">
+			                                            		<ul class="icon-group icon-list-rating comment-review-rate" title="5/5 rating">
+				                                            		<c:forEach var="i" begin="1" end="${dropRating.rating}">
+			   															<li>
+			   																<i class="fa fa-star"></i>
+			                                                    		</li>
+																	</c:forEach>
+																</ul>	
+			                                            	</c:if>	                                            	
+			                                                <span class="comment-author-name">${dropRating.rater.firstName} ${dropRating.rater.lastName}</span>
+			                                                <p class="comment-content">${dropRating.description}</p>
+			                                            </div>
+			                                        </article>
+			                                    </li>
+			                                </ul>                             	
+		                            	</c:forEach> 
+		                            	      
+		                            	<c:if test="${sessionScope.user ne null}">
+		                            		<a onclick="rateDrop(${requestScope.dealPostDetail.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Add a review</a>
+		                            	</c:if>                                                                                       
+		                            </div>
+								</c:when>
+								
+								<c:otherwise>
+									<div class="tab-pane in active" id="tab-1">
+										<p>${requestScope.dealPostDetail.description}</p>
+									</div>
+	
+									<div class="tab-pane fade" id="tab-2">
+		                            	<c:forEach items="${requestScope.dealPostDetail.dropRatings}" var="dropRating">
+			                            	<ul class="comments-list">
+			                                    <li>
+			                                        <!-- REVIEW -->
+			                                        <article class="comment">
+			                                            <div class="comment-author">
+			                                                <img src="img/50x50.png" alt="Image Alternative text" title="Gamer Chick" />
+			                                            </div>
+			                                            <div class="comment-inner">
+			                                            	<c:if test="${dropRating.rating gt 0}">
+			                                            		<ul class="icon-group icon-list-rating comment-review-rate" title="5/5 rating">
+				                                            		<c:forEach var="i" begin="1" end="${dropRating.rating}">
+			   															<li>
+			   																<i class="fa fa-star"></i>
+			                                                    		</li>
+																	</c:forEach>
+																</ul>	
+			                                            	</c:if>	                                            	
+			                                                <span class="comment-author-name">${dropRating.rater.firstName} ${dropRating.rater.lastName}</span>
+			                                                <p class="comment-content">${dropRating.description}</p>
+			                                            </div>
+			                                        </article>
+			                                    </li>
+			                                </ul>                             	
+		                            	</c:forEach> 
+		                            	      
+		                            	<c:if test="${sessionScope.user ne null}">
+		                            		<a onclick="rateDrop(${requestScope.dealPostDetail.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Add a review</a>
+		                            	</c:if>                                                                                       
+		                            </div>
+								</c:otherwise>								
+                        	</c:choose>						
+							
                         </div>
-                    </div>										
+                    </div>																			
 					
                     <div class="gap"></div>
                    
@@ -198,8 +264,8 @@
         
 	        $('.dateTimePicker').datetimepicker({
 	            pick12HourFormat: false,
-	        });  
-        
+	        });  	      
+	        	            
         	function hideViewDetails(id) { 
         		var dealPostId = id;
 				var dealWantedId = $("#txtDealWantedToMatchHidden").val();
@@ -262,7 +328,7 @@
         		$.magnificPopup.open({
         			
         			items: {
-            		      src: 'showDropRatingDialog.htm?dealPostId='+$dealPostId+'&dealWantedId='+$dealWantedId,
+            		      src: 'showHomePageDropRatingDialog.htm?dealPostId='+$dealPostId,
             		      type: 'ajax'
             		  },
         			

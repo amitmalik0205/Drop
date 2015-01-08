@@ -309,7 +309,8 @@ public class MatchingDealsController {
 		try {
 
 			dropRatingService.saveDropRating(dropRatingForm);
-
+			map.addAttribute("reviewSaved", true);
+			
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			e.printStackTrace();

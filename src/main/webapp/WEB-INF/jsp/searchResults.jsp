@@ -207,18 +207,6 @@
 		                                    <img src="img/categories/${dealWantedSearch.imageName}" alt="Image Alternative text" title="Hot mixer" />
 		                                </header>
 		                                <div class="product-inner">
-		                                    <ul class="icon-group icon-list-rating" title="4/5 rating">
-		                                        <li><i class="fa fa-star"></i>
-		                                        </li>
-		                                        <li><i class="fa fa-star"></i>
-		                                        </li>
-		                                        <li><i class="fa fa-star"></i>
-		                                        </li>
-		                                        <li><i class="fa fa-star"></i>
-		                                        </li>
-		                                        <li><i class="fa fa-star-o"></i>
-		                                        </li>
-		                                    </ul>
 		                                    <h5 class="product-title">${dealWantedSearch.title}</h5>
 		                                    <p class="product-desciption">${dealWantedSearch.description}</p>
 		                                    <div class="product-meta">
@@ -235,24 +223,13 @@
                         
                         <c:if test="${fn:length(requestScope.dealPostListForSearch) ne null}">                    	                    	
                     		<c:forEach var="dealPostSearch" items="${requestScope.dealPostListForSearch}" varStatus="counter">
+                    			<a href="viewHomePageDropDetails.htm?dealPostId=${dealPostSearch.id}">
 					             <div class="col-md-4">
 		                            <div class="product-thumb">
 		                                <header class="product-header">
 		                                    <img src="img/categories/${dealPostSearch.imageName}" alt="Image Alternative text" title="the best mode of transport here in maldives" />
 		                                </header>
-		                                <div class="product-inner">
-		                                    <ul class="icon-group icon-list-rating" title="3.1/5 rating">
-		                                        <li><i class="fa fa-star"></i>
-		                                        </li>
-		                                        <li><i class="fa fa-star"></i>
-		                                        </li>
-		                                        <li><i class="fa fa-star"></i>
-		                                        </li>
-		                                        <li><i class="fa fa-star-half-empty"></i>
-		                                        </li>
-		                                        <li><i class="fa fa-star-o"></i>
-		                                        </li>
-		                                    </ul>
+		                                <div class="product-inner">		                                    
 		                                    <h5 class="product-title">${dealPostSearch.title}</h5>
 		                                    <p class="product-desciption">${dealPostSearch.description}</p>
 		                                    <div class="product-meta">
@@ -267,7 +244,8 @@
 		                                    </div>
 		                                </div>
 		                            </div>
-		                        </div>                    			
+		                        </div> 
+		                        </a>                   			
                     		</c:forEach>
 	                    </c:if>                                               
                     </div>

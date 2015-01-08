@@ -106,89 +106,192 @@
 					<!-- Details of the item in tabs -->
 					
                     <div class="tabbable">
-                        <ul class="nav nav-tabs" id="myTab">
-                            <li class="active"><a href="#tab-1" data-toggle="tab"><i class="fa fa-pencil"></i>Desciption</a>
-                            </li>
-                            <li><a href="#tab-2" data-toggle="tab"><i class="fa fa-info"></i>Additional Information</a>
-                            </li>                      
-                            <li><a href="#tab-3" data-toggle="tab"><i class="fa fa-comments"></i>Reviews</a>
-                            </li>
-                        </ul>
+                    	<c:choose>
+                    		<c:when test="${not empty param.reviewSaved}">
+                    			<ul class="nav nav-tabs" id="myTab">
+		                            <li>
+		                            	<a href="#tab-1" data-toggle="tab"><i class="fa fa-pencil"></i>Desciption</a>
+		                            </li>
+		                            <li>
+		                            	<a href="#tab-2" data-toggle="tab"><i class="fa fa-info"></i>Additional Information</a>
+		                            </li>                      
+		                            <li class="active">
+		                            	<a href="#tab-3" data-toggle="tab"><i class="fa fa-comments"></i>Reviews</a>
+		                            </li>
+	                        	</ul>
+                    		</c:when>
+                    		<c:otherwise>
+	                    		<ul class="nav nav-tabs" id="myTab">
+		                            <li class="active">
+		                            	<a href="#tab-1" data-toggle="tab"><i class="fa fa-pencil"></i>Desciption</a>
+		                            </li>
+		                            <li>
+		                            	<a href="#tab-2" data-toggle="tab"><i class="fa fa-info"></i>Additional Information</a>
+		                            </li>                      
+		                            <li>
+		                            	<a href="#tab-3" data-toggle="tab"><i class="fa fa-comments"></i>Reviews</a>
+		                            </li>
+	                        	</ul>
+                    		</c:otherwise>
+                    	</c:choose>                                           
                         
                         <div class="tab-content">
-                            <div class="tab-pane fade in active" id="tab-1">
-                            	<p>${requestScope.dealPostDetail.description}</p>
-                            </div>
-                            <div class="tab-pane fade" id="tab-2">
-                                <table class="table table-striped mb0">
-                                    <tbody>
-                                        <tr>
-                                            <td>Sale Price</td>
-                                            <td>${requestScope.dealPostDetail.salePrice}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Retail Price</td>
-                                            <td>${requestScope.dealPostDetail.retailPrice}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Discount</td>
-                                            <td>${requestScope.dealPostDetail.discountPercent}%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Time Remaining</td>
-                                            <td>${requestScope.dealPostDetail.timeToExpire}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Special Instructions</td>
-                                            <td>${requestScope.dealPostDetail.specialInstructions}</td>
-                                        </tr> 
-                                        
-                                        <c:if test="${requestScope.dealPostDetail.onlineDeal eq true}">
-                                        	<tr>
-                                            	<td>Deal URL</td>
-                                            	<td>${requestScope.dealPostDetail.location.url}</td>
-                                            </tr>	                                       
-                                        </c:if>    
-                                        
-                                        <c:if test="${requestScope.dealPostDetail.localDeal eq true}">
-                                        	<tr>
-                                            	<td>Deal Address</td>
-                                            	<td>${requestScope.dealPostDetail.location.mailingAddress}</td>
-                                            </tr>	                                       
-                                        </c:if> 
-                                                                                                                      
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <div class="tab-pane fade" id="tab-3">
-                            	<c:forEach items="${requestScope.dealPostDetail.dropRatings}" var="dropRating">
-	                            	<ul class="comments-list">
-	                                    <li>
-	                                        <!-- REVIEW -->
-	                                        <article class="comment">
-	                                            <div class="comment-author">
-	                                                <img src="img/50x50.png" alt="Image Alternative text" title="Gamer Chick" />
-	                                            </div>
-	                                            <div class="comment-inner">
-	                                            	<c:if test="${dropRating.rating gt 0}">
-	                                            		<ul class="icon-group icon-list-rating comment-review-rate" title="5/5 rating">
-		                                            		<c:forEach var="i" begin="1" end="${dropRating.rating}">
-	   															<li>
-	   																<i class="fa fa-star"></i>
-	                                                    		</li>
-															</c:forEach>
-														</ul>	
-	                                            	</c:if>	                                            	
-	                                                <span class="comment-author-name">${dropRating.rater.firstName} ${dropRating.rater.lastName}</span>
-	                                                <p class="comment-content">${dropRating.description}</p>
-	                                            </div>
-	                                        </article>
-	                                    </li>
-	                                </ul>                             	
-                            	</c:forEach>                                                               
-                               <a onclick="rateDrop(${requestScope.dealPostDetail.id}, ${requestScope.dealWantedToMatch.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Add a review</a>
-                            </div>
+                        	<c:choose>
+	                        	<c:when test="${not empty param.reviewSaved}">
+									<div class="tab-pane fade" id="tab-1">
+	                            		<p>${requestScope.dealPostDetail.description}</p>
+	                            	</div>
+	                            	
+		                            <div class="tab-pane fade" id="tab-2">
+		                                <table class="table table-striped mb0">
+		                                    <tbody>
+		                                        <tr>
+		                                            <td>Sale Price</td>
+		                                            <td>${requestScope.dealPostDetail.salePrice}</td>
+		                                        </tr>
+		                                        <tr>
+		                                            <td>Retail Price</td>
+		                                            <td>${requestScope.dealPostDetail.retailPrice}</td>
+		                                        </tr>
+		                                        <tr>
+		                                            <td>Discount</td>
+		                                            <td>${requestScope.dealPostDetail.discountPercent}%</td>
+		                                        </tr>
+		                                        <tr>
+		                                            <td>Time Remaining</td>
+		                                            <td>${requestScope.dealPostDetail.timeToExpire}</td>
+		                                        </tr>
+		                                        <tr>
+		                                            <td>Special Instructions</td>
+		                                            <td>${requestScope.dealPostDetail.specialInstructions}</td>
+		                                        </tr> 
+		                                        
+		                                        <c:if test="${requestScope.dealPostDetail.onlineDeal eq true}">
+		                                        	<tr>
+		                                            	<td>Deal URL</td>
+		                                            	<td>${requestScope.dealPostDetail.location.url}</td>
+		                                            </tr>	                                       
+		                                        </c:if>    
+		                                        
+		                                        <c:if test="${requestScope.dealPostDetail.localDeal eq true}">
+		                                        	<tr>
+		                                            	<td>Deal Address</td>
+		                                            	<td>${requestScope.dealPostDetail.location.mailingAddress}</td>
+		                                            </tr>	                                       
+		                                        </c:if> 
+		                                                                                                                      
+		                                    </tbody>
+		                                </table>
+		                            </div>
+	                            
+		                            <div class="tab-pane fade in active" id="tab-3">
+		                            	<c:forEach items="${requestScope.dealPostDetail.dropRatings}" var="dropRating">
+			                            	<ul class="comments-list">
+			                                    <li>
+			                                        <!-- REVIEW -->
+			                                        <article class="comment">
+			                                            <div class="comment-author">
+			                                                <img src="img/50x50.png" alt="Image Alternative text" title="Gamer Chick" />
+			                                            </div>
+			                                            <div class="comment-inner">
+			                                            	<c:if test="${dropRating.rating gt 0}">
+			                                            		<ul class="icon-group icon-list-rating comment-review-rate" title="5/5 rating">
+				                                            		<c:forEach var="i" begin="1" end="${dropRating.rating}">
+			   															<li>
+			   																<i class="fa fa-star"></i>
+			                                                    		</li>
+																	</c:forEach>
+																</ul>	
+			                                            	</c:if>	                                            	
+			                                                <span class="comment-author-name">${dropRating.rater.firstName} ${dropRating.rater.lastName}</span>
+			                                                <p class="comment-content">${dropRating.description}</p>
+			                                            </div>
+			                                        </article>
+			                                    </li>
+			                                </ul>                             	
+		                            	</c:forEach>                                                               
+		                               <a onclick="rateDrop(${requestScope.dealPostDetail.id}, ${requestScope.dealWantedToMatch.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Add a review</a>
+		                            </div>
+								</c:when>
+								
+								<c:otherwise>
+									<div class="tab-pane fade in active" id="tab-1">
+	                            		<p>${requestScope.dealPostDetail.description}</p>
+	                            	</div>
+	                            	
+		                            <div class="tab-pane fade" id="tab-2">
+		                                <table class="table table-striped mb0">
+		                                    <tbody>
+		                                        <tr>
+		                                            <td>Sale Price</td>
+		                                            <td>${requestScope.dealPostDetail.salePrice}</td>
+		                                        </tr>
+		                                        <tr>
+		                                            <td>Retail Price</td>
+		                                            <td>${requestScope.dealPostDetail.retailPrice}</td>
+		                                        </tr>
+		                                        <tr>
+		                                            <td>Discount</td>
+		                                            <td>${requestScope.dealPostDetail.discountPercent}%</td>
+		                                        </tr>
+		                                        <tr>
+		                                            <td>Time Remaining</td>
+		                                            <td>${requestScope.dealPostDetail.timeToExpire}</td>
+		                                        </tr>
+		                                        <tr>
+		                                            <td>Special Instructions</td>
+		                                            <td>${requestScope.dealPostDetail.specialInstructions}</td>
+		                                        </tr> 
+		                                        
+		                                        <c:if test="${requestScope.dealPostDetail.onlineDeal eq true}">
+		                                        	<tr>
+		                                            	<td>Deal URL</td>
+		                                            	<td>${requestScope.dealPostDetail.location.url}</td>
+		                                            </tr>	                                       
+		                                        </c:if>    
+		                                        
+		                                        <c:if test="${requestScope.dealPostDetail.localDeal eq true}">
+		                                        	<tr>
+		                                            	<td>Deal Address</td>
+		                                            	<td>${requestScope.dealPostDetail.location.mailingAddress}</td>
+		                                            </tr>	                                       
+		                                        </c:if> 
+		                                                                                                                      
+		                                    </tbody>
+		                                </table>
+		                            </div>
+	                            
+		                            <div class="tab-pane fade" id="tab-3">
+		                            	<c:forEach items="${requestScope.dealPostDetail.dropRatings}" var="dropRating">
+			                            	<ul class="comments-list">
+			                                    <li>
+			                                        <!-- REVIEW -->
+			                                        <article class="comment">
+			                                            <div class="comment-author">
+			                                                <img src="img/50x50.png" alt="Image Alternative text" title="Gamer Chick" />
+			                                            </div>
+			                                            <div class="comment-inner">
+			                                            	<c:if test="${dropRating.rating gt 0}">
+			                                            		<ul class="icon-group icon-list-rating comment-review-rate" title="5/5 rating">
+				                                            		<c:forEach var="i" begin="1" end="${dropRating.rating}">
+			   															<li>
+			   																<i class="fa fa-star"></i>
+			                                                    		</li>
+																	</c:forEach>
+																</ul>	
+			                                            	</c:if>	                                            	
+			                                                <span class="comment-author-name">${dropRating.rater.firstName} ${dropRating.rater.lastName}</span>
+			                                                <p class="comment-content">${dropRating.description}</p>
+			                                            </div>
+			                                        </article>
+			                                    </li>
+			                                </ul>                             	
+		                            	</c:forEach>                                                               
+		                               <a onclick="rateDrop(${requestScope.dealPostDetail.id}, ${requestScope.dealWantedToMatch.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Add a review</a>
+		                            </div>
+								</c:otherwise>								
+                        	</c:choose>						
+                        	                            
                         </div>
                     </div>										
 					

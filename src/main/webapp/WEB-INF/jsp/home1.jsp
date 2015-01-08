@@ -52,76 +52,12 @@
 		</div> -->
 		<!-- END PAGE TITLE -->
 
-		<!-- LOGIN REGISTER LINKS CONTENT -->
-        <div id="login-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix">
-            <i class="fa fa-sign-in dialog-icon"></i>
-            <h3>Member Login</h3>
-            <h5>Welcome back, friend. Login to get started</h5>
-            <span class="formFieldError" id="errorSpan" style="display: none;"></span>
-            <form:form cssClass="dialog-form" method="POST" commandName="loginForm" action="login.htm" id="loginForm">
-                <div class="form-group">
-                    <label>E-mail</label>
-                    <form:input path="email" placeholder="email@domain.com" cssClass="form-control dummy-form-control"/>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <form:password path="password" placeholder="My secret password" cssClass="form-control dummy-form-control"/>
-                </div>
-               <!--  <input type="submit" value="Sign in" class="btn btn-primary"/> -->
-               <a class="btn btn-primary" onclick="submitForm('loginForm')" href="#">Sign in</a>
-            </form:form>
-            <ul class="dialog-alt-links">
-                <li><a class="popup-text" href="#register-dialog" data-effect="mfp-zoom-out">Not member yet</a>
-                </li>
-                <li><a class="popup-text" href="#password-recover-dialog" data-effect="mfp-zoom-out">Forgot password</a>
-                </li>
-            </ul>
-        </div>
-
-		<!-- User Registration Dialog -->
-        <div id="register-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix">
-            <i class="fa fa-edit dialog-icon"></i>
-            <h3>Member Register</h3>
-            <h5>Ready to get best offers? Let's get started!</h5>
-            <span class="formFieldError" id="errorSpan" style="display: none;"></span>
-            <form:form method="POST" commandName="registerationForm" action="register.htm" cssClass="dialog-form" id="registerationForm">
-            	<div class="form-group">
-                    <label>First Name</label>
-                    <form:input path="firstName" placeholder="First Name" cssClass="form-control dummy-form-control"/>
-                </div>
-                <div class="form-group">
-                    <label>Last Name</label>
-                    <form:input path="lastName" placeholder="Last Name" cssClass="form-control dummy-form-control"/>
-                </div>
-                <div class="form-group">
-                    <label>E-mail</label>
-                    <form:input path="email" placeholder="email@domain.com" cssClass="form-control dummy-form-control"/>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <form:password path="password" placeholder="Password" cssClass="form-control dummy-form-control"/>
-                </div>
-                <a class="btn btn-primary" onclick="submitForm('registerationForm')" href="#">Sign up</a>
-				<ul class="dialog-alt-links">
-					<li><a class="popup-text" href="#login-dialog"
-						data-effect="mfp-zoom-out">Already member</a></li>
-				</ul>
-			</form:form>
-        </div>
-
-
-        <div id="password-recover-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix">
-            <i class="icon-retweet dialog-icon"></i>
-            <h3>Password Recovery</h3>
-            <h5>Fortgot your password? Don't worry we can deal with it</h5>
-            <span class="formFieldError" id="errorSpan" style="display: none;"></span>
-            <form:form cssClass="dialog-form" id="forgotPassForm" commandName="forgotPasswordForm" action="forgotPassword.htm">
-                <label>E-mail</label>
-                <form:input path="email" placeholder="email@domain.com" cssClass="span12 dummy-form-control"/>
-                <a class="btn btn-primary" onclick="submitForm('forgotPassForm')" href="#">Request password</a>
-                <!-- <input type="submit" value="Request new password" class="btn btn-primary"> -->
-            </form:form>
-        </div>
+ 		<jsp:include page="loginDialog.jsp"/>
+ 		
+ 		<jsp:include page="registrationDialog.jsp"/>
+ 		
+ 		<jsp:include page="forgotPasswordDialog.jsp"/>
+ 		
                     
         <!-- TOP AREA -->
         <div class="top-area">
@@ -221,7 +157,7 @@
                 <h2 class="mb30">Most Recent Found Drops</h2>
                 <div class="row row-wrap" id="masonry">
 	                <c:forEach items="${requestScope.featuredDealPostList}" var="featuredDealPost">
-		                    <a class="col-md-2 col-masonry" href="viewDropDetails.htm?dealPostId=${featuredDealPost.id}">
+		                    <a class="col-md-2 col-masonry" href="viewHomePageDropDetails.htm?dealPostId=${featuredDealPost.id}">
 		                        <div class="product-thumb">
 		                            <header class="product-header">
 		                                <img src="img/categories/${featuredDealPost.imageName}" alt="Image Alternative text" title="cascada" />
