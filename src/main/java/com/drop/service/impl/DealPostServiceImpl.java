@@ -71,6 +71,8 @@ public class DealPostServiceImpl implements IDealPostService {
 		entity.setDealCategory(categoryDao.loadEntity(form.getCategory()));
 		entity.setUser(userDao.loadEntity(form.getUserId()));
 		entity.setCreatedOn(new Date());
+		entity.setAverageRating(0.0);
+		entity.setTotalRatings(0);
 
 		String dateFormat = msgConfig.getProperty("date.format");
 		Date starts = DropUtil

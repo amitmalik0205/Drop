@@ -39,7 +39,6 @@ public class DealCategoryServiceImpl implements IDealCategoryService {
 						500, false, 0, null);
 
 				CacheManager.getInstance().addCache(categoryCache);
-				CacheManager.getInstance().addCache(categoryCache);
 			}
 
 			categories = categoryDao.findAll();
@@ -64,7 +63,7 @@ public class DealCategoryServiceImpl implements IDealCategoryService {
 
 	@Override
 	@Transactional
-	public String getCategoryImageName(String categoryName) {
+	public String getCategoryImageName(long categoryId) {
 		String imageName = null;
 
 		if (null == CacheManager.getInstance().getCache("categoryCache")
@@ -80,13 +79,12 @@ public class DealCategoryServiceImpl implements IDealCategoryService {
 			}
 
 			List<DealCategory> categories = getAllDealCategories();
-			Map<String, String> categoryImages = new HashMap<>();
+			Map<Long, String> categoryImages = new HashMap<>();
 			Cache categoryCache = CacheManager.getInstance().getCache(
 					"categoryCache");
 
 			for (DealCategory category : categories) {
-				categoryImages.put(category.getName(),
-						category.getPicturePath());
+				categoryImages.put(category.getId(), category.getPicturePath());
 			}
 
 			categoryCache.put(new Element("categoryImages", categoryImages));
@@ -95,9 +93,9 @@ public class DealCategoryServiceImpl implements IDealCategoryService {
 		Cache categoryCache = CacheManager.getInstance().getCache(
 				"categoryCache");
 		Element e = categoryCache.get("categoryImages");
-		Map<String, String> categoryImages = (Map<String, String>) e
+		Map<Long, String> categoryImages = (Map<Long, String>) e
 				.getObjectValue();
-		imageName = categoryImages.get(categoryName);
+		imageName = categoryImages.get(categoryId);
 
 		/*
 		 * System.out.println("get from to cache size is " +

@@ -8,5 +8,5 @@ public interface IDealCategoryService {
 
 	public List<DealCategory> getAllDealCategories();
 
-	public String getCategoryImageName(String categoryName);
+	public String getCategoryImageName(long categoryId);
 }

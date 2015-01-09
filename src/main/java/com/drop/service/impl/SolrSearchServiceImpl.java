@@ -45,7 +45,7 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 
 	@Autowired
 	private IDealMatchService dealMatchService;
-	
+
 	@Autowired
 	private IDealCategoryService dealCategoryService;
 
@@ -71,7 +71,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		document.addField("title", dealPost.getTitle());
 		document.addField("retailPrice", dealPost.getRetailPrice().longValue());
 		document.addField("onlineDeal", dealPost.getOnlineDeal());
-		document.addField("dealCategory", dealPost.getDealCategory().getName());
+		document.addField("dealCategory", dealPost.getDealCategory().getId()
+				.toString());
 		document.addField("salePrice", dealPost.getSalePrice().longValue());
 		document.addField("localDeal", dealPost.getLocalDeal());
 		document.addField("dealExpiry", dealPost.getExpires());
@@ -111,17 +112,18 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		document.addField("title", dealWanted.getTitle());
 		document.addField("retailPrice", dealWanted.getMaxPrice().longValue());
 		document.addField("onlineDeal", dealWanted.getWouldBuyOnline());
-		document.addField("dealCategory", dealWanted.getDealCategory()
-				.getName());
+		document.addField("dealCategory", dealWanted.getDealCategory().getId()
+				.toString());
 		document.addField("isDrop", false);
 		document.addField("salePrice", dealWanted.getMaxPrice().longValue());
 		document.addField("localDeal", dealWanted.getWouldBuyLocally());
 		document.addField("created", dealWanted.getCreatedOn());
 		document.addField("description", dealWanted.getDescription());
-		if(null != dealWanted.getTipAmount()) {
-		document.addField("tipAmount", dealWanted.getTipAmount().longValue());
+		if (null != dealWanted.getTipAmount()) {
+			document.addField("tipAmount", dealWanted.getTipAmount()
+					.longValue());
 		} else {
-			document.addField("tipAmount", 0);			
+			document.addField("tipAmount", 0);
 		}
 		try {
 			UpdateResponse response = solrServer.add(document);
@@ -157,7 +159,7 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		}
 
 		query.append(" AND dealCategory:"
-				+ dealWanted.getDealCategory().getName());
+				+ dealWanted.getDealCategory().getId().toString());
 
 		query.append(" AND dealStart: [* TO NOW]");
 		query.append(" AND dealExpiry: [NOW TO *]");
@@ -205,7 +207,7 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 	}
 
 	public List<DealWantedDTO> searchWanted(String dealWantedString,
-			int pageNumber, SORT_TYPE sortType, String categoryName) {
+			int pageNumber, SORT_TYPE sortType, long categoryId) {
 
 		List<DealWantedDTO> dealWantedList = new ArrayList<>();
 
@@ -216,8 +218,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 			query.append("title:*");
 		}
 		query.append(" AND isDrop:" + false);
-		if (null != categoryName && !"All".equals(categoryName)) {
-			query.append(" AND dealCategory:" + categoryName);
+		if (categoryId != 0) {
+			query.append(" AND dealCategory:" + categoryId);
 		}
 
 		SolrQuery parameters = new SolrQuery(query.toString());
@@ -258,7 +260,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 				dealWantedDTO.setDealCategory((String) solrDocument
 						.getFieldValue("dealCategory"));
 				dealWantedDTO.setImageName(dealCategoryService
-						.getCategoryImageName(dealWantedDTO.getDealCategory()));
+						.getCategoryImageName(new Long(dealWantedDTO
+								.getDealCategory())));
 				String description = (String) solrDocument
 						.getFieldValue("description");
 				if (description.length() > 25) {
@@ -294,7 +297,7 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 	}
 
 	public List<DealPostDTO> searchDrops(String dealPostString, int pageNumber,
-			SORT_TYPE sortType, String categoryName) {
+			SORT_TYPE sortType, long categoryId) {
 
 		List<DealPostDTO> dealPostList = new ArrayList<>();
 
@@ -305,8 +308,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 			query.append("title:*");
 		}
 		query.append(" AND isDrop:" + true);
-		if (null != categoryName && !"All".equals(categoryName)) {
-			query.append(" AND dealCategory:" + categoryName);
+		if (categoryId != 0) {
+			query.append(" AND dealCategory:" + categoryId);
 		}
 		SolrQuery parameters = new SolrQuery(query.toString());
 		parameters
@@ -346,7 +349,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 				dealPostDTO.setDealCategory((String) solrDocument
 						.getFieldValue("dealCategory"));
 				dealPostDTO.setImageName(dealCategoryService
-						.getCategoryImageName(dealPostDTO.getDealCategory()));
+						.getCategoryImageName(new Long(dealPostDTO
+								.getDealCategory())));
 
 				String description = (String) solrDocument
 						.getFieldValue("description");
@@ -436,7 +440,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 				dealPostDTO.setDealCategory((String) solrDocument
 						.getFieldValue("dealCategory"));
 				dealPostDTO.setImageName(dealCategoryService
-						.getCategoryImageName(dealPostDTO.getDealCategory()));
+						.getCategoryImageName(new Long(dealPostDTO
+								.getDealCategory())));
 				String description = (String) solrDocument
 						.getFieldValue("description");
 				if (description.length() > 25) {
@@ -507,7 +512,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 				dealWantedDTO.setDealCategory((String) solrDocument
 						.getFieldValue("dealCategory"));
 				dealWantedDTO.setImageName(dealCategoryService
-						.getCategoryImageName(dealWantedDTO.getDealCategory()));
+						.getCategoryImageName(new Long(dealWantedDTO
+								.getDealCategory())));
 				String description = (String) solrDocument
 						.getFieldValue("description");
 				if (description.length() > 25) {

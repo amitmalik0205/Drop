@@ -125,12 +125,12 @@ public class HomeController {
 			searchDealForm.setSearchType(searchType);
 			if (searchType.equals("Drops")) {
 				dealPostListForSearch = solrSearchService.searchDrops("", 0,
-						SORT_TYPE.PRICE, "All");
+						SORT_TYPE.PRICE, 0);
 				map.addAttribute("dealPostListForSearch", dealPostListForSearch);
 				searchDealForm.setItemsOnpage(dealPostListForSearch.size());
 			} else {
 				dealWantedListForSearch = solrSearchService.searchWanted("", 0,
-						SORT_TYPE.PRICE, "All");
+						SORT_TYPE.PRICE, 0);
 				map.addAttribute("dealWantedListForSearch",
 						dealWantedListForSearch);
 				searchDealForm.setItemsOnpage(dealWantedListForSearch.size());
@@ -144,7 +144,7 @@ public class HomeController {
 			searchDealForm.setMaxResultOnPage(new Integer(msgConfig
 					.getProperty("search.results.per.page")));
 			searchDealForm.setSortType(SORT_TYPE.PRICE);
-			searchDealForm.setSelectedCategory("All");
+			searchDealForm.setSelectedCategory(0);
 			session.setAttribute("sessionSearchDealForm", searchDealForm);
 
 			prepareModelForHomePage(map);

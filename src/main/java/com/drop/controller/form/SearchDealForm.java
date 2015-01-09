@@ -12,7 +12,7 @@ public class SearchDealForm implements Serializable {
 	
 	private String searchType;
 	
-	private String selectedCategory;
+	private long selectedCategory;
 	
 	private SORT_TYPE sortType;
 	
@@ -38,11 +38,11 @@ public class SearchDealForm implements Serializable {
 		this.searchType = searchType;
 	}
 
-	public String getSelectedCategory() {
+	public long getSelectedCategory() {
 		return selectedCategory;
 	}
 
-	public void setSelectedCategory(String selectedCategory) {
+	public void setSelectedCategory(long selectedCategory) {
 		this.selectedCategory = selectedCategory;
 	}
 

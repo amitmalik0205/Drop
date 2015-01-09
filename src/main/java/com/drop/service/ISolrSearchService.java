@@ -17,10 +17,10 @@ public interface ISolrSearchService {
 	public List<DealPost> search(DealWanted dealWanted, int pageNumber);
 
 	public List<DealWantedDTO> searchWanted(String dealWantedString,
-			int pageNumber, SORT_TYPE sortType, String categoryName);
+			int pageNumber, SORT_TYPE sortType, long categoryId);
 
 	public List<DealPostDTO> searchDrops(String dealPostString, int pageNumber,
-			SORT_TYPE sortType, String categoryName);
+			SORT_TYPE sortType, long categoryId);
 
 	public void delete(long id, boolean isDrop);
 

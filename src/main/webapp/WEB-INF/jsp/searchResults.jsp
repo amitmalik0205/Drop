@@ -127,18 +127,18 @@
                 <div class="col-md-3">
                     <aside class="sidebar-left">                    	 
                         <ul class="nav nav-tabs nav-stacked nav-coupon-category">
-                        	<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory eq 'All'}">
-                        		<li class="active"><a href="searchByCategory.htm?categoryName=All"><i class="fa fa-ticket"></i>All</a></li>
+                        	<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory eq 0}">
+                        		<li class="active"><a href="searchByCategory.htm?categoryId=0"><i class="fa fa-ticket"></i>All</a></li>
                         	</c:if> 
-                        	<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory ne 'All'}">
-                        		<li><a href="searchByCategory.htm?categoryName=All"><i class="fa fa-ticket"></i>All</a></li>
+                        	<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory ne 0}">
+                        		<li><a href="searchByCategory.htm?categoryId=0"><i class="fa fa-ticket"></i>All</a></li>
                         	</c:if>                       	
                         	<c:forEach var="category" items="${requestScope.dealCategories}" varStatus="counter">
-                        		<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory eq category.name}">
-                        			<li class="active" id="${category.id}"><a href="searchByCategory.htm?categoryName=${fn:escapeXml(category.name)}"><i class="fa fa-ticket"></i>${category.name}</a></li>
+                        		<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory eq category.id}">
+                        			<li class="active" id="${category.id}"><a href="searchByCategory.htm?categoryId=${category.id}"><i class="fa fa-ticket"></i>${category.name}</a></li>
                         		</c:if>  
-                        		<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory ne category.name}">
-                        			<li id="${category.id}"><a href="searchByCategory.htm?categoryName=${fn:escapeXml(category.name)}"><i class="fa fa-ticket"></i>${category.name}</a></li>
+                        		<c:if test="${sessionScope.sessionSearchDealForm.selectedCategory ne category.id}">
+                        			<li id="${category.id}"><a href="searchByCategory.htm?categoryId=${category.id}"><i class="fa fa-ticket"></i>${category.name}</a></li>
                         		</c:if>                  	 		
                     	 	</c:forEach>                                                       
                         </ul>
