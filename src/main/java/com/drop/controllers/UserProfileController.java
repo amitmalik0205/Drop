@@ -20,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.drop.controller.form.AccountSettingsForm;
 import com.drop.controller.form.AddressBookForm;
-import com.drop.controller.form.SearchDealForm;
 import com.drop.dao.domain.MailingAddress;
 import com.drop.dao.domain.User;
 import com.drop.exception.DropException;
@@ -32,7 +31,7 @@ import com.drop.util.DropUtil;
 import com.drop.util.WebUtil;
 
 @Controller
-public class UserProfileController {
+public class UserProfileController extends BaseController {
 	
 	private static final Logger logger = Logger.getLogger(UserProfileController.class);
 	
@@ -66,7 +65,6 @@ public class UserProfileController {
 			User user = WebUtil.getSessionUser(session);
 			
 			AccountSettingsForm form = new AccountSettingsForm();
-			form.setEmail(user.getEmail());
 			form.setFirstName(user.getFirstName());
 			form.setLastName(user.getLastName());
 			form.setPhone(user.getPhoneNumber());
@@ -74,9 +72,7 @@ public class UserProfileController {
 			
 			modelAndView.addObject("accountSettingsForm", form);
 			
-			SearchDealForm dealForm = new SearchDealForm();		
-			map.addAttribute("searchDealForm", dealForm);
-
+			initializeCommonModel(map);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -98,6 +94,7 @@ public class UserProfileController {
 		
 		try {
 			if (result.hasErrors()) {
+				initializeCommonModel(map);
 				return "accountSettings";
 			}
 			
@@ -128,9 +125,7 @@ public class UserProfileController {
 			
 			modelAndView.addObject("addressForm", form);
 			
-			SearchDealForm dealForm = new SearchDealForm();		
-			map.addAttribute("searchDealForm", dealForm);
-
+			initializeCommonModel(map);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -310,10 +305,9 @@ public class UserProfileController {
 		if(!WebUtil.userAuthorization(session)) {
 			return "redirect:/home.htm";
 		}
-		SearchDealForm dealForm = new SearchDealForm();		
-		map.addAttribute("searchDealForm", dealForm);
-
-	
+		
+		initializeCommonModel(map);
+		
 		return "myStatistics";
 	}
 	

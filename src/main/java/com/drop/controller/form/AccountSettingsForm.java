@@ -1,5 +1,7 @@
 package com.drop.controller.form;
 
+import javax.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -15,6 +17,7 @@ public class AccountSettingsForm {
 	@NotEmpty(message = "Email is required")
 	private String email;
 	
+	@Pattern(regexp="(^$|[0-9])", message="Only numbers are allowed in phone number")
 	private String phone;
 	
 	private String skypeName;

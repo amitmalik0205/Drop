@@ -77,7 +77,6 @@ public class UserServiceImpl implements IUserService {
 	public void saveOrUpdateUser(AccountSettingsForm form) {
 		User user = WebUtil.getSessionUser(session);
 		
-		user.setEmail(form.getEmail());
 		user.setFirstName(form.getFirstName());
 		user.setLastName(form.getLastName());
 		user.setPhoneNumber(form.getPhone());

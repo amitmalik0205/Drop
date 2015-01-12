@@ -14,4 +14,8 @@
                 <a class="btn btn-primary" onclick="submitForm('forgotPassForm')" href="#">Request password</a>
                 <!-- <input type="submit" value="Request new password" class="btn btn-primary"> -->
             </form:form>
+            <ul class="dialog-alt-links">
+                <li><a class="popup-text" href="#login-dialog" data-effect="mfp-zoom-out">Member Login</a>
+                </li>
+            </ul>
         </div>

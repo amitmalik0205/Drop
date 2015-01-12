@@ -66,6 +66,7 @@
                 <div class="col-md-9">
                 
                     <div id="add-address-dialog" class="mfp-with-anim mfp-hide mfp-dialog clearfix">
+                    	<h3>Add New Address</h3>
                     	<span class="formFieldError" id="errorSpan" style="display: none;"></span>
                         <form:form cssClass="dialog-form" method="POST" commandName="addressForm" action="addAddress.htm" id="addressForm">
                             <div class="form-group" >

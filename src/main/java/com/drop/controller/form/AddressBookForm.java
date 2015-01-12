@@ -3,6 +3,8 @@ package com.drop.controller.form;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.validation.constraints.Pattern;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.drop.dao.domain.MailingAddress;
@@ -20,6 +22,7 @@ public class AddressBookForm {
 	@NotEmpty(message = "City is required")
 	private String city;
 	
+	@Pattern (regexp = "[0-9] {5}", message = "Wrong zip format")
 	@NotEmpty(message = "Zip is required")
 	private String zip;
 	

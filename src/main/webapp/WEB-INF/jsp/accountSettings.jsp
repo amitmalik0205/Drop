@@ -76,11 +76,6 @@
                                     <form:errors path="lastName" cssClass="formFieldError"></form:errors>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">E-mail</label>
-                                   <form:input path="email" cssClass="form-control"/>
-                                   <form:errors path="email" cssClass="formFieldError"></form:errors>
-                                </div> 
-                                <div class="form-group">
                                     <label for="">Phone Number</label>
                                    <form:input path="phone" cssClass="form-control"/>
                                    <form:errors path="phone" cssClass="formFieldError"></form:errors>

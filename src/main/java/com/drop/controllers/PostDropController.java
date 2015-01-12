@@ -36,7 +36,7 @@ import com.drop.util.DropUtil;
 import com.drop.util.WebUtil;
 
 @Controller
-public class PostDropController {
+public class PostDropController extends BaseController {
 
 	private static final Logger logger = Logger
 			.getLogger(PostDropController.class);
@@ -77,8 +77,7 @@ public class PostDropController {
 
 			map.addAttribute("dealPostForm", dealPostForm);
 
-			SearchDealForm dealForm = new SearchDealForm();
-			map.addAttribute("searchDealForm", dealForm);
+			initializeCommonModel(map);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -138,10 +137,10 @@ public class PostDropController {
 					}
 				}
 			}
+						
 			if (result.hasErrors()) {
 				form.setDealCategories(categoryService.getAllDealCategories());
-				SearchDealForm dealForm = new SearchDealForm();
-				map.addAttribute("searchDealForm", dealForm);
+				initializeCommonModel(map);
 				return "dealPostPage";
 			} 
 
@@ -162,8 +161,7 @@ public class PostDropController {
 			
 			if (result.hasErrors()) {
 				form.setDealCategories(categoryService.getAllDealCategories());
-				SearchDealForm dealForm = new SearchDealForm();
-				map.addAttribute("searchDealForm", dealForm);
+				initializeCommonModel(map);
 				return "dealPostPage";
 			} else {
 				
@@ -245,8 +243,7 @@ public class PostDropController {
 			List<DealPost> dealPostList = dealPostService
 					.getAllActiveDealPostForUser(user.getUserId());
 			modelAndView.addObject("dealPostList", dealPostList);
-			SearchDealForm dealForm = new SearchDealForm();
-			map.addAttribute("searchDealForm", dealForm);
+			initializeCommonModel(map);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -383,8 +380,7 @@ public class PostDropController {
 				}
 				modelAndView.addObject("editDealPostForm", form);
 
-				SearchDealForm dealForm = new SearchDealForm();
-				map.addAttribute("searchDealForm", dealForm);
+				initializeCommonModel(map);
 			}
 
 		} catch (Exception e) {
@@ -449,9 +445,8 @@ public class PostDropController {
 
 			if (result.hasErrors()) {
 				form.setDealCategories(categoryService.getAllDealCategories());
-				SearchDealForm dealForm = new SearchDealForm();
-				map.addAttribute("searchDealForm", dealForm);
-				return "dealPostPage";
+				initializeCommonModel(map);
+				return "editDealPostPage";
 			} 
 
 			String dateFormat = msgConfig.getProperty("date.format");
@@ -470,8 +465,7 @@ public class PostDropController {
 			}
 			
 			if (result.hasErrors()) {
-				SearchDealForm dealForm = new SearchDealForm();
-				map.addAttribute("searchDealForm", dealForm);
+				initializeCommonModel(map);
 				form.setDealCategories(categoryService.getAllDealCategories());
 				return "editDealPostPage";
 			}

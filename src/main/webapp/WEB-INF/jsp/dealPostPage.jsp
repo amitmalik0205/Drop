@@ -182,7 +182,7 @@
 						                </div>   
 					                </div>	                               
 				                </div> 
-				                <form:errors path="dealType"></form:errors>
+				                <form:errors path="dealType"  cssClass="error"></form:errors>
 				                <div class="row">
 				                	<div class="col-md-6">
 				                		<div class="form-group hiddenTag adderssDummyClass">
