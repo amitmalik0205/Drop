@@ -18,10 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.drop.controller.form.DealPostForm;
 import com.drop.controller.form.DealWantedForm;
 import com.drop.controller.form.ReasonToDeleteForm;
-import com.drop.controller.form.SearchDealForm;
 import com.drop.dao.domain.DealCategory;
 import com.drop.dao.domain.DealWanted;
 import com.drop.dao.domain.User;
@@ -32,7 +30,7 @@ import com.drop.util.DropUtil;
 import com.drop.util.WebUtil;
 
 @Controller
-public class WantDropController {
+public class WantDropController extends BaseController {
 
 	private static final Logger logger = Logger
 			.getLogger(WantDropController.class);
@@ -46,23 +44,6 @@ public class WantDropController {
 	@Autowired
 	private HttpSession session;
 
-	private void initializeFormModels(ModelMap map) {
-
-		DealWantedForm dealWantedForm = new DealWantedForm();
-		DealPostForm dealPostForm = new DealPostForm();
-
-		List<DealCategory> categories = categoryService.getAllDealCategories();
-		dealWantedForm.setDealCategories(categories);
-		dealPostForm.setDealCategories(categories);
-
-		map.addAttribute("dealWantedForm", dealWantedForm);
-		map.addAttribute("dealPostForm", dealPostForm);
-		
-		SearchDealForm dealForm = new SearchDealForm();		
-		map.addAttribute("searchDealForm", dealForm);
-	}
-
-	
 	@RequestMapping(value = "/showDealWantedPage", method = RequestMethod.GET)
 	public ModelAndView showDealWantedPage(ModelMap map) {
 		
@@ -81,8 +62,7 @@ public class WantDropController {
 			
 			map.addAttribute("dealWantedForm", dealWantedForm);
 			
-			SearchDealForm dealForm = new SearchDealForm();		
-			map.addAttribute("searchDealForm", dealForm);
+			initializeCommonModel(map);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -104,8 +84,7 @@ public class WantDropController {
 		}
 
 		if (result.hasErrors()) {			
-			SearchDealForm dealForm = new SearchDealForm();		
-			map.addAttribute("searchDealForm", dealForm);
+			initializeCommonModel(map);
 			form.setDealCategories(categoryService.getAllDealCategories());
 			return "dealWantedPage";
 		} else {
@@ -166,7 +145,7 @@ public class WantDropController {
 			List<DealWanted> dealWantedList = dealWantedService
 					.getAllDealWantedForUser(user.getUserId());
 			modelAndView.addObject("dealWantedList", dealWantedList);
-			initializeFormModels(map);
+			initializeCommonModel(map);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -219,8 +198,8 @@ public class WantDropController {
 
 				modelAndView.addObject("editDealWantedForm", form);
 			}
-			SearchDealForm dealForm = new SearchDealForm();		
-			map.addAttribute("searchDealForm", dealForm);
+			
+			initializeCommonModel(map);
 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
@@ -241,6 +220,7 @@ public class WantDropController {
 		try {
 
 			if (result.hasErrors()) {
+				initializeCommonModel(map);
 				form.setDealCategories(categoryService.getAllDealCategories());
 				return "editDealWantedPage";
 			}

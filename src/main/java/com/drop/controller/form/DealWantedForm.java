@@ -28,9 +28,10 @@ public class DealWantedForm {
 	
 	@NotNull(message = "Please enter maximum price")
 	@Min(value = 1, message = "Maximum Price must be greater then 1")
-	@Max(value = Long.MAX_VALUE, message = "Maximum Price is out of range")
+	@Max(value = 1000000, message = "Maximum price range is upto $1000000")
 	private BigDecimal maxPrice;
 	
+	@Max(value = 1000000, message = "Tip amount range is upto $1000000")
 	private BigDecimal tipAmount;
 	
 	private List<DealCategory> dealCategories;

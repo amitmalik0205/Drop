@@ -6,7 +6,6 @@ import java.util.List;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -31,12 +30,12 @@ public class DealPostForm {
 
 	@NotNull(message = "Sale Price is required")
 	@Min(value = 1, message = "Sale Price must be greater than 1")
-	@Max(value = Long.MAX_VALUE, message = "Sale Price is out of range")
+	@Max(value = 1000000, message = "Sale Price range is upto $1000000")
 	private BigDecimal salePrice;
 	
 	@NotNull(message = "Retail Price is required")
 	@Min(value = 1, message = "Retail Price must be greater than 1")
-	@Max(value = Long.MAX_VALUE, message = "Retail Price is out of range")
+	@Max(value = 1000000, message = "Retail Price range is upto $1000000")
 	private BigDecimal retailPrice;
 	
 	private Double discountPercent;

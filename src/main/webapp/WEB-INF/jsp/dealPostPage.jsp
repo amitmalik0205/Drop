@@ -271,10 +271,17 @@
 		<script src='js/moment.min.js'></script>
 		<script src='js/bootstrap-datetimepicker.min.js'></script>
         
-        <script type="text/javascript">      
+        <script type="text/javascript"> 
+            
+	        var nowDate = new Date();
+	        var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0);
+        
         	$('.dateTimePicker').datetimepicker({
                 pick12HourFormat: false,
+                
+                minDate:today
             });
+        	
         	
         	if($('input:radio[name=dealType]:checked').val() == "localDeal") { 
         		$(".urlDummyClass").hide();

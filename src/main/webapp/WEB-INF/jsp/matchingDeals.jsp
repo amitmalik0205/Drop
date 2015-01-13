@@ -134,7 +134,7 @@
 	                                			<a href="viewDealDetails.htm?dealPostId=${dealPost.id}&dealWantedId=${requestScope.dealWantedToMatch.id}"  id="btnViewDealDetails${dealPost.id}" class="btn btn-primary">View Details</a>
 	                                		</li>
 	                                		<li>
-	                                			<a id="btnGotIt${dealPost.dealMatch.id}" onclick="gotDeal(${dealPost.dealMatch.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Got It</a>
+	                                			<a id="btnGotIt${dealPost.id}" onclick="gotDeal(${dealPost.dealMatch.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Got It</a>
 	                                		</li>	                                	                           	 
                     						<li>
                     							<a onclick="rejectMatchingDeal(${dealPost.id})" id="btnRejectDeal${dealPost.id}" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Reject</a>
@@ -153,13 +153,13 @@
 					                    		</li>
 					                    	</c:if>
 		                                	<li>
-		                                		<a href="viewDealDetails.htm?dealPostId=${dealPost.id}&dealWantedId=${requestScope.dealWantedToMatch.id}" id="btnViewDealDetails${dealPost.id}" class="btn btn-primary" style="display: none">View Details</a>
+		                                		<a style="display: none" href="viewDealDetails.htm?dealPostId=${dealPost.id}&dealWantedId=${requestScope.dealWantedToMatch.id}" id="btnViewDealDetails${dealPost.id}" class="btn btn-primary">View Details</a>
 		                                	</li>
 		                                	<li>
-		                                		<a style="display: none" id="btnGotIt${dealPost.dealMatch.id}" onclick="gotDeal(${dealPost.dealMatch.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Got It</a>		                                	
+		                                		<a style="display: none" id="btnGotIt${dealPost.id}" onclick="gotDeal(${dealPost.dealMatch.id})" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Got It</a>		                                	
 		                                	</li>	                                	                           	 
 	                    					<li>
-	                    						<a onclick="rejectMatchingDeal(${dealPost.id})" style="display: none" id="btnRejectDeal${dealPost.id}" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Reject</a>
+	                    						<a style="display: none" onclick="rejectMatchingDeal(${dealPost.id})" id="btnRejectDeal${dealPost.id}" class="btn btn-primary" data-effect="mfp-move-from-top" data-toggle="tooltip" data-placement="right">Reject</a>
 	                    					</li>	                                	
 	                                	
 	                                	</c:if>
