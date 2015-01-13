@@ -89,18 +89,21 @@ public class DealPostServiceImpl implements IDealPostService {
 		if (dealType != null) {
 			if (dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
 				entity.setLocalDeal(true);
+				entity.setOnlineDeal(false);
 				MailingAddress address = new MailingAddress();
 				address.setAddressLine1(form.getAddressLine1());
 				address.setAddressLine2(form.getAddressLine2());
 				address.setState(form.getState());
 				address.setCity(form.getCity());
 				address.setZip(form.getZip());
+				
 
 				location.setMailingAddress(address);
 
 			} else if (dealType
 					.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {
 				entity.setOnlineDeal(true);
+				entity.setLocalDeal(false);
 				location.setUrl(form.getUrl());
 			}
 		}

@@ -154,6 +154,10 @@ public class PostDropController extends BaseController {
 			if (starts.after(expires)) {
 				result.rejectValue("starts", "dropstart.after.dropexpiry");
 			}
+			
+			if (starts.compareTo(expires) == 0) {
+				result.rejectValue("starts", "dropstart.same.dropexpiry");
+			}
 
 			if (form.getSalePrice().compareTo(form.getRetailPrice()) == 1) {
 				result.rejectValue("salePrice", "salePrice.more.retailprice");
@@ -458,6 +462,10 @@ public class PostDropController extends BaseController {
 
 			if (starts.after(expires)) {
 				result.rejectValue("starts", "dropstart.after.dropexpiry");
+			}
+			
+			if (starts.compareTo(expires) == 0) {
+				result.rejectValue("starts", "dropstart.same.dropexpiry");
 			}
 
 			if (form.getSalePrice().compareTo(form.getRetailPrice()) == 1) {
