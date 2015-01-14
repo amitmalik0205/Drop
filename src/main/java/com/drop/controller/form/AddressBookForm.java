@@ -22,7 +22,7 @@ public class AddressBookForm {
 	@NotEmpty(message = "City is required")
 	private String city;
 	
-	@Pattern (regexp = "[0-9] {5}", message = "Wrong zip format")
+	@Pattern (regexp = "^[0-9]{5}(?:-[0-9]{4})?$", message = "Wrong zip format")
 	@NotEmpty(message = "Zip is required")
 	private String zip;
 	
