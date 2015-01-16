@@ -3,6 +3,7 @@ package com.drop.service.impl;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -147,8 +148,11 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		long price = dealWanted.getMaxPrice().longValue();
 
 		StringBuilder query = new StringBuilder();
-		query.append("salePrice:[ * TO " + price + " ] AND title:*"
-				+ dealWanted.getTitle() + "*");
+		
+		processTitle(query, dealWanted.getTitle());
+		
+		query.append(" AND salePrice:[ * TO " + price + " ]");		
+		
 		if (dealWanted.getWouldBuyOnline() && dealWanted.getWouldBuyLocally()) {
 			query.append(" AND (onlineDeal:" + dealWanted.getWouldBuyOnline()
 					+ " OR localDeal:" + dealWanted.getWouldBuyLocally() + ")");
@@ -213,7 +217,8 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 
 		StringBuilder query = new StringBuilder();
 		if (null != dealWantedString && !dealWantedString.equalsIgnoreCase("")) {
-			query.append("title:*" + dealWantedString + "*");
+			dealWantedString = dealWantedString.trim();
+			processTitle(query, dealWantedString);
 		} else {
 			query.append("title:*");
 		}
@@ -302,8 +307,10 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 		List<DealPostDTO> dealPostList = new ArrayList<>();
 
 		StringBuilder query = new StringBuilder();
-		if (null != dealPostString && !dealPostString.equalsIgnoreCase("")) {
-			query.append("title:*" + dealPostString + "*");
+		if (null != dealPostString && !dealPostString.equalsIgnoreCase("")) {			
+			dealPostString = dealPostString.trim();
+			processTitle(query, dealPostString);
+			//query.append("title:*" + dealPostString + "*");
 		} else {
 			query.append("title:*");
 		}
@@ -550,6 +557,41 @@ public class SolrSearchServiceImpl implements ISolrSearchService {
 			e.printStackTrace();
 		}
 		return dealWantedList;
+
+	}
+
+	private void processTitle(StringBuilder query, String title) {
+		System.out.println("input title is "+title);
+
+		String[] connectors = { "a", "an", "am", "do", "if", "of", "the",
+				"can", "for", "and", "but", "as", "i", "so", "by", "then",
+				"than", "to", "in", "from", "or", "all", "like" };
+
+		ArrayList<String> connectorStrings = new ArrayList<String>(
+				Arrays.asList(connectors));
+
+		title = title.toLowerCase();
+
+		String[] titleArray = title.split(" ");
+
+		for (int index = 0; index < titleArray.length; index++) {
+
+			if (!(titleArray[index].length() == 1 || connectorStrings
+					.contains(titleArray[index]))) {
+				if (query.length() == 0) {
+					query.append("(title:*" + titleArray[index] + "*");
+				} else {
+					query.append(" OR title:*" + titleArray[index] + "*");
+				}
+
+			}
+		}
+		if (query.length() == 0) {
+			query.append("title:*" + title + "*");
+		} else {
+			query.append(")");
+		}	
+		System.out.println("output query is "+query.toString());
 
 	}
 

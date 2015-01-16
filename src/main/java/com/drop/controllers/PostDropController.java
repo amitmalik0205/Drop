@@ -322,7 +322,7 @@ public class PostDropController extends BaseController {
 
 	@RequestMapping(value = "/showEditDropPost", method = RequestMethod.GET)
 	public ModelAndView showEditDropWantedForm(
-			@RequestParam("dropPostId") Long dropPostId, ModelMap map,
+			@RequestParam("dropPostId") long dropPostId, ModelMap map,
 			HttpSession session) {
 
 		if (!WebUtil.userAuthorization(session)) {
