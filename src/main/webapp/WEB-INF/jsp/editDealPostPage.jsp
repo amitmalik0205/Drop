@@ -97,6 +97,7 @@
 										<div class="form-group">
 											<label>Special Instructions</label>
 											<form:textarea path="specialInstructions" placeholder="Is there anything special you need to do to get discount" cssClass="form-control dummy-form-control" />
+											<form:errors path="specialInstructions" cssClass="error"></form:errors>
 										</div>
 									</div>
 								</div>
@@ -123,7 +124,7 @@
 											<div>
 												<div class='input-group date dateTimePicker'
 													onclick="dateTimePicker()">
-													<form:input cssClass="form-control dummy-form-control" path="starts" />
+													<form:input cssClass="form-control dummy-form-control" path="starts" readonly="true"/>
 													<span class="input-group-addon"> <span
 														class="glyphicon glyphicon-calendar"></span>
 													</span>
@@ -138,7 +139,7 @@
 											<div>
 												<div class='input-group date dateTimePicker'
 													onclick="dateTimePicker()">
-													<form:input cssClass="form-control dummy-form-control" path="expires" />
+													<form:input cssClass="form-control dummy-form-control" path="expires" readonly="true"/>
 													<span class="input-group-addon"> <span
 														class="glyphicon glyphicon-calendar"></span>
 													</span>

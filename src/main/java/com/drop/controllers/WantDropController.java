@@ -157,7 +157,7 @@ public class WantDropController extends BaseController {
 
 	@RequestMapping(value = "/showEditDropWanted", method = RequestMethod.GET)
 	public ModelAndView showEditDropWantedForm(
-			@RequestParam("dropWantedId") Long dropWantedId, ModelMap map,
+			@RequestParam("dropWantedId") long dropWantedId, ModelMap map,
 			HttpSession session) {
 
 		if (!WebUtil.userAuthorization(session)) {
@@ -239,7 +239,7 @@ public class WantDropController extends BaseController {
 	}
 
 	@RequestMapping(value = "/showReasonToDeleteDialog", method = RequestMethod.GET)
-	public ModelAndView showDialog(@RequestParam Long dealId, ModelMap map,
+	public ModelAndView showDialog(@RequestParam long dealId, ModelMap map,
 			HttpSession session) {
 
 		ModelAndView modelAndView = new ModelAndView("deleteDropWantedDialog");

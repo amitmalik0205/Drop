@@ -174,15 +174,15 @@ public class DealPostServiceImpl implements IDealPostService {
 					.getCategory()));
 			savedDealPost.setUpdatedOn(new Date());
 
-			/*
-			 * String dateFormat = msgConfig.getProperty("date.format"); Date
-			 * starts = DropUtil.convertStringToDate(form.getStarts(),
-			 * dateFormat); Date expires =
-			 * DropUtil.convertStringToDate(form.getExpires(), dateFormat);
-			 * 
-			 * savedDealPost.setStarts(starts);
-			 * savedDealPost.setExpires(expires);
-			 */
+			
+			String dateFormat = msgConfig.getProperty("date.format");
+			Date starts = DropUtil.convertStringToDate(form.getStarts(),
+					dateFormat);
+			Date expires = DropUtil.convertStringToDate(form.getExpires(),
+					dateFormat);
+			savedDealPost.setStarts(starts);
+			savedDealPost.setExpires(expires);
+			 
 
 			Location location = savedDealPost.getLocation();
 
