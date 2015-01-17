@@ -69,7 +69,8 @@
                                 		<a href="showMyDropWanted.htm" class="btn btn-primary" style="float: right;">Back to My Drop Wanted</a> </div>
                             		</div>                                                             
                             	</div> 
-                            	<input id="txtDealWantedToMatchHidden" type="hidden" value="${requestScope.dealWantedToMatch.id}"/>                           
+                            	<input id="txtDealWantedToMatchHidden" type="hidden" value="${requestScope.dealWantedToMatch.id}"/>     
+                            	<input id="txtSavedDealMatchHidden" type="hidden"/>                         
                         </div>
                     </div>
                     <div class="gap"></div>
@@ -253,14 +254,22 @@
 	         		   dataType: "text",
 	         		   data : data,
 	         		   type : "POST",	         		   
-	         		   success : function(response) {
-	         			  $("#btnViewDealDetails"+id).show();
-	              		  $("#btnRejectDeal"+id).show();
-	              		  $("#btnGotIt"+id).show();
-	              		  $("#btnAcceptDeal"+id).hide();
+	         		   success : function(response) {	         			   
+	         			   if(response == "ERROR") {
+	         				   
+	         				  alert("Some error occured");	
+	         				  
+	         			   } else {
+	         				   
+	         				  $("#txtSavedDealMatchHidden").val(response);	         	
+		         			  $("#btnViewDealDetails"+id).show();
+		              		  $("#btnRejectDeal"+id).show();
+		              		  $("#btnGotIt"+id).show();
+		              		  $("#btnAcceptDeal"+id).hide();
+	         			   }	         			   	         			         			 
 	         		   },
 	         		   error : function(jqXHR, textStatus, errorThrown) {
-	         			 	alert("Some error");		         			
+	         			 	alert("Some error occured");		         			
 	         		   }
 	         		  });
         	}	 
@@ -299,7 +308,12 @@
         	} 
         	
         	
-        	function gotDeal($dealMatchId) {        		
+        	function gotDeal($dealMatchId) {    
+        		
+        		if($dealMatchId == undefined) {
+        			
+        			$dealMatchId = $("#txtSavedDealMatchHidden").val();
+        		}
         		
         		$.magnificPopup.open({
         			

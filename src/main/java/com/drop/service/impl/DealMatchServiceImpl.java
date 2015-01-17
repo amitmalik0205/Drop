@@ -30,7 +30,7 @@ public class DealMatchServiceImpl implements IDealMatchService {
 	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void saveDealMatch(DealMatchForm form) {
+	public DealMatch saveDealMatch(DealMatchForm form) {
 		
 		DealPost savedDealPost = dealPostDao.loadEntity(form.getDealPostId());
 		DealWanted savedDealWanted = dealWantedDao.loadEntity(form.getDealWantedId());
@@ -43,6 +43,8 @@ public class DealMatchServiceImpl implements IDealMatchService {
 		dealMatch.setMatchCreated(new Date());
 		
 		dealMatchDao.saveOrUpdate(dealMatch);
+		
+		return dealMatch;
 	}
 	
 	@Override

@@ -107,14 +107,22 @@ public class MatchingDealsController {
 	@RequestMapping(value = "/acceptDeal", method = RequestMethod.POST)
 	public @ResponseBody
 	String acceptDeal(@ModelAttribute DealMatchForm form) {
+		
+		DealMatch savedDealMatch = null;
+		
 		try {
-			dealMatchService.saveDealMatch(form);
+			 savedDealMatch =  dealMatchService.saveDealMatch(form);
+			 
 		} catch (Exception e) {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			e.printStackTrace();
-			return "ERROR";
 		}
-		return "SUCCESS";
+		
+		if(savedDealMatch != null) {
+			return savedDealMatch.getId().toString();
+		}
+		
+		return "ERROR";
 	}
 	
 	

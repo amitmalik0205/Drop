@@ -5,7 +5,7 @@ import com.drop.dao.domain.DealMatch;
 
 public interface IDealMatchService {
 
-	public void saveDealMatch(DealMatchForm form);
+	public DealMatch saveDealMatch(DealMatchForm form);
 
 	/**
 	 * Method will fetch DealMatch and user details
