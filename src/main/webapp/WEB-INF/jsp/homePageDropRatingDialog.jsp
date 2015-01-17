@@ -28,18 +28,25 @@
                             
                             <form:hidden path="rating" id="dropRating"/>
                             
-                            <form:hidden path="dealPostId"/>                           
+                            <form:hidden path="dealPostId" id="txtDealPostHomePageHidden"/>                           
                             
-                            <button class="btn btn-primary" onclick="submitDropReview()">Submit</button>
+                           <!--  <button class="btn btn-primary" onclick="submitDropReview()">Submit</button> -->
+                            <input class="btn btn-primary" type="submit" value="Submit"/>
                         </form:form>
                         
                         <script src="js/custom.js"></script>
                         
-                        <script type="text/javascript">                        	
-	                        function submitDropReview() {	
-	                        	var count = $('#star-rating li.selected').length;	                    		
-	                    		$('#dropRating').val(count);	                    		
-	                    		document.getElementById("homePageDropRatingForm").submit();
-	                    	}
+                        <script type="text/javascript">  
+                        
+	                        $("#homePageDropRatingForm").submit(function(e){	                            
+	                            var count = $('#star-rating li.selected').length;	                    		
+	                    		$('#dropRating').val(count);
+	                    		if(count == 0) {
+	                    			$('#errorSpan').text("Please select rating");
+	                    			$('#errorSpan').show();
+	                    			e.preventDefault(e);
+	                    		}	                            
+	                        });
+                        	                     
                         </script>                                                                        
                     </div>

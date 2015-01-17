@@ -218,4 +218,29 @@ public class HomeController {
 		}
 		return "redirect:/viewHomePageDropDetails.htm?dealPostId="+dropRatingForm.getDealPostId();
 	}
+	
+	
+	/*@RequestMapping(value = "/saveHomePageDropRating", method = RequestMethod.POST)
+	public @ResponseBody
+	String saveDropRating(@Valid @ModelAttribute DropRatingForm dropRatingForm,
+			BindingResult result, ModelMap map) {
+
+		try {
+
+			if (result.hasErrors()) {
+				return DropUtil.getErrorString(result);
+			}
+
+			dropRatingService.saveDropRating(dropRatingForm);
+			prepareModelForHomePage(map);
+
+			map.addAttribute("reviewSaved", true);
+
+		} catch (Exception e) {
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			e.printStackTrace();
+			return "ERROR";
+		}
+		return "SUCCESS";
+	}*/
 }

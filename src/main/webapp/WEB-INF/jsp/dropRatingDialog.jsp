@@ -32,16 +32,20 @@
                             
                             <form:hidden path="dealWantedId"/>
                             
-                            <button class="btn btn-primary" onclick="submitDropReview()">Submit</button>
+                            <input class="btn btn-primary" type="submit" value="Submit"/>
                         </form:form>
                         
                         <script src="js/custom.js"></script>
                         
                         <script type="text/javascript">                        	
-	                        function submitDropReview() {	
-	                        	var count = $('#star-rating li.selected').length;	                    		
-	                    		$('#dropRating').val(count);	                    		
-	                    		document.getElementById("dropRatingForm").submit();
-	                    	}
+	                        $("#dropRatingForm").submit(function(e){	
+	                            var count = $('#star-rating li.selected').length;	                    		
+	                    		$('#dropRating').val(count);
+	                    		if(count == 0) {
+	                    			$('#errorSpan').text("Please select rating");
+	                    			$('#errorSpan').show();
+	                    			e.preventDefault(e);
+	                    		}	                            
+	                        });
                         </script>                                                                        
                     </div>

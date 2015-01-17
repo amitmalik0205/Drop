@@ -260,68 +260,7 @@
 		<script src='js/moment.min.js'></script>
 		<script src='js/bootstrap-datetimepicker.min.js'></script>
         
-        <script type="text/javascript">
-        
-	        $('.dateTimePicker').datetimepicker({
-	            pick12HourFormat: false,
-	        });  	      
-	        	            
-        	function hideViewDetails(id) { 
-        		var dealPostId = id;
-				var dealWantedId = $("#txtDealWantedToMatchHidden").val();
-
-        		var data = { dealPostId : dealPostId , dealWantedId : dealWantedId};
-        		
-        		$.ajax({
-	         		   url : "acceptDeal.htm",
-	         		   dataType: "text",
-	         		   data : data,
-	         		   type : "POST",	         		   
-	         		   success : function(response) {
-	         			  $("#btnViewDealDetails"+id).show();
-	              		  $("#btnRejectDeal"+id).show();
-	              		  $("#btnGotIt"+id).show();
-	              		  $("#btnAcceptDeal"+id).hide();
-	         		   },
-	         		   error : function(jqXHR, textStatus, errorThrown) {
-	         			 	alert("Some error");		         			
-	         		   }
-	         		  });
-        	}	 
-        	
-        	function rejectMatchingDeal($dealPostId) {        		
-        		
-        		$.magnificPopup.open({
-        			
-        			items: {
-            		      src: 'showReasonToRejectDialog.htm?dealPostId='+$dealPostId+"&dealWantedId="+$("#txtDealWantedToMatchHidden").val(),
-            		      type: 'ajax'
-            		  },
-        			
-            		  ajax: {
-              			  
-             			   // Ajax settings object that will extend default one - http://api.jquery.com/jQuery.ajax/#jQuery-ajax-settings
-             			  // For example-- settings: {cache:false, async:false}
-             			  settings: null, 
-             			            			 
-             			   // CSS class that will be added to body during the loading (adds "progress" cursor)
-             			  cursor: 'mfp-ajax-cur',
-             			  
-             			  //  Error message, can contain %curr% and %total% tags if gallery is enabled
-             			  tError: '<a href="%url%">The content</a> could not be loaded.....' 
-             			},
-             		  	
-           			callbacks: {
-           				beforeOpen: function () { }
-             		},
-           
-           			closeBtnInside: true,
-           			
-           			closeOnContentClick : false
-        			
-        		});
-        	}
-        	
+        <script type="text/javascript">      
         	
         	function rateDrop($dealPostId) {        		
         		
@@ -355,8 +294,7 @@
         			
         		});
         	}
-        	
-        	
+        	        	
         </script>
         
     </div>
