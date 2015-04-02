@@ -5,6 +5,7 @@ import com.drop.controller.form.AddressBookForm;
 import com.drop.controller.form.LoginForm;
 import com.drop.controller.form.RegistrationForm;
 import com.drop.dao.domain.User;
+import com.drop.rest.request.dto.LoginDTO;
 
 public interface IUserService {
 
@@ -19,4 +20,9 @@ public interface IUserService {
 	public void saveOrUpdateUser(AccountSettingsForm form);
 	
 	public void saveOrUpdateUser(AddressBookForm form);
+	
+	//Rest Services Methods
+	public void login(LoginDTO loginDto);
+	
+	public void updateUserProfile(LoginDTO loginDto);
 }

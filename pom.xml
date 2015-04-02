@@ -16,6 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.slf4j-version>1.6.1</org.slf4j-version>
 		<jackson.databind-version>2.2.3</jackson.databind-version>
+		<jersey-version>2.12</jersey-version>
 	</properties>
 
 	<dependencies>
@@ -156,11 +157,11 @@
 		</dependency>
 
 		<!-- JSON lib for content negotiation -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.databind-version}</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>org.apache.solr</groupId>
@@ -174,6 +175,44 @@
 			<version>[2.0.0]</version>
 			<type>pom</type>
 		</dependency>
+		
+		
+				<!-- Jersey Jars -->
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet-core</artifactId>
+			<version>${jersey-version}</version>
+		</dependency>
+
+		<!-- Jersey JSON support -->
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey-version}</version>
+		</dependency>
+
+		<!-- Jersey Spring support -->
+		<dependency>
+			<groupId>org.glassfish.jersey.ext</groupId>
+			<artifactId>jersey-spring3</artifactId>
+			<version>${jersey-version}</version>
+		</dependency>
+
+		<!-- Jersey Bean Validation also load Hibernate Validator JAR -->
+		<dependency>
+			<groupId>org.glassfish.jersey.ext</groupId>
+			<artifactId>jersey-bean-validation</artifactId>
+			<version>${jersey-version}</version>
+		</dependency>
+
+		<!-- Oauth -->
+		<dependency>
+			<groupId>org.glassfish.jersey.security</groupId>
+			<artifactId>oauth1-server</artifactId>
+			<version>${jersey-version}</version>
+		</dependency>
+		
+		
 	</dependencies>
 	
 	

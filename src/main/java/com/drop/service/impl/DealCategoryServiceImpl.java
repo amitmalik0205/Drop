@@ -1,5 +1,6 @@
 package com.drop.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.drop.dao.IDealCategoryDao;
 import com.drop.dao.domain.DealCategory;
+import com.drop.rest.request.dto.GetDealCategoriesDTO;
 import com.drop.service.IDealCategoryService;
 
 @Service
@@ -103,5 +105,29 @@ public class DealCategoryServiceImpl implements IDealCategoryService {
 		 */
 
 		return imageName;
+	}
+	
+	
+	@Override
+	public List<GetDealCategoriesDTO> getAllDealCategoriesDto() {
+		
+		List<GetDealCategoriesDTO> categoryDtolist = new ArrayList<GetDealCategoriesDTO>();
+		
+		List<DealCategory> categories = categoryDao.findAll();
+		
+		for(DealCategory category : categories) {		
+			
+			GetDealCategoriesDTO dto = new GetDealCategoriesDTO();
+			
+			dto.setId(category.getId());
+			dto.setName(category.getName());
+			dto.setDescription(category.getDescription());
+			dto.setIconPath(category.getIconPath());
+			dto.setPicturePath(category.getPicturePath());
+			
+			categoryDtolist.add(dto);
+		}
+		
+		return categoryDtolist;
 	}
 }

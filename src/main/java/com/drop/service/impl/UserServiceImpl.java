@@ -1,5 +1,6 @@
 package com.drop.service.impl;
 
+import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ import com.drop.dao.IUserDao;
 import com.drop.dao.domain.MailingAddress;
 import com.drop.dao.domain.User;
 import com.drop.dto.ForgetPasswordDTO;
+import com.drop.rest.request.dto.LoginDTO;
 import com.drop.service.IUserService;
 import com.drop.util.EmailUtil;
 import com.drop.util.WebUtil;
@@ -101,5 +103,73 @@ public class UserServiceImpl implements IUserService {
 		addressList.add(address);
 		
 		userDao.saveOrUpdate(user);
+	}
+		
+	/*
+	 * Method will first check if there is user with the email id 
+	 * If found then no need to save the user details otherwise 
+	 * save details
+	 */
+	@Override
+	public void login(LoginDTO loginDto) {
+				
+		User savedUser = userDao.getUserByEmail(loginDto.getEmail());
+		
+		if(savedUser == null) {
+			
+			User  user = new User();
+			
+			user.setFirstName(loginDto.getFirstName());
+			user.setLastName(loginDto.getLastName());
+			user.setPhoneNumber(loginDto.getPhoneNumber());
+			user.setEmail(loginDto.getEmail());
+			
+			Set<MailingAddress> addressList = new HashSet<MailingAddress>();
+			
+			MailingAddress address = new MailingAddress();
+			address.setAddressLine1(loginDto.getAddressLine1());
+			address.setAddressLine2(loginDto.getAddressLine2());
+			address.setState(loginDto.getState());
+			address.setCity(loginDto.getCity());
+			address.setZip(loginDto.getZip());
+			
+			addressList.add(address);
+			
+			user.setAddresses(addressList);
+			
+			userDao.create(user);
+						
+		} 	
+	}
+	
+	
+	@Override
+	public void updateUserProfile(LoginDTO loginDto) {
+
+		User user = userDao.getUserByEmail(loginDto.getEmail());
+
+		if (user != null) {
+			
+			user.setFirstName(loginDto.getFirstName());
+			user.setLastName(loginDto.getLastName());
+			user.setPhoneNumber(loginDto.getPhoneNumber());
+			user.setEmail(loginDto.getEmail());
+
+			Set<MailingAddress> addressList = user.getAddresses();
+			
+			if(addressList.size() > 0) {
+				
+				for(MailingAddress address : addressList) {
+					address.setAddressLine1(loginDto.getAddressLine1());
+					address.setAddressLine1(loginDto.getAddressLine2());
+					address.setCity(loginDto.getCity());
+					address.setState(loginDto.getState());
+					address.setZip(loginDto.getZip());
+					break;
+				}
+			}
+			
+			userDao.saveOrUpdate(user);
+		}	
 	}
 }

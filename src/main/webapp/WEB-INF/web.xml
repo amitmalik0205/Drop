@@ -33,4 +33,23 @@
 		<session-timeout>30</session-timeout>
 	</session-config>
 
+
+	<!-- Jersey Configuration -->
+	<servlet>
+		<servlet-name>Drop REST Service</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>jersey.config.server.provider.packages</param-name>
+			<param-value>com.drop.rest.services</param-value>
+		</init-param>
+		<!-- <init-param> <param-name>javax.ws.rs.Application</param-name> <param-value>com.qait.mathplay.rest.MathPlayApplication</param-value> 
+			</init-param> -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Drop REST Service</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
 </web-app>
