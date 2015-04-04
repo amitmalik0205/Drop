@@ -5,6 +5,7 @@ import java.util.List;
 import com.drop.controller.form.DealWantedForm;
 import com.drop.controller.form.ReasonToDeleteForm;
 import com.drop.dao.domain.DealWanted;
+import com.drop.rest.request.dto.PostWantDropDTO;
 
 public interface IDealWantedService {
 
@@ -21,4 +22,6 @@ public interface IDealWantedService {
 	public List<DealWanted> getAllDealWanted();
 	
 	public DealWanted loadDealWantedById(Long dealWantedId);
+	
+	public Long saveDealWanted(PostWantDropDTO postWantDropDTO);
 }

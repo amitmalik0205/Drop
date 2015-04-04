@@ -373,4 +373,17 @@ public class DealPost implements Serializable {
 	public void setAverageRating(Double averageRating) {
 		this.averageRating = averageRating;
 	}
+	
+	
+	private String imagePath;
+
+	@Column(name = "image_path")
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+	
 }

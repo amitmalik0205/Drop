@@ -1,9 +1,16 @@
 package com.drop.util;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.MathContext;
+import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -174,4 +181,53 @@ public class DropUtil {
 		
 		return ageString;
 	}	
+	
+	
+	public static String getRandomNumber() {
+		SecureRandom random = new SecureRandom();
+		return new BigInteger(130, random).toString(32);
+	}
+	
+	
+	public static String uploadImageOnServer(InputStream in, String randomFolderName, String rootFolderPath) throws IOException, FileNotFoundException {
+
+		FileOutputStream fOut = null;
+		
+
+		createRootFolder(rootFolderPath);
+		
+		// Make folder to save images if not there.
+		String dealFolderPath = rootFolderPath + "/" + randomFolderName;
+		createDealFolder(dealFolderPath);
+		
+		
+		String convertedImageName = getRandomNumber() + ".jpg";
+		
+		String storagePath = dealFolderPath + "/" + convertedImageName;
+		
+		fOut = new FileOutputStream(storagePath);
+
+		byte[] buf = new byte[1024];
+		int len;
+
+		while ((len = in.read(buf)) > 0) {
+			fOut.write(buf, 0, len);
+		}
+
+		in.close();
+		fOut.close();
+
+		return convertedImageName;
+	}
+	
+	private static void createRootFolder(String rootFolderPath) {		
+		File rootFolder = new File(rootFolderPath);
+		rootFolder.mkdirs();		
+	}
+	
+	private static File createDealFolder(String dealFolderPath) {
+		File dealFolder = new File(dealFolderPath);
+		dealFolder.mkdirs();
+		return dealFolder;
+	}
 }

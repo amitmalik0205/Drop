@@ -1,6 +1,7 @@
 package com.drop.rest.services;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -17,22 +18,28 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.drop.dao.domain.DealCategory;
-import com.drop.dao.domain.DealPost;
-import com.drop.dao.domain.DealWanted;
 import com.drop.dao.domain.MailingAddress;
 import com.drop.dao.domain.User;
+import com.drop.dto.DealPostDTO;
+import com.drop.dto.DealWantedDTO;
 import com.drop.rest.request.dto.GetDealCategoriesDTO;
 import com.drop.rest.request.dto.LoginDTO;
+import com.drop.rest.request.dto.PostDropDTO;
+import com.drop.rest.request.dto.PostWantDropDTO;
 import com.drop.service.IDealCategoryService;
+import com.drop.service.IDealPostService;
+import com.drop.service.IDealWantedService;
+import com.drop.service.ISolrSearchService;
 import com.drop.service.IUserService;
 import com.drop.util.DropUtil;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Service
@@ -42,6 +49,10 @@ public class DropRestService {
 	private static final Logger logger = Logger.getLogger(DropRestService.class);
 	
 	@Autowired
+	@Qualifier("applicationConfig")
+	private Properties applicationConfig;
+	
+	@Autowired
 	@Qualifier("msgConfig")
 	private Properties msgConfig;
 		
@@ -49,7 +60,16 @@ public class DropRestService {
 	private IUserService userService;
 	
 	@Autowired
-	private IDealCategoryService categoryService;
+	private IDealCategoryService categoryService;	
+	
+	@Autowired
+	private IDealWantedService dealWantedService;
+	
+	@Autowired
+	private IDealPostService dealPostService;
+	
+	@Autowired
+	private ISolrSearchService solrSearchService;
 	
 	
 	@Path("test")
@@ -199,32 +219,179 @@ public class DropRestService {
 	@Path("get-home-page-drops")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Transactional
-	public Response getHomeDropsTest() {
+	public Response getHomeDrops() {
 		
-		DropServiceResponse response = new DropServiceResponse();
+		DropServiceResponse response = new DropServiceResponse();			
 		
-		//Object object[] = new Object[3];
-		
-		List<Object> list = new ArrayList<Object>();
-		
-		List<DealWanted> dropWantedList = new ArrayList<DealWanted>();
-		List<DealPost> dropPostList = new ArrayList<DealPost>();
-		
-		list.add(dropWantedList);
-		list.add(dropPostList);
+		List<Object> list = new ArrayList<Object>();			
 		
 		try {
 
+			List<DealWantedDTO> dropWantedList = solrSearchService.getDropsWantedForHome();
 			
+			if(dropWantedList.size() >= 3 ) {
+				
+				List<DealWantedDTO> dropWantedSubList = dropWantedList.subList(0, 3);
+				
+				list.add(dropWantedSubList);
+				
+			} else {
+				
+				list.add(dropWantedList);
+			}
+			
+			
+			List<DealPostDTO> dropPostList = solrSearchService.getDropsForHomePage();
+			
+			if (dropPostList.size() >= 3) {
+
+				List<DealPostDTO> dropPostSubList = dropPostList.subList(0, 3);
+
+				list.add(dropPostSubList);
+
+			} else {
+
+				list.add(dropPostList);
+			}
+			
+			//List<DealPostDTO> expireSoonList = solrSearchService.getDropsForHomePage();			
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.setCode("getSecurityQuestion001");
-			response.setMessage(msgConfig.getProperty("getSecurityQuestion001"));
+			response.setCode("getHomeDrops001");
+			response.setMessage(msgConfig.getProperty("getHomeDrops001"));
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			throw new WebApplicationException(Response.ok(response).build());
 		}
 		return Response.ok(list).build();
 	}
+	
+	
+	@POST
+	@Path("post-want-drop")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Transactional(rollbackFor = Exception.class)
+	public Response postWantDrop(PostWantDropDTO dealWantedDTO) {
+		
+		DropServiceResponse response = new DropServiceResponse();
+		response.setCode("postWantDrop002");
+		response.setMessage(msgConfig.getProperty("postWantDrop002"));
+		
+		try {
+			
+			dealWantedService.saveDealWanted(dealWantedDTO);
 
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setCode("postWantDrop001");
+			response.setMessage(msgConfig.getProperty("postWantDrop001"));
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			throw new WebApplicationException(Response.ok(response).build());
+		}
+		
+		return Response.ok(response).build();
+	}
+
+	
+	@POST
+	@Path("post-drop")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Transactional(rollbackFor = Exception.class)
+	public Response postDrop(FormDataMultiPart multiPart) {	
+		
+		DropServiceResponse response = new DropServiceResponse();
+		
+		boolean isError = false;
+		String imageName = null;		
+
+		String publicURL = applicationConfig.getProperty("deal.image.public.url");
+		String rootFolderPath = applicationConfig.getProperty("drop.image.storage.path");
+		
+		
+		//Get entity which contains Drop details
+		List<FormDataBodyPart> dropPart = multiPart.getFields("dropDetails"); 
+		PostDropDTO dropObj = null;
+		
+		try {
+
+			//Convert deal JSON to object
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				dropObj = mapper.readValue(dropPart.get(0).getValueAs(String.class), PostDropDTO.class);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				isError = true;
+				response.setMessage(msgConfig.getProperty("postDrop003"));
+				response.setCode("postDrop003");
+			} 
+			
+			if(!isError) {
+				
+				// Store main image as InputStream
+				List<FormDataBodyPart> imageList = multiPart.getFields("dropImage");  
+				FormDataBodyPart dropImage = imageList.get(0);
+				InputStream inputStream = dropImage.getValueAs(InputStream.class);			
+				
+			    //Upload image
+			    String randomFolderName = "drop_images"; //DropUtil.getRandomNumber().toString();
+			    
+			    try {
+
+					imageName = DropUtil.uploadImageOnServer(inputStream, randomFolderName, rootFolderPath);
+				
+				} catch (Exception e) {
+					e.printStackTrace();
+					isError = true;
+					response.setMessage(msgConfig.getProperty("postDrop004"));
+					response.setCode("postDrop004");
+				}
+			    			    
+			    if(!isError) {			    	
+			    	//Set image path for drop
+			    	dropObj.setImagePath(publicURL + "/" + randomFolderName + "/" + imageName);
+			    	
+			    	dealPostService.saveDealPost(dropObj);
+			    			    			    
+			    }
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setCode("postDrop001");
+			response.setMessage(msgConfig.getProperty("postDrop001"));
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			throw new WebApplicationException(Response.ok(response).build());
+		}
+	    
+		return Response.ok(response).build();
+	}
+	
+	
+	
+	@GET
+	@Path("get-my-want-drops")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Transactional
+	public Response getMyWantDrops(@QueryParam("email") String email) {
+		
+		DropServiceResponse response = new DropServiceResponse();
+		response.setCode("postDrop002");
+		response.setMessage(msgConfig.getProperty("postDrop002"));
+		
+		try {
+			
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setCode("postDrop001");
+			response.setMessage(msgConfig.getProperty("postDrop001"));
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			throw new WebApplicationException(Response.ok(response).build());
+		}
+		
+		return Response.ok(response).build();
+	}
 }

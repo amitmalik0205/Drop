@@ -21,6 +21,7 @@ import com.drop.dao.domain.Location;
 import com.drop.dao.domain.MailingAddress;
 import com.drop.dao.domain.User;
 import com.drop.enums.POST_DEAL_TYPE;
+import com.drop.rest.request.dto.PostDropDTO;
 import com.drop.service.IDealPostService;
 import com.drop.service.IMailingAddressService;
 import com.drop.service.ISolrSearchService;
@@ -256,5 +257,94 @@ public class DealPostServiceImpl implements IDealPostService {
 	@Transactional
 	public DealPost getDealPostWithUserAndRating(long dealPostId) {
 		return dealPostDao.getDealPostWithUserAndRating(dealPostId);
+	}
+	
+	
+	@Override
+	public void saveDealPost(PostDropDTO postDropDTO) {
+		
+		DealPost entity = new DealPost();
+		
+		User user = userDao.getUserByEmail(postDropDTO.getEmail());
+		
+		if(user != null) {
+			
+			entity.setTitle(postDropDTO.getTitle());			
+			entity.setDealCategory(categoryDao.loadEntity(postDropDTO.getCategory()));
+			
+			String dateFormat = msgConfig.getProperty("date.format");
+			Date starts = DropUtil
+					.convertStringToDate(postDropDTO.getStarts(), dateFormat);
+			Date expires = DropUtil.convertStringToDate(postDropDTO.getExpires(),
+					dateFormat);
+			
+			entity.setStarts(starts);
+			entity.setExpires(expires);
+						
+			entity.setSalePrice(postDropDTO.getSalePrice());
+			entity.setRetailPrice(postDropDTO.getRetailPrice());
+			
+			entity.setDiscountPercent(DropUtil.calculateDiscount(
+					postDropDTO.getSalePrice(), postDropDTO.getRetailPrice()));
+			
+			entity.setDescription(postDropDTO.getDescription());							
+			entity.setSpecialInstructions(postDropDTO.getSpecialInstructions());
+			entity.setCouponsRequired(postDropDTO.getCouponsRequired());
+			entity.setMembershipRequired(postDropDTO.getMembershipRequired());										
+				
+			entity.setImagePath(postDropDTO.getImagePath());
+			
+			Location location = new Location();
+			String dealType = postDropDTO.getDealType();
+
+			if (dealType != null) {
+				if (dealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
+					
+					entity.setLocalDeal(true);
+					entity.setOnlineDeal(false);
+					
+					MailingAddress address = new MailingAddress();
+					address.setAddressLine1(postDropDTO.getAddressLine1());
+					address.setAddressLine2(postDropDTO.getAddressLine2());
+					address.setState(postDropDTO.getState());
+					address.setCity(postDropDTO.getCity());
+					address.setZip(postDropDTO.getZip());
+					
+
+					location.setMailingAddress(address);
+
+				} else if (dealType
+						.equals(POST_DEAL_TYPE.ONLINE_DEAL.getDealType())) {
+					
+					entity.setOnlineDeal(true);
+					entity.setLocalDeal(false);
+					
+					location.setUrl(postDropDTO.getUrl());
+				}
+			}
+
+			entity.setLocation(location);
+			
+			entity.setUser(user);			
+			entity.setActive(true);
+			entity.setCreatedOn(new Date());
+			entity.setAverageRating(0.0);
+			entity.setTotalRatings(0);
+
+			dealPostDao.create(entity);
+			
+			if (null != user.getTotalPosts()) {
+				user.setTotalPosts(user.getTotalPosts() + 1);
+			} else {
+				user.setTotalPosts(1);
+
+			}
+			
+			userDao.saveOrUpdate(user);
+			
+			solrSearchService.add(entity);
+						
+		}
+	
 	}
 }

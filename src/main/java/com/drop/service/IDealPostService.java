@@ -5,6 +5,7 @@ import java.util.List;
 import com.drop.controller.form.DealPostForm;
 import com.drop.controller.form.ReasonToDeleteForm;
 import com.drop.dao.domain.DealPost;
+import com.drop.rest.request.dto.PostDropDTO;
 
 public interface IDealPostService {
 
@@ -25,4 +26,6 @@ public interface IDealPostService {
 	public DealPost loadDealPostbyId(long dealPostId);
 	
 	public DealPost getDealPostWithUserAndRating(long dealPostId);
+	
+	public void saveDealPost(PostDropDTO postDropDTO);
 }

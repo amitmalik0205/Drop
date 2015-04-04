@@ -177,7 +177,7 @@
 		</dependency>
 		
 		
-				<!-- Jersey Jars -->
+		<!-- Jersey Jars -->
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-servlet-core</artifactId>
@@ -212,9 +212,14 @@
 			<version>${jersey-version}</version>
 		</dependency>
 		
-		
-	</dependencies>
-	
+		<!-- Jersey File Upload -->
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
+			<version>${jersey-version}</version>
+		</dependency>
+				
+	</dependencies>	
 	
 
 	<build>

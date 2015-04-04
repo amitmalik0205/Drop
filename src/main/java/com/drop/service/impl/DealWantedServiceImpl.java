@@ -13,6 +13,7 @@ import com.drop.dao.IDealCategoryDao;
 import com.drop.dao.IDealWantedDao;
 import com.drop.dao.IUserDao;
 import com.drop.dao.domain.DealWanted;
+import com.drop.rest.request.dto.PostWantDropDTO;
 import com.drop.service.IDealWantedService;
 import com.drop.service.ISolrSearchService;
 
@@ -126,5 +127,35 @@ public class DealWantedServiceImpl implements IDealWantedService {
 	@Transactional
 	public DealWanted loadDealWantedById(Long dealWantedId) {
 		return dealWantedDao.loadEntity(dealWantedId);
+	}
+	
+	
+	
+	@Override
+	public Long saveDealWanted(PostWantDropDTO postWantDropDTO) {
+		
+		DealWanted entity = new DealWanted();
+
+		entity.setTitle(postWantDropDTO.getTitle());
+		entity.setDescription(postWantDropDTO.getDescription());
+		entity.setMaxPrice(postWantDropDTO.getMaxPrice());
+		entity.setTipAmount(postWantDropDTO.getTipAmount());
+		entity.setAcceptCoupons(postWantDropDTO.getAcceptCoupons());
+		entity.setWouldBuyOnline(postWantDropDTO.getWouldBuyOnline());
+		entity.setWouldBuyLocally(postWantDropDTO.getWouldBuyLocally());
+		entity.setWantNew(postWantDropDTO.getWantNew());
+		entity.setWantUsed(postWantDropDTO.getWantUsed());
+		entity.setRefurbishedOK(postWantDropDTO.getRefurbishedOK());
+		
+		entity.setActive(true);
+		entity.setDealCategory(categoryDao.loadEntity(postWantDropDTO.getCategory()));
+		entity.setUser(userDao.getUserByEmail(postWantDropDTO.getEmail()));
+		entity.setCreatedOn(new Date(System.currentTimeMillis()));
+
+		dealWantedDao.create(entity);
+
+		solrSearchService.add(entity);
+
+		return entity.getId();			
 	}
 }
