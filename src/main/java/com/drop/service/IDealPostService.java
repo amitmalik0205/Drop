@@ -6,6 +6,7 @@ import com.drop.controller.form.DealPostForm;
 import com.drop.controller.form.ReasonToDeleteForm;
 import com.drop.dao.domain.DealPost;
 import com.drop.rest.request.dto.PostDropDTO;
+import com.drop.rest.response.dto.GetMyDropsDTO;
 
 public interface IDealPostService {
 
@@ -28,4 +29,6 @@ public interface IDealPostService {
 	public DealPost getDealPostWithUserAndRating(long dealPostId);
 	
 	public void saveDealPost(PostDropDTO postDropDTO);
+	
+	public List<GetMyDropsDTO> getAllActiveDealPostForUser(String email);
 }

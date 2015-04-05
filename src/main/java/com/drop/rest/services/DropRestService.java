@@ -33,6 +33,8 @@ import com.drop.rest.request.dto.GetDealCategoriesDTO;
 import com.drop.rest.request.dto.LoginDTO;
 import com.drop.rest.request.dto.PostDropDTO;
 import com.drop.rest.request.dto.PostWantDropDTO;
+import com.drop.rest.response.dto.GetMyDropsDTO;
+import com.drop.rest.response.dto.GetMyWantDropsDTO;
 import com.drop.service.IDealCategoryService;
 import com.drop.service.IDealPostService;
 import com.drop.service.IDealWantedService;
@@ -368,30 +370,55 @@ public class DropRestService {
 		return Response.ok(response).build();
 	}
 	
-	
-	
+		
 	@GET
 	@Path("get-my-want-drops")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Transactional
 	public Response getMyWantDrops(@QueryParam("email") String email) {
 		
+		List<GetMyWantDropsDTO> dtoList = new ArrayList<GetMyWantDropsDTO>();
+		
 		DropServiceResponse response = new DropServiceResponse();
-		response.setCode("postDrop002");
-		response.setMessage(msgConfig.getProperty("postDrop002"));
 		
 		try {
 			
-			
+			dtoList = dealWantedService.getAllDealWantedForUser(email);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.setCode("postDrop001");
-			response.setMessage(msgConfig.getProperty("postDrop001"));
+			response.setCode("getMyWantDrops001");
+			response.setMessage(msgConfig.getProperty("getMyWantDrops001"));
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			throw new WebApplicationException(Response.ok(response).build());
 		}
 		
-		return Response.ok(response).build();
+		return Response.ok(dtoList).build();
+	}
+	
+	
+	@GET
+	@Path("get-my-drops")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Transactional
+	public Response getMyDrops(@QueryParam("email") String email) {
+		
+		List<GetMyDropsDTO> dtoList = new ArrayList<GetMyDropsDTO>();
+		
+		DropServiceResponse response = new DropServiceResponse();
+		
+		try {
+			
+			dtoList = dealPostService.getAllActiveDealPostForUser(email);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setCode("getMyDrops001");
+			response.setMessage(msgConfig.getProperty("getMyDrops001"));
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			throw new WebApplicationException(Response.ok(response).build());
+		}
+		
+		return Response.ok(dtoList).build();
 	}
 }

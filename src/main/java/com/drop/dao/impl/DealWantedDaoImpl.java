@@ -7,7 +7,6 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import com.drop.dao.IDealWantedDao;
-import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.DealWanted;
 
 @Repository

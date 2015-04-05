@@ -1,5 +1,6 @@
 package com.drop.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -16,12 +17,14 @@ import com.drop.controller.form.ReasonToDeleteForm;
 import com.drop.dao.IDealCategoryDao;
 import com.drop.dao.IDealPostDao;
 import com.drop.dao.IUserDao;
+import com.drop.dao.domain.DealCategory;
 import com.drop.dao.domain.DealPost;
 import com.drop.dao.domain.Location;
 import com.drop.dao.domain.MailingAddress;
 import com.drop.dao.domain.User;
 import com.drop.enums.POST_DEAL_TYPE;
 import com.drop.rest.request.dto.PostDropDTO;
+import com.drop.rest.response.dto.GetMyDropsDTO;
 import com.drop.service.IDealPostService;
 import com.drop.service.IMailingAddressService;
 import com.drop.service.ISolrSearchService;
@@ -346,5 +349,65 @@ public class DealPostServiceImpl implements IDealPostService {
 						
 		}
 	
+	}
+	
+	
+	@Override
+	public List<GetMyDropsDTO> getAllActiveDealPostForUser(String email) {
+		
+		 List<GetMyDropsDTO> dtoList = new ArrayList<GetMyDropsDTO>();
+		 
+		 User user = userDao.getUserByEmail(email);
+		 
+		 if(user != null) {
+			 
+			 List<DealPost> list = dealPostDao.getAllActiveDealPostForUser(user.getUserId());
+			 
+			 for(DealPost dealPost : list) {
+				 
+				 GetMyDropsDTO dto = new GetMyDropsDTO();
+				 
+				 dto.setDropId(dealPost.getId());
+				 dto.setTitle(dealPost.getTitle());
+				 
+				 DealCategory category = dealPost.getDealCategory();
+				 dto.setCategoryId(category.getId());
+				 dto.setCategoryName(category.getName());
+				 
+				 dto.setStarts(DropUtil.convertDateToString(dealPost.getStarts(), "yyyy-MM-dd HH:mm:ss"));
+				 dto.setExpires(DropUtil.convertDateToString(dealPost.getExpires(), "yyyy-MM-dd HH:mm:ss"));
+				 
+				 dto.setSalePrice(dealPost.getSalePrice());
+				 dto.setRetailPrice(dealPost.getRetailPrice());
+				 
+				 dto.setDescription(dealPost.getDescription());
+				 dto.setSpecialInstructions(dealPost.getSpecialInstructions());
+				 
+				 dto.setCouponsRequired(dealPost.getCouponsRequired());
+				 dto.setMembershipRequired(dealPost.getMembershipRequired());
+				 
+				 Location location = dealPost.getLocation();	
+				 
+				if(dealPost.getLocalDeal()) {							
+					MailingAddress address = location.getMailingAddress();
+					
+					dto.setAddressLine1(address.getAddressLine1());
+					dto.setAddressLine2(address.getAddressLine2());
+					dto.setState(address.getState());
+					dto.setCity(address.getCity());
+					dto.setZip(address.getZip());
+					
+				} else if (dealPost.getOnlineDeal()) {
+					
+					dto.setUrl(location.getUrl());
+				}
+				 
+				dto.setImagePath(DropUtil.appendServerUrlToPath(dealPost.getImagePath()));
+				
+				 dtoList.add(dto);
+			 }
+		 }
+		 
+		 return dtoList;		
 	}
 }

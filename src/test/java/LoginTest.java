@@ -28,7 +28,7 @@ public class LoginTest {
 		String content = mapper.writeValueAsString(loginDTO);
 		System.out.println(content);
 
-		TestUtil.sendRequest(url, content, "POST");
+		TestUtil.sendRequest(url, content, "POST");	
 		
 	}
 }

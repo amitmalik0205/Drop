@@ -1,19 +1,21 @@
-package com.drop.rest.request.dto;
+package com.drop.rest.response.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class PostWantDropDTO implements Serializable {
+public class GetMyWantDropsDTO implements Serializable {
 
-	private static final long serialVersionUID = 854696150937607455L;	
+	private static final long serialVersionUID = -2742358316537747253L;
 	
 	private Long wantDropId;
-		
+	
 	private String title;
 		
 	private String description;
 		
-	private Long category;
+	private Long categoryId;
+	
+	private String categoryName;
 		
 	private BigDecimal maxPrice;
 		
@@ -58,12 +60,21 @@ public class PostWantDropDTO implements Serializable {
 		this.description = description;
 	}
 
-	public Long getCategory() {
-		return category;
+
+	public Long getCategoryId() {
+		return categoryId;
 	}
 
-	public void setCategory(Long category) {
-		this.category = category;
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 	public BigDecimal getMaxPrice() {

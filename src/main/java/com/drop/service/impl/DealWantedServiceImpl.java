@@ -1,6 +1,7 @@
 package com.drop.service.impl;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,11 @@ import com.drop.controller.form.ReasonToDeleteForm;
 import com.drop.dao.IDealCategoryDao;
 import com.drop.dao.IDealWantedDao;
 import com.drop.dao.IUserDao;
+import com.drop.dao.domain.DealCategory;
 import com.drop.dao.domain.DealWanted;
+import com.drop.dao.domain.User;
 import com.drop.rest.request.dto.PostWantDropDTO;
+import com.drop.rest.response.dto.GetMyWantDropsDTO;
 import com.drop.service.IDealWantedService;
 import com.drop.service.ISolrSearchService;
 
@@ -157,5 +161,47 @@ public class DealWantedServiceImpl implements IDealWantedService {
 		solrSearchService.add(entity);
 
 		return entity.getId();			
+	}
+	
+	
+	@Override
+	public List<GetMyWantDropsDTO> getAllDealWantedForUser(String  email) {
+		
+		List<GetMyWantDropsDTO> dtoList = new ArrayList<GetMyWantDropsDTO>();
+		
+		User user = userDao.getUserByEmail(email);
+		
+		if(user != null) {
+			
+			List<DealWanted> list = dealWantedDao.getAllDealWantedForUser(user.getUserId());
+			
+			for(DealWanted dealWanted : list) {
+				
+				GetMyWantDropsDTO dto = new GetMyWantDropsDTO();
+				
+				dto.setWantDropId(dealWanted.getId());
+				dto.setTitle(dealWanted.getTitle());
+				
+				DealCategory category = dealWanted.getDealCategory();				
+				dto.setCategoryId(category.getId());
+				dto.setCategoryName(category.getName());
+				
+				dto.setMaxPrice(dealWanted.getMaxPrice());
+				dto.setTipAmount(dealWanted.getTipAmount());
+				dto.setDescription(dealWanted.getDescription());
+				
+				dto.setAcceptCoupons(dealWanted.getAcceptCoupons());
+				dto.setWantNew(dealWanted.getWantNew());
+				dto.setWantUsed(dealWanted.getWantUsed());
+				
+				dto.setWouldBuyOnline(dealWanted.getWouldBuyOnline());
+				dto.setWouldBuyLocally(dealWanted.getWouldBuyLocally());
+				dto.setRefurbishedOK(dealWanted.getRefurbishedOK());
+				
+				dtoList.add(dto);
+			}
+		}
+		
+		return dtoList;		
 	}
 }

@@ -230,4 +230,16 @@ public class DropUtil {
 		dealFolder.mkdirs();
 		return dealFolder;
 	}
+	
+	
+	/**
+	 * Method will append server url to image path
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static String appendServerUrlToPath(String path) {
+		return PropertiesFileReaderUtil.getApplicationProperty("server.url")
+				+ "/" + path;
+	}
 }
