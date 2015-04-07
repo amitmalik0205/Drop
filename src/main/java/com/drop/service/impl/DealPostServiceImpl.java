@@ -24,6 +24,7 @@ import com.drop.dao.domain.MailingAddress;
 import com.drop.dao.domain.User;
 import com.drop.enums.POST_DEAL_TYPE;
 import com.drop.rest.request.dto.PostDropDTO;
+import com.drop.rest.request.dto.UpdateDropDTO;
 import com.drop.rest.response.dto.GetMyDropsDTO;
 import com.drop.service.IDealPostService;
 import com.drop.service.IMailingAddressService;
@@ -409,5 +410,91 @@ public class DealPostServiceImpl implements IDealPostService {
 		 }
 		 
 		 return dtoList;		
+	}
+	
+	
+	@Override
+	public void saveOrUpdate(UpdateDropDTO dto) {
+
+		DealPost savedDealPost = dealPostDao.getEntity(dto.getDropId());
+
+		if (savedDealPost != null) {
+			
+			savedDealPost.setTitle(dto.getTitle());
+			savedDealPost.setDescription(dto.getDescription());
+			
+			savedDealPost.setSalePrice(dto.getSalePrice());
+			savedDealPost.setRetailPrice(dto.getRetailPrice());
+			
+			savedDealPost.setDiscountPercent(DropUtil.calculateDiscount(
+					dto.getSalePrice(), dto.getRetailPrice()));
+			
+			savedDealPost.setSpecialInstructions(dto.getSpecialInstructions());
+			
+			savedDealPost.setCouponsRequired(dto.getCouponsRequired());
+			savedDealPost.setMembershipRequired(dto.getMembershipRequired());
+			
+			savedDealPost.setDealCategory(categoryDao.loadEntity(dto.getCategoryId()));
+			savedDealPost.setUpdatedOn(new Date());
+
+			
+			String dateFormat = msgConfig.getProperty("date.format");
+			Date starts = DropUtil.convertStringToDate(dto.getStarts(),
+					dateFormat);
+			Date expires = DropUtil.convertStringToDate(dto.getExpires(),
+					dateFormat);
+			savedDealPost.setStarts(starts);
+			savedDealPost.setExpires(expires);
+			 
+
+			Location location = savedDealPost.getLocation();
+
+			String editedDealType = dto.getDealType();
+
+			if (editedDealType.equals(POST_DEAL_TYPE.LOCAL_DEAL.getDealType())) {
+
+				MailingAddress address = null;
+
+				if (savedDealPost.getLocalDeal()) {
+					// saved deal type is local so update mailing address
+					address = location.getMailingAddress();
+				} else {
+					// Saved Deal type is online so delete it and set a new
+					// mailing address
+					address = new MailingAddress();
+					savedDealPost.setLocalDeal(true);
+					savedDealPost.setOnlineDeal(false);
+					location.setUrl(null);
+				}
+
+				address.setAddressLine1(dto.getAddressLine1());
+				address.setAddressLine2(dto.getAddressLine2());
+				address.setState(dto.getState());
+				address.setCity(dto.getCity());
+				address.setZip(dto.getZip());
+
+				location.setMailingAddress(address);
+
+			} else if (editedDealType.equals(POST_DEAL_TYPE.ONLINE_DEAL
+					.getDealType())) {
+
+				if (!savedDealPost.getOnlineDeal()) {
+
+					savedDealPost.setOnlineDeal(true);
+					savedDealPost.setLocalDeal(false);
+					MailingAddress address = location.getMailingAddress();
+					mailingAddressService.delete(address);
+					location.setMailingAddress(null);
+				}
+
+				location.setUrl(dto.getUrl());
+			}
+
+			savedDealPost.setLocation(location);
+
+			dealPostDao.saveOrUpdate(savedDealPost);
+			
+			solrSearchService.edit(savedDealPost);
+		}		
 	}
 }

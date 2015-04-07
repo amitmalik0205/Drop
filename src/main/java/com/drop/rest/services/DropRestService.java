@@ -33,8 +33,11 @@ import com.drop.rest.request.dto.GetDealCategoriesDTO;
 import com.drop.rest.request.dto.LoginDTO;
 import com.drop.rest.request.dto.PostDropDTO;
 import com.drop.rest.request.dto.PostWantDropDTO;
+import com.drop.rest.request.dto.UpdateDropDTO;
+import com.drop.rest.request.dto.UpdateWantDropDTO;
 import com.drop.rest.response.dto.GetMyDropsDTO;
 import com.drop.rest.response.dto.GetMyWantDropsDTO;
+import com.drop.rest.response.dto.HomePageDropsDTO;
 import com.drop.service.IDealCategoryService;
 import com.drop.service.IDealPostService;
 import com.drop.service.IDealWantedService;
@@ -223,40 +226,52 @@ public class DropRestService {
 	@Transactional
 	public Response getHomeDrops() {
 		
-		DropServiceResponse response = new DropServiceResponse();			
+		DropServiceResponse response = new DropServiceResponse();
 		
-		List<Object> list = new ArrayList<Object>();			
+		HomePageDropsDTO dto = new HomePageDropsDTO();					
 		
 		try {
-
+						
 			List<DealWantedDTO> dropWantedList = solrSearchService.getDropsWantedForHome();
 			
 			if(dropWantedList.size() >= 3 ) {
 				
-				List<DealWantedDTO> dropWantedSubList = dropWantedList.subList(0, 3);
+				List<DealWantedDTO> dropWantedSubList = dropWantedList.subList(0, 3);							
 				
-				list.add(dropWantedSubList);
+				dto.setHomePageWantDrops(dropWantedSubList);
 				
 			} else {
 				
-				list.add(dropWantedList);
+				dto.setHomePageWantDrops(dropWantedList);
 			}
 			
-			
+						
 			List<DealPostDTO> dropPostList = solrSearchService.getDropsForHomePage();
 			
 			if (dropPostList.size() >= 3) {
 
 				List<DealPostDTO> dropPostSubList = dropPostList.subList(0, 3);
-
-				list.add(dropPostSubList);
+				
+				dto.setHomePageDrops(dropPostSubList);
 
 			} else {
 
-				list.add(dropPostList);
+				dto.setHomePageDrops(dropPostList);
 			}
 			
-			//List<DealPostDTO> expireSoonList = solrSearchService.getDropsForHomePage();			
+			
+			List<DealPostDTO> expireSoonDropList = solrSearchService.getDropsForHomePage();
+			
+			if (expireSoonDropList.size() >= 3) {
+
+				List<DealPostDTO> expireSoonDropSubList = expireSoonDropList.subList(0, 3);
+				
+				dto.setHomePageExpireSoonDrops(expireSoonDropSubList);
+
+			} else {
+
+				dto.setHomePageExpireSoonDrops(expireSoonDropList);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -265,7 +280,7 @@ public class DropRestService {
 			logger.fatal(DropUtil.getExceptionDescriptionString(e));
 			throw new WebApplicationException(Response.ok(response).build());
 		}
-		return Response.ok(list).build();
+		return Response.ok(dto).build();
 	}
 	
 	
@@ -421,4 +436,58 @@ public class DropRestService {
 		
 		return Response.ok(dtoList).build();
 	}
+	
+	
+	@POST
+	@Path("update-want-drop")
+	@Consumes((MediaType.APPLICATION_JSON))
+	@Produces(MediaType.APPLICATION_JSON)
+	@Transactional(rollbackFor = Exception.class)
+	public Response updateWantDrop(UpdateWantDropDTO updateWantDropDTO) {
+				
+		DropServiceResponse response = new DropServiceResponse();
+		response.setCode("updateWantDrop002");
+		response.setMessage(msgConfig.getProperty("updateWantDrop002"));
+		
+		try {
+			
+			dealWantedService.saveOrUpdate(updateWantDropDTO);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setCode("updateWantDrop001");
+			response.setMessage(msgConfig.getProperty("updateWantDrop001"));
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			throw new WebApplicationException(Response.ok(response).build());
+		}
+		
+		return Response.ok(response).build();
+	} 
+	
+	
+	@POST
+	@Path("update-drop")
+	@Consumes((MediaType.APPLICATION_JSON))
+	@Produces(MediaType.APPLICATION_JSON)
+	@Transactional(rollbackFor = Exception.class)
+	public Response updateDrop(UpdateDropDTO updateDropDTO) {
+				
+		DropServiceResponse response = new DropServiceResponse();
+		response.setCode("updateDrop002");
+		response.setMessage(msgConfig.getProperty("updateDrop002"));
+		
+		try {
+			
+			dealPostService.saveOrUpdate(updateDropDTO);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setCode("updateDrop001");
+			response.setMessage(msgConfig.getProperty("updateDrop001"));
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			throw new WebApplicationException(Response.ok(response).build());
+		}
+		
+		return Response.ok(response).build();
+	} 
 }

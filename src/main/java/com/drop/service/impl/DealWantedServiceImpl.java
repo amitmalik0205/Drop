@@ -17,6 +17,7 @@ import com.drop.dao.domain.DealCategory;
 import com.drop.dao.domain.DealWanted;
 import com.drop.dao.domain.User;
 import com.drop.rest.request.dto.PostWantDropDTO;
+import com.drop.rest.request.dto.UpdateWantDropDTO;
 import com.drop.rest.response.dto.GetMyWantDropsDTO;
 import com.drop.service.IDealWantedService;
 import com.drop.service.ISolrSearchService;
@@ -203,5 +204,39 @@ public class DealWantedServiceImpl implements IDealWantedService {
 		}
 		
 		return dtoList;		
+	}
+	
+	
+	@Override
+	public void saveOrUpdate(UpdateWantDropDTO dto) {
+		
+		DealWanted savedDealWanted = dealWantedDao.getEntity(dto.getWantDropId());
+
+		if (savedDealWanted != null) {
+			
+			savedDealWanted.setTitle(dto.getTitle());
+			savedDealWanted.setDescription(dto.getDescription());
+			
+			savedDealWanted.setMaxPrice(dto.getMaxPrice());
+			savedDealWanted.setTipAmount(dto.getTipAmount());
+			
+			savedDealWanted.setAcceptCoupons(dto.getAcceptCoupons());
+			savedDealWanted.setWouldBuyOnline(dto.getWouldBuyOnline());
+			savedDealWanted.setWouldBuyLocally(dto.getWouldBuyLocally());
+			
+			savedDealWanted.setWantNew(dto.getWantNew());
+			savedDealWanted.setWantUsed(dto.getWantUsed());
+			savedDealWanted.setRefurbishedOK(dto.getRefurbishedOK());
+			
+			savedDealWanted.setActive(true);
+			
+			savedDealWanted.setDealCategory(categoryDao.loadEntity(dto.getCategoryId()));
+			
+			savedDealWanted.setUpdatedOn(new Date(System.currentTimeMillis()));
+
+			dealWantedDao.saveOrUpdate(savedDealWanted);
+			
+			solrSearchService.edit(savedDealWanted);
+		}
 	}
 }

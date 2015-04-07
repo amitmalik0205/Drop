@@ -6,6 +6,7 @@ import com.drop.controller.form.DealWantedForm;
 import com.drop.controller.form.ReasonToDeleteForm;
 import com.drop.dao.domain.DealWanted;
 import com.drop.rest.request.dto.PostWantDropDTO;
+import com.drop.rest.request.dto.UpdateWantDropDTO;
 import com.drop.rest.response.dto.GetMyWantDropsDTO;
 
 public interface IDealWantedService {
@@ -28,4 +29,6 @@ public interface IDealWantedService {
 	
 	
 	public List<GetMyWantDropsDTO> getAllDealWantedForUser(String  email);
+	
+	public void saveOrUpdate(UpdateWantDropDTO updateWantDropDTO);
 }
