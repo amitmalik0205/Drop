@@ -29,6 +29,7 @@ import com.drop.dao.domain.MailingAddress;
 import com.drop.dao.domain.User;
 import com.drop.dto.DealPostDTO;
 import com.drop.dto.DealWantedDTO;
+import com.drop.enums.SORT_TYPE;
 import com.drop.rest.request.dto.GetDealCategoriesDTO;
 import com.drop.rest.request.dto.LoginDTO;
 import com.drop.rest.request.dto.PostDropDTO;
@@ -44,6 +45,7 @@ import com.drop.service.IDealWantedService;
 import com.drop.service.ISolrSearchService;
 import com.drop.service.IUserService;
 import com.drop.util.DropUtil;
+import com.drop.util.PropertiesFileReaderUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -323,8 +325,8 @@ public class DropRestService {
 		boolean isError = false;
 		String imageName = null;		
 
-		String publicURL = applicationConfig.getProperty("deal.image.public.url");
-		String rootFolderPath = applicationConfig.getProperty("drop.image.storage.path");
+		String publicURL = PropertiesFileReaderUtil.getApplicationProperty("deal.image.public.url");
+		String rootFolderPath = PropertiesFileReaderUtil.getApplicationProperty("drop.image.storage.path");
 		
 		
 		//Get entity which contains Drop details
@@ -490,4 +492,33 @@ public class DropRestService {
 		
 		return Response.ok(response).build();
 	} 
+	
+	
+	@GET
+	@Path("get-drops-for-category")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Transactional
+	public Response getDropsForCategory(
+			@QueryParam("categoryId") long categoryId,
+			@QueryParam("pageNumber") int pageNumber) {
+
+		List<DealPostDTO> dropList = new ArrayList<DealPostDTO>();
+
+		DropServiceResponse response = new DropServiceResponse();
+
+		try {
+
+			dropList = solrSearchService.searchDrops("", pageNumber,
+					SORT_TYPE.DATE, categoryId);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setCode("getDropsForCategory001");
+			response.setMessage(msgConfig.getProperty("getDropsForCategory001"));
+			logger.fatal(DropUtil.getExceptionDescriptionString(e));
+			throw new WebApplicationException(Response.ok(response).build());
+		}
+
+		return Response.ok(dropList).build();
+	}
 }
